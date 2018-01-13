@@ -1,12 +1,20 @@
 {
   "assetsByChunkName": {
+    "path---swift-language-feature-summary": [
+      "path---swift-language-feature-summary-3569051b1e1296089bdb.js",
+      "path---swift-language-feature-summary-3569051b1e1296089bdb.js.map"
+    ],
     "component---src-pages-index-js": [
-      "component---src-pages-index-js-651bd00b480d5c0eaa9c.js",
-      "component---src-pages-index-js-651bd00b480d5c0eaa9c.js.map"
+      "component---src-pages-index-js-04f324bd3987d4819d3a.js",
+      "component---src-pages-index-js-04f324bd3987d4819d3a.js.map"
     ],
     "path---": [
       "path----557518bd178906f8d58a.js",
       "path----557518bd178906f8d58a.js.map"
+    ],
+    "path---starting-resources-for-ios-and-swift": [
+      "path---starting-resources-for-ios-and-swift-36f6a3a696fb4146afb4.js",
+      "path---starting-resources-for-ios-and-swift-36f6a3a696fb4146afb4.js.map"
     ],
     "component---node-modules-gatsby-plugin-offline-app-shell-js": [
       "component---node-modules-gatsby-plugin-offline-app-shell-js-5c4c5a0f7af9dc69d6d7.js",
@@ -17,21 +25,21 @@
       "component---src-templates-blog-post-js-c79d1600c395e4a4c2b8.js.map"
     ],
     "component---src-layouts-index-js": [
-      "component---src-layouts-index-js-89fd36d55f8999b845af.js",
-      "component---src-layouts-index-js-89fd36d55f8999b845af.js.map"
+      "component---src-layouts-index-js-ec7f3fb3d857e7507a80.js",
+      "component---src-layouts-index-js-ec7f3fb3d857e7507a80.js.map"
     ],
     "path---index": [
-      "path---index-01dafa5d1f51641e6eda.js",
-      "path---index-01dafa5d1f51641e6eda.js.map"
+      "path---index-9d1bbe3e51411813c4b0.js",
+      "path---index-9d1bbe3e51411813c4b0.js.map"
     ],
     "path---hello-world": [
-      "path---hello-world-dfebb41656afdd4d12bf.js",
-      "path---hello-world-dfebb41656afdd4d12bf.js.map"
+      "path---hello-world-a898e8f346175671c60a.js",
+      "path---hello-world-a898e8f346175671c60a.js.map"
     ],
     "commons": [
-      "commons-5ffad0295fd1bf4d5a0e.js",
+      "commons-78727bd33a365b16d4bb.js",
       "build-js-styles.css",
-      "commons-5ffad0295fd1bf4d5a0e.js.map",
+      "commons-78727bd33a365b16d4bb.js.map",
       "build-js-styles.css.map"
     ],
     "path---offline-plugin-app-shell-fallback": [
@@ -39,9 +47,9 @@
       "path---offline-plugin-app-shell-fallback-a0e39f21c11f6a62c5ab.js.map"
     ],
     "app": [
-      "app-aaa87a23cd7ff2c9f63b.js",
+      "app-777e5182795cee48a52c.js",
       "build-js-styles.css",
-      "app-aaa87a23cd7ff2c9f63b.js.map",
+      "app-777e5182795cee48a52c.js.map",
       "build-js-styles.css.map"
     ]
   }

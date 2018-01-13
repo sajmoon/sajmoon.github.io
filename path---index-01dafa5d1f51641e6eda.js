@@ -1,2 +1,0 @@
-webpackJsonp([0x81b8806e4260],{478:function(t,e){t.exports={data:{site:{siteMetadata:{title:"Tinkering with Code."}},allMarkdownRemark:{edges:[{node:{excerpt:"Started a gatsby blog. Will migrate old blog posts here later.",fields:{slug:"/hello-world/"},frontmatter:{date:"07 January, 2017",title:"Installed Gatsby"}}}]}},pathContext:{}}}});
-//# sourceMappingURL=path---index-01dafa5d1f51641e6eda.js.map

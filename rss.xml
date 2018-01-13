@@ -1,1 +1,63 @@
-<?xml version="1.0" encoding="UTF-8"?><rss xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:content="http://purl.org/rss/1.0/modules/content/" xmlns:atom="http://www.w3.org/2005/Atom" version="2.0"><channel><title><![CDATA[Tinkering with Code.]]></title><description><![CDATA[My blog. A dev log.]]></description><link>https://sajmoon.github.io</link><generator>RSS for Node</generator><lastBuildDate>Sun, 07 Jan 2018 20:25:43 GMT</lastBuildDate><item><title><![CDATA[Installed Gatsby]]></title><description><![CDATA[Started a gatsby blog. Will migrate old blog posts here later.]]></description><link>https://sajmoon.github.io/hello-world/</link><guid isPermaLink="false">https://sajmoon.github.io/hello-world/</guid><pubDate>Sat, 07 Jan 2017 20:52:03 GMT</pubDate><content:encoded>&lt;p&gt;Started a gatsby blog. Will migrate old blog posts here later.&lt;/p&gt;</content:encoded></item></channel></rss>
+<?xml version="1.0" encoding="UTF-8"?><rss xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:content="http://purl.org/rss/1.0/modules/content/" xmlns:atom="http://www.w3.org/2005/Atom" version="2.0"><channel><title><![CDATA[Tinkering with Code.]]></title><description><![CDATA[My blog. A dev log.]]></description><link>https://sajmoon.github.io</link><generator>RSS for Node</generator><lastBuildDate>Sat, 13 Jan 2018 00:37:25 GMT</lastBuildDate><item><title><![CDATA[Resources for starting with iOS and Swift]]></title><description><![CDATA[I got a new job and here our main platform is iOS. Im a web developer so this should be interesting. Will try to document what and how I…]]></description><link>https://sajmoon.github.io/starting-resources-for-ios-and-swift/</link><guid isPermaLink="false">https://sajmoon.github.io/starting-resources-for-ios-and-swift/</guid><pubDate>Sun, 07 Jan 2018 00:00:00 GMT</pubDate><content:encoded>&lt;p&gt;I got a new job and here our main platform is iOS. Im a web developer so this should be interesting.&lt;/p&gt;
+&lt;p&gt;Will try to document what and how I learn both Swift as a language and the SDKs and inner workings of iOS.&lt;/p&gt;
+&lt;h2&gt;Where to start&lt;/h2&gt;
+&lt;h3&gt;Read the docs&lt;/h3&gt;
+&lt;p&gt;Apples &lt;em&gt;The Swift Programming Langugae&lt;/em&gt; is a great book. It talks about all the language features without the SDK for iOS. &lt;a href=&quot;https://developer.apple.com/library/content/documentation/Swift/Conceptual/Swift_Programming_Language/TheBasics.html#//apple_ref/doc/uid/TP40014097-CH5-ID309&quot;&gt;Read it&lt;/a&gt;&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;Build a table view - &lt;a href=&quot;https://developer.apple.com/library/content/referencelibrary/GettingStarted/DevelopiOSAppsSwift/CreateATableView.html&quot;&gt;Apple documentation&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3&gt;Stanford course&lt;/h3&gt;
+&lt;p&gt;Standford has a open course for app development with swift &lt;a href=&quot;https://itunes.apple.com/us/course/developing-ios-11-apps-with-swift/id1309275316&quot;&gt;here&lt;/a&gt;. Only avaialbe for apple devices.&lt;/p&gt;
+&lt;p&gt;I found some episodes on youtube:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&quot;https://www.youtube.com/watch?v=pnUFW6NxlSE&quot;&gt;Episode 1&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&quot;https://www.youtube.com/watch?v=qiROf0aHI4k&quot;&gt;Episode 2&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&quot;https://www.youtube.com/watch?v=bZldHF69C_s&quot;&gt;Episode 3&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&quot;https://www.youtube.com/watch?v=bHv6QVHId6Q&quot;&gt;Episode 4&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&quot;https://www.youtube.com/watch?v=5n7cqFdJd1U&quot;&gt;Episode 5&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3&gt;Other resiources&lt;/h3&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&quot;https://www.appcoda.com/learnswift/&quot;&gt;https://www.appcoda.com/learnswift/&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&quot;https://www.raywenderlich.com/160521/storyboards-tutorial-ios-11-part-1&quot;&gt;https://www.raywenderlich.com/160521/storyboards-tutorial-ios-11-part-1&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;Build a logger (simple use of extensions and more) &lt;a href=&quot;https://medium.com/@sauvik_dolui/developing-a-tiny-logger-in-swift-7221751628e6&quot;&gt;https://medium.com/@sauvik_dolui/developing-a-tiny-logger-in-swift-7221751628e6&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;Declare new infix operators &lt;a href=&quot;https://developer.apple.com/library/content/documentation/Swift/Conceptual/Swift_Programming_Language/AdvancedOperators.html&quot;&gt;https://developer.apple.com/library/content/documentation/Swift/Conceptual/Swift&lt;em&gt;Programming&lt;/em&gt;Language/AdvancedOperators.html&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2&gt;Write code&lt;/h2&gt;
+&lt;h3&gt;Playground&lt;/h3&gt;
+&lt;p&gt;It’s important to write code to learn. So start building something. However, sometimes it can help to try out new language features. Xcode has a playground feature. Start a new empty playground and you can follow along in &lt;em&gt;The Swift Programming Lanugauge&lt;/em&gt; book and try it out.&lt;/p&gt;
+&lt;p&gt;You can do pretty advanced stuff in the playground, showing the code and the final product at the same time. Perfect for learning things.&lt;/p&gt;
+&lt;p&gt;Read more about the playground and find examples &lt;a href=&quot;https://developer.apple.com/swift/playgrounds/&quot;&gt;here&lt;/a&gt;.&lt;/p&gt;
+&lt;h3&gt;Excersism&lt;/h3&gt;
+&lt;p&gt;Excersism is a great way to learn new things. You have a very small and well defined problem to solve. They provide test cases and your job is to make them pass.&lt;/p&gt;
+&lt;p&gt;Then you can get feedback on your solution from the community or read someone elses code. Then iterate and improve your solution. It’s quite awesome. Have a look &lt;a href=&quot;http://exercism.io/languages/swift/about&quot;&gt;http://exercism.io&lt;/a&gt;&lt;/p&gt;</content:encoded></item><item><title><![CDATA[Summary of Swift language features]]></title><description><![CDATA[Summary of Swift language features Swith value bining In a switch statement you can sort of pattern match on tuples. The complete example…]]></description><link>https://sajmoon.github.io/swift-language-feature-summary/</link><guid isPermaLink="false">https://sajmoon.github.io/swift-language-feature-summary/</guid><pubDate>Sat, 07 Jan 2017 20:52:03 GMT</pubDate><content:encoded>&lt;h1&gt;Summary of Swift language features&lt;/h1&gt;
+&lt;h3&gt;Swith value bining&lt;/h3&gt;
+&lt;p&gt;In a switch statement you can sort of pattern match on tuples.&lt;/p&gt;
+&lt;div class=&quot;gatsby-highlight&quot;&gt;
+      &lt;pre class=&quot;language-none&quot;&gt;&lt;code&gt;let anotherPoint = (2, 0)
+switch anotherPoint {
+case (let x, 0):
+    print(&quot;on the x-axis with an x value of \(x)&quot;)
+case (0, let y):
+    print(&quot;on the y-axis with a y value of \(y)&quot;)
+case let (x, y):
+    print(&quot;somewhere else at (\(x), \(y))&quot;)
+}
+// Prints &quot;on the x-axis with an x value of 2&quot;&lt;/code&gt;&lt;/pre&gt;
+      &lt;/div&gt;
+&lt;p&gt;The complete example can be read [here.]&lt;a href=&quot;https://developer.apple.com/library/content/documentation/Swift/Conceptual/Swift_Programming_Language/ControlFlow.html#//apple_ref/doc/uid/TP40014097-CH9-ID120&quot;&gt;https://developer.apple.com/library/content/documentation/Swift/Conceptual/Swift&lt;em&gt;Programming&lt;/em&gt;Language/ControlFlow.html#//apple_ref/doc/uid/TP40014097-CH9-ID120&lt;/a&gt;)&lt;/p&gt;
+&lt;h3&gt;var title: String!&lt;/h3&gt;
+&lt;h3&gt;Guard&lt;/h3&gt;
+&lt;p&gt;Assignments are kept in scope&lt;/p&gt;
+&lt;h3&gt;Named function arguments&lt;/h3&gt;
+&lt;p&gt;Not strange in general but we are allowed to have two names for a paramter, an internal and an external.&lt;/p&gt;
+&lt;div class=&quot;gatsby-highlight&quot;&gt;
+      &lt;pre class=&quot;language-none&quot;&gt;&lt;code&gt;func methodName(external internal : String) {
+ use internal
+}&lt;/code&gt;&lt;/pre&gt;
+      &lt;/div&gt;
+&lt;p&gt;called as &lt;code&gt;methodName(external: &quot;value&quot;)&lt;/code&gt;&lt;/p&gt;
+&lt;h2&gt;Xcode was slow&lt;/h2&gt;
+&lt;p&gt;I had enabled slow animations. Check the debug menu.&lt;/p&gt;
+&lt;h2&gt;Extra stuff&lt;/h2&gt;
+&lt;p&gt;class func vs static func&lt;/p&gt;</content:encoded></item><item><title><![CDATA[Installed Gatsby]]></title><description><![CDATA[Started a gatsby blog. Will migrate old blog posts here later.]]></description><link>https://sajmoon.github.io/hello-world/</link><guid isPermaLink="false">https://sajmoon.github.io/hello-world/</guid><pubDate>Fri, 06 Jan 2017 00:00:00 GMT</pubDate><content:encoded>&lt;p&gt;Started a gatsby blog. Will migrate old blog posts here later.&lt;/p&gt;</content:encoded></item></channel></rss>
