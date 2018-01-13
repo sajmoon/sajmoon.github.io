@@ -10,6 +10,7 @@ class BlogIndex extends React.Component {
   render() {
     const siteTitle = get(this, 'props.data.site.siteMetadata.title')
     const posts = get(this, 'props.data.allMarkdownRemark.edges')
+      .filter(({ node }) => !node.frontmatter.draft)
 
     return (
       <div>
@@ -57,6 +58,7 @@ export const pageQuery = graphql`
           frontmatter {
             date(formatString: "DD MMMM, YYYY")
             title
+            draft
           }
         }
       }
