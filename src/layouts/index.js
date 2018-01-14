@@ -2,6 +2,9 @@ import React from 'react'
 import Link from 'gatsby-link'
 import { Container } from 'react-responsive-grid'
 
+// Code heighlight
+require('prismjs/themes/prism-solarizedlight.css')
+
 import { rhythm, scale } from '../utils/typography'
 
 class Template extends React.Component {
