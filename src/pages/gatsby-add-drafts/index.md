@@ -1,7 +1,7 @@
 ---
 title: Add support for drafts in gatsby
 date: "2018-01-14"
-draft: true
+draft: false
 ---
 
 Adding support for drafts in Gatsby.
