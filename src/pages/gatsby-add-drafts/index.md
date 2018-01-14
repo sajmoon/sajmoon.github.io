@@ -35,8 +35,9 @@ draft: false
 In our `pages/index.js` we list our posts and iterate over them to render links. We add a filter to hide our drafts.
 
 ```javascript
-const posts = get(this, 'props.data.allMarkdownRemark.edges')
-  .filter(({ node }) => !node.frontmatter.draft)
+const posts = get(this, 'props.data.allMarkdownRemark.edges').filter(
+  ({ node }) => !node.frontmatter.draft
+)
 ```
 
 That doesn't work yet. The markdown parse knows we added a `draft` value but we do not have it in the data node. We need to make sure we fetch it.

@@ -28,7 +28,7 @@ class BlogIndex extends React.Component {
                   marginBottom: rhythm(1 / 4),
                 }}
               >
-                { isDraft && '[Draft] ' }
+                {isDraft && '[Draft] '}
                 <Link style={{ boxShadow: 'none' }} to={node.fields.slug}>
                   {title}
                 </Link>
