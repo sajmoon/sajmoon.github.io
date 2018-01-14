@@ -8,9 +8,11 @@ import { rhythm } from '../utils/typography'
 
 class BlogIndex extends React.Component {
   render() {
+    const isDevelopment = process.env.NODE_ENV === 'development'
     const siteTitle = get(this, 'props.data.site.siteMetadata.title')
-    const posts = get(this, 'props.data.allMarkdownRemark.edges')
-      .filter(({ node }) => !node.frontmatter.draft)
+    const posts = get(this, 'props.data.allMarkdownRemark.edges').filter(
+      ({ node }) => isDevelopment || !node.frontmatter.draft
+    )
 
     return (
       <div>
@@ -18,6 +20,7 @@ class BlogIndex extends React.Component {
         <Bio />
         {posts.map(({ node }) => {
           const title = get(node, 'frontmatter.title') || node.fields.slug
+          const isDraft = get(node, 'frontmatter.draft') || false
           return (
             <div key={node.fields.slug}>
               <h3
@@ -25,6 +28,7 @@ class BlogIndex extends React.Component {
                   marginBottom: rhythm(1 / 4),
                 }}
               >
+                { isDraft && '[Draft] ' }
                 <Link style={{ boxShadow: 'none' }} to={node.fields.slug}>
                   {title}
                 </Link>
