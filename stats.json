@@ -1,12 +1,12 @@
 {
   "assetsByChunkName": {
     "path---swift-language-feature-summary": [
-      "path---swift-language-feature-summary-3569051b1e1296089bdb.js",
-      "path---swift-language-feature-summary-3569051b1e1296089bdb.js.map"
+      "path---swift-language-feature-summary-59960169af2230ae17df.js",
+      "path---swift-language-feature-summary-59960169af2230ae17df.js.map"
     ],
     "component---src-pages-index-js": [
-      "component---src-pages-index-js-dab5d032f9a6ebd72742.js",
-      "component---src-pages-index-js-dab5d032f9a6ebd72742.js.map"
+      "component---src-pages-index-js-cfcfba8790f1170c8286.js",
+      "component---src-pages-index-js-cfcfba8790f1170c8286.js.map"
     ],
     "path---": [
       "path----557518bd178906f8d58a.js",
@@ -25,16 +25,16 @@
       "component---src-templates-blog-post-js-c79d1600c395e4a4c2b8.js.map"
     ],
     "component---src-layouts-index-js": [
-      "component---src-layouts-index-js-ec7f3fb3d857e7507a80.js",
-      "component---src-layouts-index-js-ec7f3fb3d857e7507a80.js.map"
+      "component---src-layouts-index-js-1082d0b0a0d1a123b297.js",
+      "component---src-layouts-index-js-1082d0b0a0d1a123b297.js.map"
     ],
     "path---index": [
-      "path---index-9d1bbe3e51411813c4b0.js",
-      "path---index-9d1bbe3e51411813c4b0.js.map"
+      "path---index-4a62497c0fc0114d9a62.js",
+      "path---index-4a62497c0fc0114d9a62.js.map"
     ],
     "path---hello-world": [
-      "path---hello-world-a898e8f346175671c60a.js",
-      "path---hello-world-a898e8f346175671c60a.js.map"
+      "path---hello-world-3e6595ecc6413de38f90.js",
+      "path---hello-world-3e6595ecc6413de38f90.js.map"
     ],
     "commons": [
       "commons-78727bd33a365b16d4bb.js",
@@ -47,10 +47,14 @@
       "path---offline-plugin-app-shell-fallback-a0e39f21c11f6a62c5ab.js.map"
     ],
     "app": [
-      "app-777e5182795cee48a52c.js",
+      "app-b61350173b9a36fc1282.js",
       "build-js-styles.css",
-      "app-777e5182795cee48a52c.js.map",
+      "app-b61350173b9a36fc1282.js.map",
       "build-js-styles.css.map"
+    ],
+    "path---gatsby-add-drafts": [
+      "path---gatsby-add-drafts-1acda0460dc51002bb5a.js",
+      "path---gatsby-add-drafts-1acda0460dc51002bb5a.js.map"
     ]
   }
 }

@@ -1,4 +1,65 @@
-<?xml version="1.0" encoding="UTF-8"?><rss xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:content="http://purl.org/rss/1.0/modules/content/" xmlns:atom="http://www.w3.org/2005/Atom" version="2.0"><channel><title><![CDATA[Tinkering with Code.]]></title><description><![CDATA[My blog. A dev log.]]></description><link>https://sajmoon.github.io</link><generator>RSS for Node</generator><lastBuildDate>Sat, 13 Jan 2018 00:41:59 GMT</lastBuildDate><item><title><![CDATA[Resources for starting with iOS and Swift]]></title><description><![CDATA[I got a new job and here our main platform is iOS. Im a web developer so this should be interesting. Will try to document what and how I…]]></description><link>https://sajmoon.github.io/starting-resources-for-ios-and-swift/</link><guid isPermaLink="false">https://sajmoon.github.io/starting-resources-for-ios-and-swift/</guid><pubDate>Sun, 07 Jan 2018 00:00:00 GMT</pubDate><content:encoded>&lt;p&gt;I got a new job and here our main platform is iOS. Im a web developer so this should be interesting.&lt;/p&gt;
+<?xml version="1.0" encoding="UTF-8"?><rss xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:content="http://purl.org/rss/1.0/modules/content/" xmlns:atom="http://www.w3.org/2005/Atom" version="2.0"><channel><title><![CDATA[Tinkering with Code.]]></title><description><![CDATA[My blog. A dev log.]]></description><link>https://sajmoon.github.io</link><generator>RSS for Node</generator><lastBuildDate>Sun, 14 Jan 2018 21:23:49 GMT</lastBuildDate><item><title><![CDATA[Add support for drafts in gatsby]]></title><description><![CDATA[Adding support for drafts in Gatsby. I started out with a blog starter for Gatsby. Pretty handy. Easy to get started. But it felt like magic…]]></description><link>https://sajmoon.github.io/gatsby-add-drafts/</link><guid isPermaLink="false">https://sajmoon.github.io/gatsby-add-drafts/</guid><pubDate>Sun, 14 Jan 2018 00:00:00 GMT</pubDate><content:encoded>&lt;p&gt;Adding support for drafts in Gatsby.&lt;/p&gt;
+&lt;p&gt;I started out with a blog starter for Gatsby. Pretty handy. Easy to get started. But it felt like magic. Why and how do we generate blog posts with urls from markdown files?&lt;/p&gt;
+&lt;p&gt;So I started to actually read the guide. So before you start to look for a quick fix, read the guide &lt;a href=&quot;https://www.gatsbyjs.org/docs/&quot;&gt;here&lt;/a&gt;. It acutally tells you how gatsby works. Hopefully you will be able to implment this yourself.&lt;/p&gt;
+&lt;h2&gt;How can we add support for drafts?&lt;/h2&gt;
+&lt;p&gt;To solve this problem for us we will just hide all blog posts that have been marked as drafts.&lt;/p&gt;
+&lt;p&gt;Gatsby is built around the idea of plugins. We use the &lt;a href=&quot;https://www.gatsbyjs.org/packages/gatsby-transformer-remark/&quot;&gt;transformer-remark&lt;/a&gt; plugin to convert markdown files to queriable data. The data is queried from a &lt;a href=&quot;http://graphql.org/learn/&quot;&gt;GraphQl instance&lt;/a&gt;.&lt;/p&gt;
+&lt;p&gt;Just remember that all this happens in build time, not run time.&lt;/p&gt;
+&lt;h3&gt;Add meta data&lt;/h3&gt;
+&lt;p&gt;We have a meta data block on top of each markdown file. We can add any data we need there. For example a draft: Bool. This block is called frontmatter for some reason.&lt;/p&gt;
+&lt;div class=&quot;gatsby-highlight&quot;&gt;
+      &lt;pre class=&quot;language-markdown&quot;&gt;&lt;code&gt;&lt;span class=&quot;token hr punctuation&quot;&gt;---&lt;/span&gt;
+title: Title of page
+date: &quot;2018-01-01&quot;
+&lt;span class=&quot;token title important&quot;&gt;draft: false
+&lt;span class=&quot;token punctuation&quot;&gt;---&lt;/span&gt;&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;
+      &lt;/div&gt;
+&lt;h3&gt;Filter our posts&lt;/h3&gt;
+&lt;p&gt;In our &lt;code&gt;pages/index.js&lt;/code&gt; we list our posts and iterate over them to render links. We add a filter to hide our drafts.&lt;/p&gt;
+&lt;div class=&quot;gatsby-highlight&quot;&gt;
+      &lt;pre class=&quot;language-javascript&quot;&gt;&lt;code&gt;&lt;span class=&quot;token keyword&quot;&gt;const&lt;/span&gt; posts &lt;span class=&quot;token operator&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;token keyword&quot;&gt;get&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;token keyword&quot;&gt;this&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;token string&quot;&gt;&apos;props.data.allMarkdownRemark.edges&apos;&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;)&lt;/span&gt;
+  &lt;span class=&quot;token punctuation&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;token function&quot;&gt;filter&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;{&lt;/span&gt; node &lt;span class=&quot;token punctuation&quot;&gt;}&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;token operator&quot;&gt;=&gt;&lt;/span&gt; &lt;span class=&quot;token operator&quot;&gt;!&lt;/span&gt;node&lt;span class=&quot;token punctuation&quot;&gt;.&lt;/span&gt;frontmatter&lt;span class=&quot;token punctuation&quot;&gt;.&lt;/span&gt;draft&lt;span class=&quot;token punctuation&quot;&gt;)&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;
+      &lt;/div&gt;
+&lt;p&gt;That doesn’t work yet. The markdown parse knows we added a &lt;code&gt;draft&lt;/code&gt; value but we do not have it in the data node. We need to make sure we fetch it.&lt;/p&gt;
+&lt;h3&gt;Query data&lt;/h3&gt;
+&lt;p&gt;In the &lt;code&gt;pages/index.js&lt;/code&gt; file we have a pageQuery object. It is a GraphQL query, so we tell it we need the draft status.&lt;/p&gt;
+&lt;div class=&quot;gatsby-highlight&quot;&gt;
+      &lt;pre class=&quot;language-javascript&quot;&gt;&lt;code&gt;frontmatter &lt;span class=&quot;token punctuation&quot;&gt;{&lt;/span&gt;
+  &lt;span class=&quot;token function&quot;&gt;date&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;(&lt;/span&gt;formatString&lt;span class=&quot;token punctuation&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;token string&quot;&gt;&quot;DD MMMM, YYYY&quot;&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;)&lt;/span&gt;
+  title
+  draft
+&lt;span class=&quot;token punctuation&quot;&gt;}&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;
+      &lt;/div&gt;
+&lt;p&gt;And we are done.&lt;/p&gt;
+&lt;h2&gt;Show me a real implementaion!&lt;/h2&gt;
+&lt;p&gt;Sure. I added draft support to this blog in &lt;a href=&quot;https://github.com/sajmoon/sajmoon.github.io/commit/1340ce9e5fcda5b8b6a0ca1d791b488638df8b87&quot;&gt;this commit&lt;/a&gt;. Unfortunatly it includes some other stuff too. But there yout have all the changes needed.&lt;/p&gt;
+&lt;h2&gt;Some improvements.&lt;/h2&gt;
+&lt;p&gt;This is a pretty bad feature. It is hard to use this in development where you might actually have to read the post you are writing.&lt;/p&gt;
+&lt;p&gt;So let’s hide the posts in production, but in development add a tag to them or something.&lt;/p&gt;
+&lt;div class=&quot;gatsby-highlight&quot;&gt;
+      &lt;pre class=&quot;language-javascript&quot;&gt;&lt;code&gt;&lt;span class=&quot;token keyword&quot;&gt;const&lt;/span&gt; isDevelopment &lt;span class=&quot;token operator&quot;&gt;=&lt;/span&gt; process&lt;span class=&quot;token punctuation&quot;&gt;.&lt;/span&gt;env&lt;span class=&quot;token punctuation&quot;&gt;.&lt;/span&gt;NODE_ENV &lt;span class=&quot;token operator&quot;&gt;===&lt;/span&gt; &lt;span class=&quot;token string&quot;&gt;&apos;development&apos;&lt;/span&gt;
+&lt;span class=&quot;token keyword&quot;&gt;const&lt;/span&gt; posts &lt;span class=&quot;token operator&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;token keyword&quot;&gt;get&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;token keyword&quot;&gt;this&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;token string&quot;&gt;&apos;props.data.allMarkdownRemark.edges&apos;&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;)&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;token function&quot;&gt;filter&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;(&lt;/span&gt;
+  &lt;span class=&quot;token punctuation&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;{&lt;/span&gt; node &lt;span class=&quot;token punctuation&quot;&gt;}&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;token operator&quot;&gt;=&gt;&lt;/span&gt; isDevelopment &lt;span class=&quot;token operator&quot;&gt;||&lt;/span&gt; &lt;span class=&quot;token operator&quot;&gt;!&lt;/span&gt;node&lt;span class=&quot;token punctuation&quot;&gt;.&lt;/span&gt;frontmatter&lt;span class=&quot;token punctuation&quot;&gt;.&lt;/span&gt;draft
+&lt;span class=&quot;token punctuation&quot;&gt;)&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;
+      &lt;/div&gt;
+&lt;p&gt;Now we do not filter posts in development. We can then show in the UI something to tell the user it is a draft.&lt;/p&gt;
+&lt;p&gt;In our render method:&lt;/p&gt;
+&lt;div class=&quot;gatsby-highlight&quot;&gt;
+      &lt;pre class=&quot;language-javascript&quot;&gt;&lt;code&gt;&lt;span class=&quot;token keyword&quot;&gt;const&lt;/span&gt; isDraft &lt;span class=&quot;token operator&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;token keyword&quot;&gt;get&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;(&lt;/span&gt;node&lt;span class=&quot;token punctuation&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;token string&quot;&gt;&apos;frontmatter.draft&apos;&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;token operator&quot;&gt;||&lt;/span&gt; &lt;span class=&quot;token boolean&quot;&gt;false&lt;/span&gt;
+
+&lt;span class=&quot;token operator&quot;&gt;&amp;lt;&lt;/span&gt;Link style&lt;span class=&quot;token operator&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;{&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;{&lt;/span&gt; boxShadow&lt;span class=&quot;token punctuation&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;token string&quot;&gt;&apos;none&apos;&lt;/span&gt; &lt;span class=&quot;token punctuation&quot;&gt;}&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;}&lt;/span&gt; to&lt;span class=&quot;token operator&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;{&lt;/span&gt;node&lt;span class=&quot;token punctuation&quot;&gt;.&lt;/span&gt;fields&lt;span class=&quot;token punctuation&quot;&gt;.&lt;/span&gt;slug&lt;span class=&quot;token punctuation&quot;&gt;}&lt;/span&gt;&lt;span class=&quot;token operator&quot;&gt;&gt;&lt;/span&gt;
+  &lt;span class=&quot;token punctuation&quot;&gt;{&lt;/span&gt; isDraft &lt;span class=&quot;token operator&quot;&gt;&amp;amp;&amp;amp;&lt;/span&gt; &lt;span class=&quot;token string&quot;&gt;&apos;[Draft] &apos;&lt;/span&gt; &lt;span class=&quot;token punctuation&quot;&gt;}&lt;/span&gt;
+  &lt;span class=&quot;token punctuation&quot;&gt;{&lt;/span&gt;title&lt;span class=&quot;token punctuation&quot;&gt;}&lt;/span&gt;
+&lt;span class=&quot;token operator&quot;&gt;&amp;lt;&lt;/span&gt;&lt;span class=&quot;token operator&quot;&gt;/&lt;/span&gt;Link&lt;span class=&quot;token operator&quot;&gt;&gt;&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;
+      &lt;/div&gt;
+&lt;h2&gt;Summary&lt;/h2&gt;
+&lt;p&gt;Now we can mark a page as draft. Have it visible during development, and hidden on the final site.&lt;/p&gt;
+&lt;p&gt;We learned how Gatsby uses plugins to parse data, realized that we should look at the documentation, and also how gatsby uses GraphQL.&lt;/p&gt;</content:encoded></item><item><title><![CDATA[Resources for starting with iOS and Swift]]></title><description><![CDATA[I got a new job and here our main platform is iOS. Im a web developer so this should be interesting. Will try to document what and how I…]]></description><link>https://sajmoon.github.io/starting-resources-for-ios-and-swift/</link><guid isPermaLink="false">https://sajmoon.github.io/starting-resources-for-ios-and-swift/</guid><pubDate>Sun, 07 Jan 2018 00:00:00 GMT</pubDate><content:encoded>&lt;p&gt;I got a new job and here our main platform is iOS. Im a web developer so this should be interesting.&lt;/p&gt;
 &lt;p&gt;Will try to document what and how I learn both Swift as a language and the SDKs and inner workings of iOS.&lt;/p&gt;
 &lt;h2&gt;Where to start&lt;/h2&gt;
 &lt;h3&gt;Read the docs&lt;/h3&gt;
@@ -30,34 +91,50 @@
 &lt;p&gt;Read more about the playground and find examples &lt;a href=&quot;https://developer.apple.com/swift/playgrounds/&quot;&gt;here&lt;/a&gt;.&lt;/p&gt;
 &lt;h3&gt;Excersism&lt;/h3&gt;
 &lt;p&gt;Excersism is a great way to learn new things. You have a very small and well defined problem to solve. They provide test cases and your job is to make them pass.&lt;/p&gt;
-&lt;p&gt;Then you can get feedback on your solution from the community or read someone elses code. Then iterate and improve your solution. It’s quite awesome. Have a look &lt;a href=&quot;http://exercism.io/languages/swift/about&quot;&gt;http://exercism.io&lt;/a&gt;&lt;/p&gt;</content:encoded></item><item><title><![CDATA[Summary of Swift language features]]></title><description><![CDATA[Summary of Swift language features Swith value bining In a switch statement you can sort of pattern match on tuples. The complete example…]]></description><link>https://sajmoon.github.io/swift-language-feature-summary/</link><guid isPermaLink="false">https://sajmoon.github.io/swift-language-feature-summary/</guid><pubDate>Sat, 07 Jan 2017 20:52:03 GMT</pubDate><content:encoded>&lt;h1&gt;Summary of Swift language features&lt;/h1&gt;
+&lt;p&gt;Then you can get feedback on your solution from the community or read someone elses code. Then iterate and improve your solution. It’s quite awesome. Have a look &lt;a href=&quot;http://exercism.io/languages/swift/about&quot;&gt;http://exercism.io&lt;/a&gt;&lt;/p&gt;</content:encoded></item><item><title><![CDATA[Installed Gatsby]]></title><description><![CDATA[Started a gatsby blog. Will migrate old blog posts here later.]]></description><link>https://sajmoon.github.io/hello-world/</link><guid isPermaLink="false">https://sajmoon.github.io/hello-world/</guid><pubDate>Sat, 06 Jan 2018 00:00:00 GMT</pubDate><content:encoded>&lt;p&gt;Started a gatsby blog. Will migrate old blog posts here later.&lt;/p&gt;</content:encoded></item><item><title><![CDATA[Summary of Swift language features]]></title><description><![CDATA[As I started to learn Swift i wrote a list of things that where notworthy about the language. This is the result: A short summary of…]]></description><link>https://sajmoon.github.io/swift-language-feature-summary/</link><guid isPermaLink="false">https://sajmoon.github.io/swift-language-feature-summary/</guid><pubDate>Fri, 13 Jan 2017 20:52:03 GMT</pubDate><content:encoded>&lt;p&gt;As I started to learn Swift i wrote a list of things that where notworthy about the language. This is the result: A short summary of interesting Swift language features.&lt;/p&gt;
+&lt;h2&gt;Features&lt;/h2&gt;
+&lt;p&gt;Listed in no particular order.&lt;/p&gt;
 &lt;h3&gt;Swith value bining&lt;/h3&gt;
 &lt;p&gt;In a switch statement you can sort of pattern match on tuples.&lt;/p&gt;
 &lt;div class=&quot;gatsby-highlight&quot;&gt;
-      &lt;pre class=&quot;language-none&quot;&gt;&lt;code&gt;let anotherPoint = (2, 0)
-switch anotherPoint {
-case (let x, 0):
-    print(&quot;on the x-axis with an x value of \(x)&quot;)
-case (0, let y):
-    print(&quot;on the y-axis with a y value of \(y)&quot;)
-case let (x, y):
-    print(&quot;somewhere else at (\(x), \(y))&quot;)
-}
-// Prints &quot;on the x-axis with an x value of 2&quot;&lt;/code&gt;&lt;/pre&gt;
+      &lt;pre class=&quot;language-swift&quot;&gt;&lt;code&gt;&lt;span class=&quot;token keyword&quot;&gt;let&lt;/span&gt; anotherPoint &lt;span class=&quot;token operator&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;token punctuation&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;token number&quot;&gt;2&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;token number&quot;&gt;0&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;)&lt;/span&gt;
+&lt;span class=&quot;token keyword&quot;&gt;switch&lt;/span&gt; anotherPoint &lt;span class=&quot;token punctuation&quot;&gt;{&lt;/span&gt;
+&lt;span class=&quot;token keyword&quot;&gt;case&lt;/span&gt; &lt;span class=&quot;token punctuation&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;token keyword&quot;&gt;let&lt;/span&gt; x&lt;span class=&quot;token punctuation&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;token number&quot;&gt;0&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;)&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;:&lt;/span&gt;
+    &lt;span class=&quot;token function&quot;&gt;print&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;token string&quot;&gt;&quot;on the x-axis with an x value of &lt;span class=&quot;token interpolation&quot;&gt;&lt;span class=&quot;token delimiter variable&quot;&gt;\(&lt;/span&gt;x&lt;span class=&quot;token delimiter variable&quot;&gt;)&lt;/span&gt;&lt;/span&gt;&quot;&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;)&lt;/span&gt;
+&lt;span class=&quot;token keyword&quot;&gt;case&lt;/span&gt; &lt;span class=&quot;token punctuation&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;token number&quot;&gt;0&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;token keyword&quot;&gt;let&lt;/span&gt; y&lt;span class=&quot;token punctuation&quot;&gt;)&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;:&lt;/span&gt;
+    &lt;span class=&quot;token function&quot;&gt;print&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;token string&quot;&gt;&quot;on the y-axis with a y value of &lt;span class=&quot;token interpolation&quot;&gt;&lt;span class=&quot;token delimiter variable&quot;&gt;\(&lt;/span&gt;y&lt;span class=&quot;token delimiter variable&quot;&gt;)&lt;/span&gt;&lt;/span&gt;&quot;&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;)&lt;/span&gt;
+&lt;span class=&quot;token keyword&quot;&gt;case&lt;/span&gt; &lt;span class=&quot;token keyword&quot;&gt;let&lt;/span&gt; &lt;span class=&quot;token punctuation&quot;&gt;(&lt;/span&gt;x&lt;span class=&quot;token punctuation&quot;&gt;,&lt;/span&gt; y&lt;span class=&quot;token punctuation&quot;&gt;)&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;:&lt;/span&gt;
+    &lt;span class=&quot;token function&quot;&gt;print&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;token string&quot;&gt;&quot;somewhere else at (&lt;span class=&quot;token interpolation&quot;&gt;&lt;span class=&quot;token delimiter variable&quot;&gt;\(&lt;/span&gt;x&lt;span class=&quot;token delimiter variable&quot;&gt;)&lt;/span&gt;&lt;/span&gt;, &lt;span class=&quot;token interpolation&quot;&gt;&lt;span class=&quot;token delimiter variable&quot;&gt;\(&lt;/span&gt;y&lt;span class=&quot;token delimiter variable&quot;&gt;)&lt;/span&gt;&lt;/span&gt;)&quot;&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;)&lt;/span&gt;
+&lt;span class=&quot;token punctuation&quot;&gt;}&lt;/span&gt;
+&lt;span class=&quot;token comment&quot;&gt;// Prints &quot;on the x-axis with an x value of 2&quot;&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;
       &lt;/div&gt;
-&lt;p&gt;The complete example can be read [here.]&lt;a href=&quot;https://developer.apple.com/library/content/documentation/Swift/Conceptual/Swift_Programming_Language/ControlFlow.html#//apple_ref/doc/uid/TP40014097-CH9-ID120&quot;&gt;https://developer.apple.com/library/content/documentation/Swift/Conceptual/Swift&lt;em&gt;Programming&lt;/em&gt;Language/ControlFlow.html#//apple_ref/doc/uid/TP40014097-CH9-ID120&lt;/a&gt;)&lt;/p&gt;
+&lt;p&gt;The complete example can be read &lt;a href=&quot;https://developer.apple.com/library/content/documentation/Swift/Conceptual/Swift_Programming_Language/ControlFlow.html#//apple_ref/doc/uid/TP40014097-CH9-ID120&quot;&gt;in the Swift documentation.&lt;/a&gt;&lt;/p&gt;
 &lt;h3&gt;var title: String!&lt;/h3&gt;
 &lt;h3&gt;Guard&lt;/h3&gt;
 &lt;p&gt;Assignments are kept in scope&lt;/p&gt;
 &lt;h3&gt;Named function arguments&lt;/h3&gt;
-&lt;p&gt;Not strange in general but we are allowed to have two names for a paramter, an internal and an external.&lt;/p&gt;
+&lt;p&gt;Not strange in general but we are allowed to have two names for a paramter, an internal and an external. Pretty cool hand handy.&lt;/p&gt;
 &lt;div class=&quot;gatsby-highlight&quot;&gt;
-      &lt;pre class=&quot;language-none&quot;&gt;&lt;code&gt;func methodName(external internal : String) {
- use internal
-}&lt;/code&gt;&lt;/pre&gt;
+      &lt;pre class=&quot;language-swift&quot;&gt;&lt;code&gt;&lt;span class=&quot;token keyword&quot;&gt;func&lt;/span&gt; &lt;span class=&quot;token function&quot;&gt;methodName&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;(&lt;/span&gt;external &lt;span class=&quot;token keyword&quot;&gt;internal&lt;/span&gt; &lt;span class=&quot;token punctuation&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;token builtin&quot;&gt;String&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;token punctuation&quot;&gt;{&lt;/span&gt;
+  &lt;span class=&quot;token function&quot;&gt;print&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;token keyword&quot;&gt;internal&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;)&lt;/span&gt;
+&lt;span class=&quot;token punctuation&quot;&gt;}&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;
       &lt;/div&gt;
-&lt;p&gt;called as &lt;code&gt;methodName(external: &quot;value&quot;)&lt;/code&gt;&lt;/p&gt;
-&lt;h2&gt;Xcode was slow&lt;/h2&gt;
-&lt;p&gt;I had enabled slow animations. Check the debug menu.&lt;/p&gt;
-&lt;h2&gt;Extra stuff&lt;/h2&gt;
-&lt;p&gt;class func vs static func&lt;/p&gt;</content:encoded></item><item><title><![CDATA[Installed Gatsby]]></title><description><![CDATA[Started a gatsby blog. Will migrate old blog posts here later.]]></description><link>https://sajmoon.github.io/hello-world/</link><guid isPermaLink="false">https://sajmoon.github.io/hello-world/</guid><pubDate>Fri, 06 Jan 2017 00:00:00 GMT</pubDate><content:encoded>&lt;p&gt;Started a gatsby blog. Will migrate old blog posts here later.&lt;/p&gt;</content:encoded></item></channel></rss>
+&lt;p&gt;called as&lt;/p&gt;
+&lt;div class=&quot;gatsby-highlight&quot;&gt;
+      &lt;pre class=&quot;language-swift&quot;&gt;&lt;code&gt;&lt;span class=&quot;token function&quot;&gt;methodName&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;(&lt;/span&gt;external&lt;span class=&quot;token punctuation&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;token string&quot;&gt;&quot;value&quot;&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;)&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;
+      &lt;/div&gt;
+&lt;p&gt;Use unnamed parameters.&lt;/p&gt;
+&lt;div class=&quot;gatsby-highlight&quot;&gt;
+      &lt;pre class=&quot;language-swift&quot;&gt;&lt;code&gt;&lt;span class=&quot;token keyword&quot;&gt;func&lt;/span&gt; &lt;span class=&quot;token function&quot;&gt;methodName&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;token number&quot;&gt;_&lt;/span&gt; &lt;span class=&quot;token keyword&quot;&gt;internal&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;token builtin&quot;&gt;String&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;token punctuation&quot;&gt;{&lt;/span&gt;
+  &lt;span class=&quot;token function&quot;&gt;print&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;token keyword&quot;&gt;internal&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;)&lt;/span&gt;
+&lt;span class=&quot;token punctuation&quot;&gt;}&lt;/span&gt;
+
+&lt;span class=&quot;token function&quot;&gt;methodName&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;token string&quot;&gt;&quot;string&quot;&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;)&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;
+      &lt;/div&gt;
+&lt;h3&gt;Xcode was slow&lt;/h3&gt;
+&lt;p&gt;The app in simulator was really slow. I thought it was a bug in XCode but it turned out that it was my fault. I had enabled slow animations. Check the debug menu where you can disable it.&lt;/p&gt;
+&lt;h3&gt;class func vs static func&lt;/h3&gt;</content:encoded></item></channel></rss>
