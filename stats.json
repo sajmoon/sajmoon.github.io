@@ -28,9 +28,13 @@
       "component---src-layouts-index-js-1082d0b0a0d1a123b297.js",
       "component---src-layouts-index-js-1082d0b0a0d1a123b297.js.map"
     ],
+    "path---ruby-add-methods-to-classes": [
+      "path---ruby-add-methods-to-classes-e2ce4e6e80337e60a694.js",
+      "path---ruby-add-methods-to-classes-e2ce4e6e80337e60a694.js.map"
+    ],
     "path---index": [
-      "path---index-d4aa4cc9ec0e650ce1fd.js",
-      "path---index-d4aa4cc9ec0e650ce1fd.js.map"
+      "path---index-6c3ef364233c0c85ba58.js",
+      "path---index-6c3ef364233c0c85ba58.js.map"
     ],
     "path---hello-world": [
       "path---hello-world-3e6595ecc6413de38f90.js",
@@ -47,9 +51,9 @@
       "path---offline-plugin-app-shell-fallback-a0e39f21c11f6a62c5ab.js.map"
     ],
     "app": [
-      "app-3b33baefff212b7887f3.js",
+      "app-1b77efc49e1969d44f2e.js",
       "build-js-styles.css",
-      "app-3b33baefff212b7887f3.js.map",
+      "app-1b77efc49e1969d44f2e.js.map",
       "build-js-styles.css.map"
     ],
     "path---gatsby-add-drafts": [

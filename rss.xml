@@ -1,4 +1,71 @@
-<?xml version="1.0" encoding="UTF-8"?><rss xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:content="http://purl.org/rss/1.0/modules/content/" xmlns:atom="http://www.w3.org/2005/Atom" version="2.0"><channel><title><![CDATA[Tinkering with Code.]]></title><description><![CDATA[My blog. A dev log.]]></description><link>https://sajmoon.github.io</link><generator>RSS for Node</generator><lastBuildDate>Sun, 14 Jan 2018 22:28:30 GMT</lastBuildDate><item><title><![CDATA[Add support for drafts in gatsby]]></title><description><![CDATA[Adding support for drafts in Gatsby. I started out with a blog starter for Gatsby. Pretty handy. Easy to get started. But it felt like magic…]]></description><link>https://sajmoon.github.io/gatsby-add-drafts/</link><guid isPermaLink="false">https://sajmoon.github.io/gatsby-add-drafts/</guid><pubDate>Sun, 14 Jan 2018 00:00:00 GMT</pubDate><content:encoded>&lt;p&gt;Adding support for drafts in Gatsby.&lt;/p&gt;
+<?xml version="1.0" encoding="UTF-8"?><rss xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:content="http://purl.org/rss/1.0/modules/content/" xmlns:atom="http://www.w3.org/2005/Atom" version="2.0"><channel><title><![CDATA[Tinkering with Code.]]></title><description><![CDATA[My blog. A dev log.]]></description><link>https://sajmoon.github.io</link><generator>RSS for Node</generator><lastBuildDate>Wed, 17 Jan 2018 19:25:31 GMT</lastBuildDate><item><title><![CDATA[Add methods to a Ruby class]]></title><description><![CDATA[We can always extend classes in Ruby. Both predefined and classes we create ourselfs. We say that classes are  always open . If you extend a…]]></description><link>https://sajmoon.github.io/ruby-add-methods-to-classes/</link><guid isPermaLink="false">https://sajmoon.github.io/ruby-add-methods-to-classes/</guid><pubDate>Tue, 16 Jan 2018 00:00:00 GMT</pubDate><content:encoded>&lt;p&gt;We can always extend classes in Ruby. Both predefined and classes we create ourselfs. We say that classes are &lt;em&gt;always open&lt;/em&gt;.&lt;/p&gt;
+&lt;p&gt;If you extend a built-in class be sure that it should be there. A string for example probably should not have methods to generate urls to a placeholder image, even if it could. It does not belong in the String class.&lt;/p&gt;
+&lt;h2&gt;Add an instance method to a built-in class.&lt;/h2&gt;
+&lt;p&gt;Add a method to Integers that returns a random value between 0 and the integer value.&lt;/p&gt;
+&lt;div class=&quot;gatsby-highlight&quot;&gt;
+      &lt;pre class=&quot;language-ruby&quot;&gt;&lt;code&gt;&lt;span class=&quot;token keyword&quot;&gt;begin&lt;/span&gt;
+  &lt;span class=&quot;token number&quot;&gt;19&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;.&lt;/span&gt;random &lt;span class=&quot;token comment&quot;&gt;# Undefined method &apos;random&apos; for 19:Integer&lt;/span&gt;
+&lt;span class=&quot;token keyword&quot;&gt;rescue&lt;/span&gt; &lt;span class=&quot;token constant&quot;&gt;NoMethodError&lt;/span&gt;
+  puts &lt;span class=&quot;token string&quot;&gt;&quot;19.random is not defined&quot;&lt;/span&gt;
+&lt;span class=&quot;token keyword&quot;&gt;end&lt;/span&gt;
+
+puts &lt;span class=&quot;token string&quot;&gt;&quot;extending Integer&quot;&lt;/span&gt;
+&lt;span class=&quot;token keyword&quot;&gt;class&lt;/span&gt; &lt;span class=&quot;token class-name&quot;&gt;Integer&lt;/span&gt;
+  &lt;span class=&quot;token keyword&quot;&gt;def&lt;/span&gt; random
+    &lt;span class=&quot;token constant&quot;&gt;Random&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;token function&quot;&gt;rand&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;token keyword&quot;&gt;self&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;)&lt;/span&gt;
+  &lt;span class=&quot;token keyword&quot;&gt;end&lt;/span&gt;
+&lt;span class=&quot;token keyword&quot;&gt;end&lt;/span&gt;
+
+puts &lt;span class=&quot;token string&quot;&gt;&quot;19.random =&gt; &lt;span class=&quot;token interpolation&quot;&gt;&lt;span class=&quot;token delimiter tag&quot;&gt;#{&lt;/span&gt;&lt;span class=&quot;token number&quot;&gt;19&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;.&lt;/span&gt;random&lt;span class=&quot;token delimiter tag&quot;&gt;}&lt;/span&gt;&lt;/span&gt;&quot;&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;
+      &lt;/div&gt;
+&lt;p&gt;&lt;code&gt;self&lt;/code&gt; refers to the instance of the object itself. In the case of our Integer self is 19.&lt;/p&gt;
+&lt;h2&gt;Add a class method&lt;/h2&gt;
+&lt;p&gt;To add a class method is also simple.&lt;/p&gt;
+&lt;div class=&quot;gatsby-highlight&quot;&gt;
+      &lt;pre class=&quot;language-ruby&quot;&gt;&lt;code&gt;&lt;span class=&quot;token keyword&quot;&gt;begin&lt;/span&gt;
+  &lt;span class=&quot;token builtin&quot;&gt;Integer&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;.&lt;/span&gt;random &lt;span class=&quot;token number&quot;&gt;3&lt;/span&gt;
+&lt;span class=&quot;token keyword&quot;&gt;rescue&lt;/span&gt; &lt;span class=&quot;token constant&quot;&gt;NoMethodError&lt;/span&gt;
+  puts &lt;span class=&quot;token string&quot;&gt;&quot;Integer.random is not defined&quot;&lt;/span&gt;
+&lt;span class=&quot;token keyword&quot;&gt;end&lt;/span&gt;
+
+&lt;span class=&quot;token keyword&quot;&gt;class&lt;/span&gt; &lt;span class=&quot;token class-name&quot;&gt;Integer&lt;/span&gt;
+  &lt;span class=&quot;token keyword&quot;&gt;def&lt;/span&gt; &lt;span class=&quot;token keyword&quot;&gt;self&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;.&lt;/span&gt;random number
+    &lt;span class=&quot;token constant&quot;&gt;Random&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;.&lt;/span&gt;rand number
+  &lt;span class=&quot;token keyword&quot;&gt;end&lt;/span&gt;
+&lt;span class=&quot;token keyword&quot;&gt;end&lt;/span&gt;
+
+puts &lt;span class=&quot;token string&quot;&gt;&quot;Integer.random 3 =&gt; &lt;span class=&quot;token interpolation&quot;&gt;&lt;span class=&quot;token delimiter tag&quot;&gt;#{&lt;/span&gt;Integer&lt;span class=&quot;token punctuation&quot;&gt;.&lt;/span&gt;random &lt;span class=&quot;token number&quot;&gt;3&lt;/span&gt;&lt;span class=&quot;token delimiter tag&quot;&gt;}&lt;/span&gt;&lt;/span&gt;&quot;&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;
+      &lt;/div&gt;
+&lt;p&gt;We add methods to self.&lt;/p&gt;
+&lt;h2&gt;Extend active record&lt;/h2&gt;
+&lt;p&gt;We use Kaminari to paginate our application. We need to render the meta data in the json response, and to do that we extend ActiveRecord to provide this functionalliy.&lt;/p&gt;
+&lt;p&gt;Extend ActiveRecord::Relation with a &lt;code&gt;pagination_info&lt;/code&gt; method.&lt;/p&gt;
+&lt;p&gt;In &lt;code&gt;lib/active_record_relation_extension.rb&lt;/code&gt;:&lt;/p&gt;
+&lt;div class=&quot;gatsby-highlight&quot;&gt;
+      &lt;pre class=&quot;language-ruby&quot;&gt;&lt;code&gt;&lt;span class=&quot;token keyword&quot;&gt;module&lt;/span&gt; &lt;span class=&quot;token constant&quot;&gt;ActiveRecordRelationExtension&lt;/span&gt;
+  &lt;span class=&quot;token keyword&quot;&gt;def&lt;/span&gt; pagination_info
+    &lt;span class=&quot;token keyword&quot;&gt;if&lt;/span&gt; respond_to&lt;span class=&quot;token operator&quot;&gt;?&lt;/span&gt; &lt;span class=&quot;token symbol&quot;&gt;:total_count&lt;/span&gt;
+      &lt;span class=&quot;token punctuation&quot;&gt;{&lt;/span&gt;
+        total_count&lt;span class=&quot;token punctuation&quot;&gt;:&lt;/span&gt; total_count&lt;span class=&quot;token punctuation&quot;&gt;,&lt;/span&gt;
+        current_page&lt;span class=&quot;token punctuation&quot;&gt;:&lt;/span&gt; current_page&lt;span class=&quot;token punctuation&quot;&gt;,&lt;/span&gt;
+        next_page&lt;span class=&quot;token punctuation&quot;&gt;:&lt;/span&gt; next_page&lt;span class=&quot;token punctuation&quot;&gt;,&lt;/span&gt;
+        prev_page&lt;span class=&quot;token punctuation&quot;&gt;:&lt;/span&gt; prev_page&lt;span class=&quot;token punctuation&quot;&gt;,&lt;/span&gt;
+      &lt;span class=&quot;token punctuation&quot;&gt;}&lt;/span&gt;
+    &lt;span class=&quot;token keyword&quot;&gt;else&lt;/span&gt;
+      &lt;span class=&quot;token keyword&quot;&gt;nil&lt;/span&gt;
+    &lt;span class=&quot;token keyword&quot;&gt;end&lt;/span&gt;
+  &lt;span class=&quot;token keyword&quot;&gt;end&lt;/span&gt;
+ &lt;span class=&quot;token keyword&quot;&gt;end&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;
+      &lt;/div&gt;
+&lt;p&gt; Then we also need to configure it. We push it to the inheritance stack of Relation.&lt;/p&gt;
+&lt;p&gt;&lt;code&gt;config/initializers/active_record_relation_pagination.rb&lt;/code&gt;&lt;/p&gt;
+&lt;div class=&quot;gatsby-highlight&quot;&gt;
+      &lt;pre class=&quot;language-ruby&quot;&gt;&lt;code&gt;&lt;span class=&quot;token constant&quot;&gt;ActiveRecord&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;token symbol&quot;&gt;:Relation&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;token function&quot;&gt;send&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;token symbol&quot;&gt;:include&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;token constant&quot;&gt;ActiveRecordRelationExtension&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;)&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;
+      &lt;/div&gt;</content:encoded></item><item><title><![CDATA[Add support for drafts in gatsby]]></title><description><![CDATA[Adding support for drafts in Gatsby. I started out with a blog starter for Gatsby. Pretty handy. Easy to get started. But it felt like magic…]]></description><link>https://sajmoon.github.io/gatsby-add-drafts/</link><guid isPermaLink="false">https://sajmoon.github.io/gatsby-add-drafts/</guid><pubDate>Sun, 14 Jan 2018 00:00:00 GMT</pubDate><content:encoded>&lt;p&gt;Adding support for drafts in Gatsby.&lt;/p&gt;
 &lt;p&gt;I started out with a blog starter for Gatsby. Pretty handy. Easy to get started. But it felt like magic. Why and how do we generate blog posts with urls from markdown files?&lt;/p&gt;
 &lt;p&gt;So I started to actually read the guide. So before you start to look for a quick fix, read the guide &lt;a href=&quot;https://www.gatsbyjs.org/docs/&quot;&gt;here&lt;/a&gt;. It acutally tells you how gatsby works. Hopefully you will be able to implment this yourself.&lt;/p&gt;
 &lt;h2&gt;How can we add support for drafts?&lt;/h2&gt;
