@@ -34,6 +34,8 @@ class BlogIndex extends React.Component {
                 </Link>
               </h3>
               <small>{node.frontmatter.date}</small>
+              <span style={{ margin: '10px' }}>&middot;</span>
+              <small>{node.timeToRead} minute read.</small>
               <p dangerouslySetInnerHTML={{ __html: node.excerpt }} />
             </div>
           )
@@ -56,6 +58,10 @@ export const pageQuery = graphql`
       edges {
         node {
           excerpt
+          timeToRead
+          wordCount {
+            words
+          }
           fields {
             slug
             path
