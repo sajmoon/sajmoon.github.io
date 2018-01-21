@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="UTF-8"?><rss xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:content="http://purl.org/rss/1.0/modules/content/" xmlns:atom="http://www.w3.org/2005/Atom" version="2.0"><channel><title><![CDATA[Tinkering with Code.]]></title><description><![CDATA[My blog. A dev log.]]></description><link>https://sajmoon.github.io</link><generator>RSS for Node</generator><lastBuildDate>Sun, 21 Jan 2018 22:16:36 GMT</lastBuildDate><item><title><![CDATA[Add methods to a Ruby class]]></title><description><![CDATA[We can always extend classes in Ruby. Both predefined and classes we create ourselfs. We say that classes are  always open . If you extend a…]]></description><link>https://sajmoon.github.io/ruby-add-methods-to-classes/</link><guid isPermaLink="false">https://sajmoon.github.io/ruby-add-methods-to-classes/</guid><pubDate>Tue, 16 Jan 2018 00:00:00 GMT</pubDate><content:encoded>&lt;p&gt;We can always extend classes in Ruby. Both predefined and classes we create ourselfs. We say that classes are &lt;em&gt;always open&lt;/em&gt;.&lt;/p&gt;
+<?xml version="1.0" encoding="UTF-8"?><rss xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:content="http://purl.org/rss/1.0/modules/content/" xmlns:atom="http://www.w3.org/2005/Atom" version="2.0"><channel><title><![CDATA[Tinkering with Code.]]></title><description><![CDATA[My blog. A dev log.]]></description><link>https://sajmoon.github.io</link><generator>RSS for Node</generator><lastBuildDate>Sun, 21 Jan 2018 22:25:49 GMT</lastBuildDate><item><title><![CDATA[Add methods to a Ruby class]]></title><description><![CDATA[We can always extend classes in Ruby. Both predefined and classes we create ourselfs. We say that classes are  always open . If you extend a…]]></description><link>https://sajmoon.github.io/ruby-add-methods-to-classes/</link><guid isPermaLink="false">https://sajmoon.github.io/ruby-add-methods-to-classes/</guid><pubDate>Tue, 16 Jan 2018 00:00:00 GMT</pubDate><content:encoded>&lt;p&gt;We can always extend classes in Ruby. Both predefined and classes we create ourselfs. We say that classes are &lt;em&gt;always open&lt;/em&gt;.&lt;/p&gt;
 &lt;p&gt;If you extend a built-in class be sure that it should be there. A string for example probably should not have methods to generate urls to a placeholder image, even if it could. It does not belong in the String class.&lt;/p&gt;
 &lt;h2&gt;Add an instance method to a built-in class.&lt;/h2&gt;
 &lt;p&gt;Add a method to Integers that returns a random value between 0 and the integer value.&lt;/p&gt;
@@ -172,6 +172,26 @@ starting from scratch.&lt;/p&gt;
 with &lt;a href=&quot;https://www.gatsbyjs.org/packages/gatsby-transformer-remark/&quot;&gt;&lt;code&gt;gatsby-transformer-remark&lt;/code&gt;&lt;/a&gt; which is the files we eventually see live.&lt;/p&gt;
 &lt;p&gt;The first plugin is a source plugin. It generates File nodes. Remark reads nodes, and
 parses what it needs, in this case markdown. It creates ‘MarkdownRemark’ Nodes.&lt;/p&gt;
+&lt;p&gt;A fun thing, that is not really well documented about &lt;code&gt;gatsby-transformer-remark&lt;/code&gt; is that it can provide some useful meta data. Remark, which is used in the background, can tell us word count for example.&lt;/p&gt;
+&lt;p&gt;And from word count it is not that far to an estimation of reading time.&lt;/p&gt;
+&lt;div class=&quot;gatsby-highlight&quot;&gt;
+      &lt;pre class=&quot;language-javascript&quot;&gt;&lt;code&gt;    &lt;span class=&quot;token function&quot;&gt;allMarkdownRemark&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;(&lt;/span&gt;sort&lt;span class=&quot;token punctuation&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;token punctuation&quot;&gt;{&lt;/span&gt; fields&lt;span class=&quot;token punctuation&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;token punctuation&quot;&gt;[&lt;/span&gt;frontmatter___date&lt;span class=&quot;token punctuation&quot;&gt;]&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;,&lt;/span&gt; order&lt;span class=&quot;token punctuation&quot;&gt;:&lt;/span&gt; DESC &lt;span class=&quot;token punctuation&quot;&gt;}&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;token punctuation&quot;&gt;{&lt;/span&gt;
+      edges &lt;span class=&quot;token punctuation&quot;&gt;{&lt;/span&gt;
+        node &lt;span class=&quot;token punctuation&quot;&gt;{&lt;/span&gt;
+          excerpt
+          timeToRead
+          wordCount &lt;span class=&quot;token punctuation&quot;&gt;{&lt;/span&gt;
+            words
+          &lt;span class=&quot;token punctuation&quot;&gt;}&lt;/span&gt;
+          &lt;span class=&quot;token operator&quot;&gt;...&lt;/span&gt;etc
+&lt;/code&gt;&lt;/pre&gt;
+      &lt;/div&gt;
+&lt;p&gt;That information we can display in our UI.&lt;/p&gt;
+&lt;div class=&quot;gatsby-highlight&quot;&gt;
+      &lt;pre class=&quot;language-javascript&quot;&gt;&lt;code&gt;&lt;span class=&quot;token operator&quot;&gt;&amp;lt;&lt;/span&gt;span&lt;span class=&quot;token operator&quot;&gt;&gt;&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;{&lt;/span&gt;node&lt;span class=&quot;token punctuation&quot;&gt;.&lt;/span&gt;timeToRead&lt;span class=&quot;token punctuation&quot;&gt;}&lt;/span&gt; minute read&lt;span class=&quot;token punctuation&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;token operator&quot;&gt;&amp;lt;&lt;/span&gt;&lt;span class=&quot;token operator&quot;&gt;/&lt;/span&gt;span&lt;span class=&quot;token operator&quot;&gt;&gt;&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;
+      &lt;/div&gt;
+&lt;p&gt;It provides more useful data points (headings, tableOfContent, etc). Read the source code &lt;a href=&quot;https://github.com/gatsbyjs/gatsby/blob/master/packages/gatsby-transformer-remark/src/extend-node-type.js#L315&quot;&gt;here&lt;/a&gt;.&lt;/p&gt;
 &lt;h3&gt;Gatsby onCreateNode&lt;/h3&gt;
 &lt;p&gt;&lt;code&gt;onCreateNode&lt;/code&gt; is called when a node is created, and in this hook I already had
 code to generate the slug.&lt;/p&gt;
