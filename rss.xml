@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="UTF-8"?><rss xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:content="http://purl.org/rss/1.0/modules/content/" xmlns:atom="http://www.w3.org/2005/Atom" version="2.0"><channel><title><![CDATA[Tinkering with Code.]]></title><description><![CDATA[My blog. A dev log.]]></description><link>https://sajmoon.github.io</link><generator>RSS for Node</generator><lastBuildDate>Sun, 21 Jan 2018 22:28:46 GMT</lastBuildDate><item><title><![CDATA[Add methods to a Ruby class]]></title><description><![CDATA[We can always extend classes in Ruby. Both predefined and classes we create ourselfs. We say that classes are  always open . If you extend a…]]></description><link>https://sajmoon.github.io/ruby-add-methods-to-classes/</link><guid isPermaLink="false">https://sajmoon.github.io/ruby-add-methods-to-classes/</guid><pubDate>Tue, 16 Jan 2018 00:00:00 GMT</pubDate><content:encoded>&lt;p&gt;We can always extend classes in Ruby. Both predefined and classes we create ourselfs. We say that classes are &lt;em&gt;always open&lt;/em&gt;.&lt;/p&gt;
+<?xml version="1.0" encoding="UTF-8"?><rss xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:content="http://purl.org/rss/1.0/modules/content/" xmlns:atom="http://www.w3.org/2005/Atom" version="2.0"><channel><title><![CDATA[Tinkering with Code.]]></title><description><![CDATA[My blog. A dev log.]]></description><link>https://sajmoon.github.io</link><generator>RSS for Node</generator><lastBuildDate>Sun, 21 Jan 2018 22:55:45 GMT</lastBuildDate><item><title><![CDATA[Add methods to a Ruby class]]></title><description><![CDATA[We can always extend classes in Ruby. Both predefined and classes we create ourselfs. We say that classes are  always open . If you extend a…]]></description><link>https://sajmoon.github.io/ruby-add-methods-to-classes/</link><guid isPermaLink="false">https://sajmoon.github.io/ruby-add-methods-to-classes/</guid><pubDate>Tue, 16 Jan 2018 00:00:00 GMT</pubDate><content:encoded>&lt;p&gt;We can always extend classes in Ruby. Both predefined and classes we create ourselfs. We say that classes are &lt;em&gt;always open&lt;/em&gt;.&lt;/p&gt;
 &lt;p&gt;If you extend a built-in class be sure that it should be there. A string for example probably should not have methods to generate urls to a placeholder image, even if it could. It does not belong in the String class.&lt;/p&gt;
 &lt;h2&gt;Add an instance method to a built-in class.&lt;/h2&gt;
 &lt;p&gt;Add a method to Integers that returns a random value between 0 and the integer value.&lt;/p&gt;
@@ -301,4 +301,2343 @@ case let (x, y):
 &lt;h2&gt;Xcode was slow&lt;/h2&gt;
 &lt;p&gt;I had enabled slow animations. Check the debug menu.&lt;/p&gt;
 &lt;h2&gt;Extra stuff&lt;/h2&gt;
-&lt;p&gt;class func vs static func&lt;/p&gt;</content:encoded></item></channel></rss>
+&lt;p&gt;class func vs static func&lt;/p&gt;</content:encoded></item><item><title><![CDATA[Deploy to Kubernetes running on Google Container Engine]]></title><description><![CDATA[We will setup a small cluster of 3 n1-standard-1 instances. They cost around $25 per month. So the cluster will cost you somewhere above $7…]]></description><link>https://sajmoon.github.io/2016-12-04-deploy-to-kubernetes-running-on-google-container-engine/</link><guid isPermaLink="false">https://sajmoon.github.io/2016-12-04-deploy-to-kubernetes-running-on-google-container-engine/</guid><pubDate>Sun, 04 Dec 2016 00:39:23 GMT</pubDate><content:encoded>&lt;p&gt;We will setup a small cluster of 3 n1-standard-1 instances. They cost around $25 per month. So the cluster will cost you somewhere above $75 a month for the servers.&lt;/p&gt;
+&lt;p&gt;This is just a few notes from the tutorial from &lt;a href=&quot;http://kubernetes.io/docs/hellonode/&quot;&gt;kubernetes.io&lt;/a&gt;.&lt;/p&gt;
+&lt;h2&gt;Setup needed before we start with the cluster&lt;/h2&gt;
+&lt;ul&gt;
+&lt;li&gt;Install google cloud sdk&lt;/li&gt;
+&lt;/ul&gt;
+&lt;div class=&quot;gatsby-highlight&quot;&gt;
+      &lt;pre class=&quot;language-none&quot;&gt;&lt;code&gt;brew cask install google-cloud-sdk&lt;/code&gt;&lt;/pre&gt;
+      &lt;/div&gt;
+&lt;ul&gt;
+&lt;li&gt;Create a project on google cloud&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;Go to &lt;a href=&quot;console.cloud.google.com&quot;&gt;console.cloud.google.com&lt;/a&gt; and set it up. Remember the project id.&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;Install kubectl&lt;/p&gt;
+&lt;div class=&quot;gatsby-highlight&quot;&gt;
+      &lt;pre class=&quot;language-none&quot;&gt;&lt;code&gt;gcloud components install kubectl&lt;/code&gt;&lt;/pre&gt;
+      &lt;/div&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;Have a sample project.&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;In a &lt;code&gt;server.js&lt;/code&gt; file&lt;/p&gt;
+&lt;div class=&quot;gatsby-highlight&quot;&gt;
+      &lt;pre class=&quot;language-none&quot;&gt;&lt;code&gt;var http = require(&apos;http&apos;);
+var handleRequest = function(request, response) {
+  console.log(&apos;Received request for URL: &apos; + request.url);
+  response.writeHead(200);
+  response.end(&apos;Hello World!&apos;);
+};
+var www = http.createServer(handleRequest);
+www.listen(8080);&lt;/code&gt;&lt;/pre&gt;
+      &lt;/div&gt;
+&lt;ul&gt;
+&lt;li&gt;Create a docker file.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;&lt;code&gt;Dockerfile&lt;/code&gt;&lt;/p&gt;
+&lt;div class=&quot;gatsby-highlight&quot;&gt;
+      &lt;pre class=&quot;language-none&quot;&gt;&lt;code&gt;FROM node:4.4
+EXPOSE 8080
+COPY server.js .
+CMD node server.js&lt;/code&gt;&lt;/pre&gt;
+      &lt;/div&gt;
+&lt;ul&gt;
+&lt;li&gt;Build the docker container&lt;/li&gt;
+&lt;/ul&gt;
+&lt;div class=&quot;gatsby-highlight&quot;&gt;
+      &lt;pre class=&quot;language-none&quot;&gt;&lt;code&gt;docker build -t gcr.io/$PROJECT_ID/hello-node:v1 .&lt;/code&gt;&lt;/pre&gt;
+      &lt;/div&gt;
+&lt;ul&gt;
+&lt;li&gt;Authenticated for the google api&lt;/li&gt;
+&lt;/ul&gt;
+&lt;div class=&quot;gatsby-highlight&quot;&gt;
+      &lt;pre class=&quot;language-none&quot;&gt;&lt;code&gt;gcloud auth login
+gcloud config set project PROJECT_ID&lt;/code&gt;&lt;/pre&gt;
+      &lt;/div&gt;
+&lt;ul&gt;
+&lt;li&gt;Push the container to the google docker registry&lt;/li&gt;
+&lt;/ul&gt;
+&lt;div class=&quot;gatsby-highlight&quot;&gt;
+      &lt;pre class=&quot;language-none&quot;&gt;&lt;code&gt;gcloud docker -- push gcr.io/$PROJECT_ID/hello-node:v1&lt;/code&gt;&lt;/pre&gt;
+      &lt;/div&gt;
+&lt;h3&gt;Create a cluster&lt;/h3&gt;
+&lt;ul&gt;
+&lt;li&gt;Create a cluster&lt;/li&gt;
+&lt;/ul&gt;
+&lt;div class=&quot;gatsby-highlight&quot;&gt;
+      &lt;pre class=&quot;language-none&quot;&gt;&lt;code&gt;gcloud container clusters create hello-world&lt;/code&gt;&lt;/pre&gt;
+      &lt;/div&gt;
+&lt;p&gt;Fetch configuration needed&lt;/p&gt;
+&lt;div class=&quot;gatsby-highlight&quot;&gt;
+      &lt;pre class=&quot;language-none&quot;&gt;&lt;code&gt;gcloud container clusters get-credentials hello-world&lt;/code&gt;&lt;/pre&gt;
+      &lt;/div&gt;
+&lt;p&gt;I had some missing credentials. Had to run this command again:&lt;/p&gt;
+&lt;div class=&quot;gatsby-highlight&quot;&gt;
+      &lt;pre class=&quot;language-none&quot;&gt;&lt;code&gt;gcloud auth application-default login&lt;/code&gt;&lt;/pre&gt;
+      &lt;/div&gt;
+&lt;ul&gt;
+&lt;li&gt;Create a pod&lt;/li&gt;
+&lt;/ul&gt;
+&lt;div class=&quot;gatsby-highlight&quot;&gt;
+      &lt;pre class=&quot;language-none&quot;&gt;&lt;code&gt;kubectl run hello-node --image=gcr.io/$PROJECT_ID/hello-node:v1 --port=8080&lt;/code&gt;&lt;/pre&gt;
+      &lt;/div&gt;
+&lt;p&gt;Allow external traffic to the application&lt;/p&gt;
+&lt;div class=&quot;gatsby-highlight&quot;&gt;
+      &lt;pre class=&quot;language-none&quot;&gt;&lt;code&gt;kubectl expose deployment hello-node --type=&quot;LoadBalancer&quot;&lt;/code&gt;&lt;/pre&gt;
+      &lt;/div&gt;
+&lt;p&gt;To find the ip adress run:&lt;/p&gt;
+&lt;div class=&quot;gatsby-highlight&quot;&gt;
+      &lt;pre class=&quot;language-none&quot;&gt;&lt;code&gt;kubectl get services hello-node&lt;/code&gt;&lt;/pre&gt;
+      &lt;/div&gt;
+&lt;p&gt;You can now see your service running on you kube cluster.&lt;/p&gt;
+&lt;h3&gt;View the setup&lt;/h3&gt;
+&lt;div class=&quot;gatsby-highlight&quot;&gt;
+      &lt;pre class=&quot;language-none&quot;&gt;&lt;code&gt;kubectl get deployments
+kubectl get pods
+kubectl logs &lt;POD-NAME&gt;
+kubectl cluster-info
+kubectl get events
+kubectl config view
+kubectl get services hello-node&lt;/code&gt;&lt;/pre&gt;
+      &lt;/div&gt;
+&lt;p&gt;Run &lt;code&gt;kubectl cluser-info&lt;/code&gt; and you will see a list of all Kubernetes services running. One is the &lt;code&gt;Kubernetes-Dashboard&lt;/code&gt;.&lt;/p&gt;
+&lt;p&gt;If you open that url in the browser you will be prompted for a username and password. These can we viewed (in plain text) with:&lt;/p&gt;
+&lt;div class=&quot;gatsby-highlight&quot;&gt;
+      &lt;pre class=&quot;language-none&quot;&gt;&lt;code&gt;gcloud container clusters describe &lt;cluster-name&gt;&lt;/code&gt;&lt;/pre&gt;
+      &lt;/div&gt;
+&lt;p&gt;Somewhere in there you will find a &lt;code&gt;username&lt;/code&gt; and &lt;code&gt;password&lt;/code&gt;.&lt;/p&gt;
+&lt;h3&gt;Scaling&lt;/h3&gt;
+&lt;p&gt;Scale up? Or scale down? Define how many instance you want to have running and the rest is managed for you.&lt;/p&gt;
+&lt;div class=&quot;gatsby-highlight&quot;&gt;
+      &lt;pre class=&quot;language-none&quot;&gt;&lt;code&gt;kubectl scale deployment hello-node --replicas=4&lt;/code&gt;&lt;/pre&gt;
+      &lt;/div&gt;
+&lt;h3&gt;Deploy a new version&lt;/h3&gt;
+&lt;p&gt;Modify you application.&lt;/p&gt;
+&lt;div class=&quot;gatsby-highlight&quot;&gt;
+      &lt;pre class=&quot;language-none&quot;&gt;&lt;code&gt;docker build -t gcr.io/$PROJECT_ID/hello-node:v2 .
+gcloud docker push gcr.io/$PROJECT_ID/hello-node:v2&lt;/code&gt;&lt;/pre&gt;
+      &lt;/div&gt;
+&lt;p&gt;To run the new version we set which image we want kube to run.&lt;/p&gt;
+&lt;div class=&quot;gatsby-highlight&quot;&gt;
+      &lt;pre class=&quot;language-none&quot;&gt;&lt;code&gt;kubectl set image deployment/hello-node hello-node=gcr.io/$PROJECT_ID/hello-node:v2&lt;/code&gt;&lt;/pre&gt;
+      &lt;/div&gt;
+&lt;h3&gt;Clean up you cluster&lt;/h3&gt;
+&lt;p&gt;If you did this to test it out you might want to remove your cluster now.&lt;/p&gt;
+&lt;div class=&quot;gatsby-highlight&quot;&gt;
+      &lt;pre class=&quot;language-none&quot;&gt;&lt;code&gt;kubectl delete service,deployment hello-node
+gcloud container clusters delete hello-world&lt;/code&gt;&lt;/pre&gt;
+      &lt;/div&gt;
+&lt;p&gt;List all the images you uploaded&lt;/p&gt;
+&lt;div class=&quot;gatsby-highlight&quot;&gt;
+      &lt;pre class=&quot;language-none&quot;&gt;&lt;code&gt;gsutil ls&lt;/code&gt;&lt;/pre&gt;
+      &lt;/div&gt;
+&lt;p&gt;Remove them:&lt;/p&gt;
+&lt;div class=&quot;gatsby-highlight&quot;&gt;
+      &lt;pre class=&quot;language-none&quot;&gt;&lt;code&gt;gsutil rm -r gs://artifacts.$PROJECT_ID.appspot.com/&lt;/code&gt;&lt;/pre&gt;
+      &lt;/div&gt;
+&lt;p&gt;That it.&lt;/p&gt;</content:encoded></item><item><title><![CDATA[Tag tests that uses network - ExUnit]]></title><description><![CDATA[Tag tests as tests that require network, and only run them when needed. We do this to speed up that test suite. Ideally you should not rely…]]></description><link>https://sajmoon.github.io/2016-10-22-tag-tests-that-uses-network-exunit-2/</link><guid isPermaLink="false">https://sajmoon.github.io/2016-10-22-tag-tests-that-uses-network-exunit-2/</guid><pubDate>Sat, 22 Oct 2016 11:51:43 GMT</pubDate><content:encoded>&lt;p&gt;Tag tests as tests that require network, and only run them when needed.&lt;/p&gt;
+&lt;p&gt;We do this to speed up that test suite. Ideally you should not rely on network in your tests but sometimes it is necessary.&lt;/p&gt;
+&lt;h3&gt;How?&lt;/h3&gt;
+&lt;p&gt;Add a tag to the test.&lt;/p&gt;
+&lt;div class=&quot;gatsby-highlight&quot;&gt;
+      &lt;pre class=&quot;language-none&quot;&gt;&lt;code&gt;@tag :network
+test &quot;expensive test&quot; do
+end&lt;/code&gt;&lt;/pre&gt;
+      &lt;/div&gt;
+&lt;p&gt;configure ExUnit to exclude these tests in &lt;code&gt;test/test_helper.ex&lt;/code&gt;&lt;/p&gt;
+&lt;div class=&quot;gatsby-highlight&quot;&gt;
+      &lt;pre class=&quot;language-none&quot;&gt;&lt;code&gt;ExUnit.configure exclude: [network: true]
+ExUnit.start&lt;/code&gt;&lt;/pre&gt;
+      &lt;/div&gt;
+&lt;p&gt;run the test and you will have one test skipped.&lt;/p&gt;
+&lt;div class=&quot;gatsby-highlight&quot;&gt;
+      &lt;pre class=&quot;language-none&quot;&gt;&lt;code&gt;$ mix test
+Excluding tags: [network: true]
+
+.......................................................
+
+Finished in 0.3 seconds
+56 tests, 0 failures, 1 skipped&lt;/code&gt;&lt;/pre&gt;
+      &lt;/div&gt;
+&lt;p&gt;When you want to run your network tests use the —include argument to mix test&lt;/p&gt;
+&lt;div class=&quot;gatsby-highlight&quot;&gt;
+      &lt;pre class=&quot;language-none&quot;&gt;&lt;code&gt;mix test --include network
+Including tags: [:network]
+Excluding tags: [network: true]
+
+........................................................
+
+Finished in 1.4 seconds
+56 tests, 0 failures&lt;/code&gt;&lt;/pre&gt;
+      &lt;/div&gt;
+&lt;h3&gt;Run all by default&lt;/h3&gt;
+&lt;p&gt;if you want to run all your tests by default and only exclude network tests when you explicitly request it you dont have to configure ExUnit inte test_helper.ex&lt;/p&gt;
+&lt;p&gt;instead use the —exclude argument&lt;/p&gt;
+&lt;div class=&quot;gatsby-highlight&quot;&gt;
+      &lt;pre class=&quot;language-none&quot;&gt;&lt;code&gt;mix test --exclude network&lt;/code&gt;&lt;/pre&gt;
+      &lt;/div&gt;</content:encoded></item><item><title><![CDATA[Working with Ecto in tests]]></title><description><![CDATA[Working with our application and writing all those needed tests are great in the beginning of the project when everything is simple. Writing…]]></description><link>https://sajmoon.github.io/2016-10-19-working-with-ecto-in-tests/</link><guid isPermaLink="false">https://sajmoon.github.io/2016-10-19-working-with-ecto-in-tests/</guid><pubDate>Wed, 19 Oct 2016 20:08:44 GMT</pubDate><content:encoded>&lt;p&gt;Working with our application and writing all those needed tests are great in the beginning of the project when everything is simple. Writing code from scratch is always a joy. &lt;/p&gt;
+&lt;p&gt;Then comes the time when you have added validations to your model here and there and the tests starts to be more about setup then actual tests.&lt;/p&gt;
+&lt;p&gt;The setup of tests has to have a &lt;code&gt;User&lt;/code&gt; to create one &lt;code&gt;Team&lt;/code&gt; since we have foreign key constraints. The User needs to be valid, and we then we have to have a proper email. But we are writing tests for our &lt;code&gt;Team&lt;/code&gt; and we do not care about email for the user.&lt;/p&gt;
+&lt;p&gt;The best thing to do is write tests that do not require actually digging in the database etc. We all know that. But sometimes you are either lazy, or it is actually needed.&lt;/p&gt;
+&lt;p&gt;So you think: I can create a factory (See java doc) that can take care of the creating of my models. And then you think I can find a plugin for this. And you do. If you have worked with ruby you you have heard of &lt;code&gt;FactoryGirl&lt;/code&gt; and since we are writing &lt;a href=&quot;http://elixir-lang.org/&quot;&gt;Elixir&lt;/a&gt; now lets find something similar.&lt;/p&gt;
+&lt;p&gt;A quick search for “factory girl for elixir” gives you some good results, one is &lt;a href=&quot;https://github.com/thoughtbot/ex_machina&quot;&gt;ExMachina&lt;/a&gt;.&lt;/p&gt;
+&lt;p&gt;And you feel dirty. “I dont wanna..” you complain.&lt;/p&gt;
+&lt;p&gt;But you code looks like this:&lt;/p&gt;
+&lt;div class=&quot;gatsby-highlight&quot;&gt;
+      &lt;pre class=&quot;language-none&quot;&gt;&lt;code&gt;{:ok, user} = User.changeset(%User{}, %{email: &quot;valid_email@example.com&quot;, password: &quot;...&quot;, name: &quot;&quot;, etc, etc) |&gt; Repo.insert()
+{:ok, team} = Team.changeset(%Team{}, %{owner: user, name: &quot;&quot;, etc, etc}) |&gt; Repo.insert()&lt;/code&gt;&lt;/pre&gt;
+      &lt;/div&gt;
+&lt;p&gt;And this is just the beginning. You have only two models interacting. So you add a new required field to user, and you have to update all tests. Or worse, another relation.&lt;/p&gt;
+&lt;p&gt;You can defined the params for user as @valid_user, or use one of those factory things.&lt;/p&gt;
+&lt;p&gt;But I just realised that you don’t have to use changesets. Changesets are awesome, but in this case we don’t need it.&lt;/p&gt;
+&lt;div class=&quot;gatsby-highlight&quot;&gt;
+      &lt;pre class=&quot;language-none&quot;&gt;&lt;code&gt;{:ok, user} = %User{} |&gt; Repo.insert()
+{:ok, team} = Team.changeset(%Team{}, %{owner: user, name: &quot;&quot;, etc, etc}) |&gt; Repo.insert()&lt;/code&gt;&lt;/pre&gt;
+      &lt;/div&gt;
+&lt;p&gt;You can still validate that the team has a foreign key constraint on &lt;code&gt;creator&lt;/code&gt; but without having to have a complete user.&lt;/p&gt;
+&lt;p&gt;Our &lt;code&gt;Team&lt;/code&gt; still uses a changeset since that is the model we care about. And if the current action requires a proper user you should have one.&lt;/p&gt;
+&lt;p&gt;But this has helped me and is one of those small things that I should have realized before but apparently missed about Ecto.&lt;/p&gt;</content:encoded></item><item><title><![CDATA[Grouping tests with ExUnit (Elixir)]]></title><description><![CDATA[In an old post I talked about  tags  in elixir and how we could use them to fake grouping of tests. See  Elixir testing - Tag tests in…]]></description><link>https://sajmoon.github.io/2016-07-22-grouping-tests-with-exunit-elixir/</link><guid isPermaLink="false">https://sajmoon.github.io/2016-07-22-grouping-tests-with-exunit-elixir/</guid><pubDate>Fri, 22 Jul 2016 06:26:20 GMT</pubDate><content:encoded>&lt;p&gt;In an old post I talked about &lt;code&gt;tags&lt;/code&gt; in elixir and how we could use them to fake grouping of tests. See &lt;a href=&quot;http://blog.simonstrom.xyz/elixir-testing-tag-tests-in-exunit/&quot;&gt;Elixir testing - Tag tests in ExUnit&lt;/a&gt;.&lt;/p&gt;
+&lt;p&gt;That is no longer needed.&lt;/p&gt;
+&lt;p&gt;Since 1.3 Elixir and ExUnit will let developer group tests. The syntax will be familiar to people used with &lt;code&gt;rspec&lt;/code&gt;. The classic &lt;code&gt;describe&lt;/code&gt; keyword.&lt;/p&gt;
+&lt;p&gt;Here is an example (shamelessly copied from the &lt;a href=&quot;http://elixir-lang.org/blog/2016/06/21/elixir-v1-3-0-released/#named-setups-and-describes&quot;&gt;Elixir 1.3 Change log&lt;/a&gt;)&lt;/p&gt;
+&lt;div class=&quot;gatsby-highlight&quot;&gt;
+      &lt;pre class=&quot;language-none&quot;&gt;&lt;code&gt;defmodule StringTest do
+  use ExUnit.Case, async: true
+
+  describe &quot;String.capitalize/2&quot; do
+    test &quot;uppercases the first grapheme&quot; do
+      assert &quot;T&quot; &lt;&gt; _ = String.capitalize(&quot;test&quot;)
+    end
+
+    test &quot;lowercases the remaining graphemes&quot; do
+      assert &quot;Test&quot; = String.capitalize(&quot;TEST&quot;)
+    end
+  end
+end&lt;/code&gt;&lt;/pre&gt;
+      &lt;/div&gt;
+&lt;p&gt;&lt;strong&gt;Describes are not nestable!&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;See the &lt;a href=&quot;http://elixir-lang.org/blog/2016/06/21/elixir-v1-3-0-released/&quot;&gt;Elixir 1.3 Change log&lt;/a&gt; for a complete reference of what has changed recently.&lt;/p&gt;</content:encoded></item><item><title><![CDATA[Working Ecto embeds in Phoenix]]></title><description><![CDATA[I was playing around with a small phoenix app and wanted to embed some data in the model instead of of having an additional table. I want…]]></description><link>https://sajmoon.github.io/2016-05-16-w/</link><guid isPermaLink="false">https://sajmoon.github.io/2016-05-16-w/</guid><pubDate>Sun, 15 May 2016 23:08:12 GMT</pubDate><content:encoded>&lt;p&gt;I was playing around with a small phoenix app and wanted to embed some data in the model instead of of having an additional table.&lt;/p&gt;
+&lt;p&gt;I want one model called &lt;code&gt;Profile&lt;/code&gt;. A profile should have some fields, and embed &lt;code&gt;address&lt;/code&gt;.&lt;/p&gt;
+&lt;div class=&quot;gatsby-highlight&quot;&gt;
+      &lt;pre class=&quot;language-language-bash&quot;&gt;&lt;code&gt;mix phoenix.new {AppName}
+cd {AppName}
+mix test&lt;/code&gt;&lt;/pre&gt;
+      &lt;/div&gt;
+&lt;p&gt;That is your basic app. Now we need our profile, so let us generate it.&lt;/p&gt;
+&lt;div class=&quot;gatsby-highlight&quot;&gt;
+      &lt;pre class=&quot;language-language-bash&quot;&gt;&lt;code&gt;mix phoenix.gen.controller Profile profiles name:string email:string&lt;/code&gt;&lt;/pre&gt;
+      &lt;/div&gt;
+&lt;p&gt;This will give us a controller and a model, and some basic tests for it.&lt;/p&gt;
+&lt;p&gt;No we need to add our embedded model &lt;code&gt;address&lt;/code&gt;. It will be stored in a jsonb column on the profile model.&lt;/p&gt;
+&lt;p&gt;In the end we want to be able to see the address from the show action on the ProfileController. So we modify the ProfileController#show to reflect the end result we want.&lt;/p&gt;
+&lt;div class=&quot;gatsby-highlight&quot;&gt;
+      &lt;pre class=&quot;language-language-elixir&quot;&gt;&lt;code&gt;test &quot;shows chosen resource&quot;, %{conn: conn} do
+    profile = Repo.insert! %Profile{}
+    changeset = Ecto.Changeset.change(profile)
+
+    changeset = Ecto.Changeset.put_embed(changeset, :address,
+      %Resume.Address{
+        street: &quot;StreetName&quot;,
+        city: &quot;TheCityOfMyDreams&quot;,
+        zip: &quot;12345&quot;,
+        country: &quot;MyCountry&quot;
+      }
+    )
+    Repo.update!(changeset)
+
+    conn = get conn, profile_path(conn, :show, profile)
+    assert json_response(conn, 200)[&quot;data&quot;] == %{&quot;id&quot; =&gt; profile.id,
+      &quot;name&quot; =&gt; profile.name,
+      &quot;email&quot; =&gt; profile.email,
+      &quot;address&quot; =&gt; %{
+        &quot;city&quot; =&gt; &quot;TheCityOfMyDreams&quot;,
+        &quot;country&quot; =&gt; &quot;MyCountry&quot;,
+        &quot;street&quot; =&gt; &quot;StreetName&quot;,
+        &quot;zip&quot; =&gt; &quot;12345&quot;,
+      }
+    }
+  end&lt;/code&gt;&lt;/pre&gt;
+      &lt;/div&gt;
+&lt;p&gt;To set an address to our profile we use  Ecto.Changeset.put_embed/3. &lt;/p&gt;
+&lt;p&gt;The controller action does the correct thing; it fetches the profile and renders it. However, the rendering function does not by default include the address. To add it modify the profile view file.&lt;/p&gt;
+&lt;div class=&quot;gatsby-highlight&quot;&gt;
+      &lt;pre class=&quot;language-language-elixir&quot;&gt;&lt;code&gt;  def render(&quot;profile.json&quot;, %{profile: profile}) do
+    %{
+      id: profile.id,
+      name: profile.name,
+      email: profile.email,
+      address: render_one(profile.address, MyApp.AddressView, &quot;address.json&quot;)
+    }
+  end&lt;/code&gt;&lt;/pre&gt;
+      &lt;/div&gt;
+&lt;p&gt;We call MyAppAddressView and asks it to render an address. So we need to implement it. Create &lt;code&gt;web/view/address_view.ex&lt;/code&gt; with the following.&lt;/p&gt;
+&lt;div class=&quot;gatsby-highlight&quot;&gt;
+      &lt;pre class=&quot;language-language-elixir&quot;&gt;&lt;code&gt;defmodule MyApp.AddressView do
+  use Resume.Web, :view
+
+  def render(&quot;address.json&quot;, %{address: address}) do
+    %{
+      street: address.street,
+      zip: address.zip,
+      city: address.city,
+      country: address.country
+    }
+  end
+end&lt;/code&gt;&lt;/pre&gt;
+      &lt;/div&gt;
+&lt;p&gt;Cool!&lt;/p&gt;
+&lt;p&gt;Easy and explicit. Here we assume that profile.address is a valid thing. It should be embedded in the model.&lt;/p&gt;
+&lt;p&gt;The tests for it would be something like this:&lt;/p&gt;
+&lt;div class=&quot;gatsby-highlight&quot;&gt;
+      &lt;pre class=&quot;language-language-elixir&quot;&gt;&lt;code&gt; test &quot;has embedded address&quot; do
+    changeset = Profile.changeset(%Profile{}, @valid_attrs)
+    changeset = Ecto.Changeset.put_embed(changeset, :address,
+      %Resume.Address{ street: &quot;StreetName&quot; }
+    )
+
+    assert changeset.changes.address.changes.street == &quot;StreetName&quot;
+  end&lt;/code&gt;&lt;/pre&gt;
+      &lt;/div&gt;
+&lt;p&gt;It is a bit to explicit to check that the street name is correct, but it does the trick. Refactoring is your friend.&lt;/p&gt;
+&lt;p&gt;Now let us add address to profiles, and make this test pass.&lt;/p&gt;
+&lt;div class=&quot;gatsby-highlight&quot;&gt;
+      &lt;pre class=&quot;language-language-elixir&quot;&gt;&lt;code&gt;  schema &quot;profiles&quot; do
+    field :name, :string
+    field :email, :string
+    embeds_one :address, MyApp.Address
+
+    timestamps
+  end&lt;/code&gt;&lt;/pre&gt;
+      &lt;/div&gt;
+&lt;p&gt;We state that we want profiles to have ONE address, and we define an address to be MyApp.Address. Create a new model for it in &lt;code&gt;web/model/address.ex&lt;/code&gt;&lt;/p&gt;
+&lt;div class=&quot;gatsby-highlight&quot;&gt;
+      &lt;pre class=&quot;language-language-elixir&quot;&gt;&lt;code&gt;defmodule Resume.Address do
+  use Ecto.Schema
+
+  embedded_schema do
+    field :street, :string
+    field :zip, :string
+    field :city, :string
+    field :country, :string
+
+    timestamps
+  end
+end&lt;/code&gt;&lt;/pre&gt;
+      &lt;/div&gt;
+&lt;p&gt;Nothing fancy. It just defines a schema. But for this to work, profiles needs a place to store it. We will add a &lt;code&gt;address&lt;/code&gt; column in the &lt;code&gt;profile&lt;/code&gt; table. It should be of type &lt;code&gt;jsonb&lt;/code&gt;. We do that by setting it to a map.&lt;/p&gt;
+&lt;p&gt;Create a new migration&lt;/p&gt;
+&lt;div class=&quot;gatsby-highlight&quot;&gt;
+      &lt;pre class=&quot;language-language-elixir&quot;&gt;&lt;code&gt;mix ecto.gen.migration AddAddressToProfile&lt;/code&gt;&lt;/pre&gt;
+      &lt;/div&gt;
+&lt;p&gt;Open the new file and add the migration&lt;/p&gt;
+&lt;div class=&quot;gatsby-highlight&quot;&gt;
+      &lt;pre class=&quot;language-language-elixir&quot;&gt;&lt;code&gt;defmodule MyApp.Repo.Migrations.AddAddressToProfile do
+  use Ecto.Migration
+
+  def change do
+    alter table(:profiles) do
+      add :address, :map
+    end
+  end
+end&lt;/code&gt;&lt;/pre&gt;
+      &lt;/div&gt;
+&lt;p&gt;We use the type &lt;code&gt;map&lt;/code&gt;.&lt;/p&gt;
+&lt;div class=&quot;gatsby-highlight&quot;&gt;
+      &lt;pre class=&quot;language-language-bash&quot;&gt;&lt;code&gt;mix ecto.create
+mix ecto.migrate
+mix test&lt;/code&gt;&lt;/pre&gt;
+      &lt;/div&gt;
+&lt;p&gt;It should all be green and pretty.&lt;/p&gt;</content:encoded></item><item><title><![CDATA[Elixir - Phoenix: Simple Authentication]]></title><description><![CDATA[A simple Phoenix authentication flow for an JSON api. Using  JSON Web Tokens  via  Joken  and  Mellon  for access controller. The basics…]]></description><link>https://sajmoon.github.io/2016-01-02-elixir-phoenix-simple-authentication/</link><guid isPermaLink="false">https://sajmoon.github.io/2016-01-02-elixir-phoenix-simple-authentication/</guid><pubDate>Sat, 02 Jan 2016 14:22:26 GMT</pubDate><content:encoded>&lt;p&gt;A simple Phoenix authentication flow for an JSON api. Using &lt;a href=&quot;https://jwt.io/&quot;&gt;JSON Web Tokens&lt;/a&gt; via &lt;a href=&quot;https://github.com/bryanjos/joken&quot;&gt;Joken&lt;/a&gt; and &lt;a href=&quot;https://github.com/sajmoon/mellon&quot;&gt;Mellon&lt;/a&gt; for access controller.&lt;/p&gt;
+&lt;h2&gt;The basics.&lt;/h2&gt;
+&lt;p&gt;Let’s start from scratch. Create a new Phoenix Application. Read the &lt;a href=&quot;http://www.phoenixframework.org/docs/up-and-running&quot;&gt;Phoenix guide&lt;/a&gt; to get started.&lt;/p&gt;
+&lt;div class=&quot;gatsby-highlight&quot;&gt;
+      &lt;pre class=&quot;language-sh&quot;&gt;&lt;code&gt;$ mix phoenix.new --no-brunch app_name
+$ cd app_name
+$ mix ecto.setup&lt;/code&gt;&lt;/pre&gt;
+      &lt;/div&gt;
+&lt;h2&gt;Create a user model&lt;/h2&gt;
+&lt;p&gt;We will use a generator now and remove most of the code, but obviously you don’t have to.&lt;/p&gt;
+&lt;div class=&quot;gatsby-highlight&quot;&gt;
+      &lt;pre class=&quot;language-sh&quot;&gt;&lt;code&gt;$ mix phoenix.gen.json User users email:string password_hash:string&lt;/code&gt;&lt;/pre&gt;
+      &lt;/div&gt;
+&lt;p&gt;We will want the emails to be unique so modify the migration file to include the following that will generate a index of all emails for us.&lt;/p&gt;
+&lt;div class=&quot;gatsby-highlight&quot;&gt;
+      &lt;pre class=&quot;language-none&quot;&gt;&lt;code&gt;create unique_index(:users, [:email])&lt;/code&gt;&lt;/pre&gt;
+      &lt;/div&gt;
+&lt;p&gt;We need to modify the routes, so let’s do that. We start by adding all possible CRUD routes in &lt;code&gt;web/routes.ex&lt;/code&gt;.&lt;/p&gt;
+&lt;div class=&quot;gatsby-highlight&quot;&gt;
+      &lt;pre class=&quot;language-none&quot;&gt;&lt;code&gt;pipeline :api do
+  plug :accepts, [&quot;json&quot;]
+end
+
+scope &quot;/api/&quot; do
+  pipe_through :api
+  resources &quot;/users&quot;, UserController
+end&lt;/code&gt;&lt;/pre&gt;
+      &lt;/div&gt;
+&lt;p&gt;Then fix the database.&lt;/p&gt;
+&lt;div class=&quot;gatsby-highlight&quot;&gt;
+      &lt;pre class=&quot;language-none&quot;&gt;&lt;code&gt;$ mix ecto.migrate&lt;/code&gt;&lt;/pre&gt;
+      &lt;/div&gt;
+&lt;p&gt;We will not use the UserController but my memory is always messing with me and I need both the tests and controller to remember stuff.&lt;/p&gt;
+&lt;h2&gt;Registrate new users&lt;/h2&gt;
+&lt;p&gt;New users will &lt;code&gt;POST&lt;/code&gt; to &lt;code&gt;/auth/&lt;/code&gt; all data needed and a user will be created.&lt;/p&gt;
+&lt;p&gt;The route will be:&lt;/p&gt;
+&lt;div class=&quot;gatsby-highlight&quot;&gt;
+      &lt;pre class=&quot;language-none&quot;&gt;&lt;code&gt;scope &quot;/api/&quot; do
+  pipe_through :api
+  resources &quot;/users&quot;, UserController
+  
+  post &quot;/auth&quot;, RegistrationController, :create
+end&lt;/code&gt;&lt;/pre&gt;
+      &lt;/div&gt;
+&lt;p&gt;So we need a new controller called &lt;code&gt;RegistrationController&lt;/code&gt; located  in &lt;code&gt;web/controllers/registration_controller.ex&lt;/code&gt;. The tests for that controller will be in &lt;code&gt;tests/controller/registration_controller_test.exs&lt;/code&gt;. Create them both. See the full code further down.&lt;/p&gt;
+&lt;p&gt;When a user registers s/he will send some json containing email and password. In the end we will store password_hash in the db. For the hashing of the password we use &lt;a href=&quot;https://github.com/elixircnx/comeonin&quot;&gt;comeonin&lt;/a&gt;.&lt;/p&gt;
+&lt;p&gt;After we get the basics up and running, for example an endpoint that can take some post data and return a 200, we should modify the changeset method in the model to accept password and hide the password_hash.&lt;/p&gt;
+&lt;p&gt;Be sure to write tests for your code. To have your tests run as soon as you save a file you can use &lt;a href=&quot;http://entrproject.org/&quot;&gt;entr&lt;/a&gt;.&lt;/p&gt;
+&lt;div class=&quot;gatsby-highlight&quot;&gt;
+      &lt;pre class=&quot;language-none&quot;&gt;&lt;code&gt;while sleep 1; do ls -d lib/**/*.ex web/**/*.ex test/**/*.exs | entr│ mix test; done&lt;/code&gt;&lt;/pre&gt;
+      &lt;/div&gt;
+&lt;h3&gt;User Model&lt;/h3&gt;
+&lt;p&gt;We add a password field (virtual) to our model. That way we can pass it along from the user and convert it to a password_hash. We also change how the changeset works&lt;/p&gt;
+&lt;div class=&quot;gatsby-highlight&quot;&gt;
+      &lt;pre class=&quot;language-none&quot;&gt;&lt;code&gt;schema &quot;users&quot; do
+  field :email, :string
+  field :password_hash, :string
+  field :password, :string, virtual: true
+
+  timestamps
+end
+
+@required_fields ~w(email password)
+
+def changeset(model, params \\ :empty) do
+  model
+  |&gt; cast(params, @required_fields, @optional_fields)
+  |&gt; unique_constraint(:email)
+  |&gt; validate_length(:password, min: 5)
+  |&gt; hash_password
+end
+
+defp hash_password(changeset) do
+  if password = get_change(changeset, :password) do
+    changeset
+    |&gt; put_change(:password_hash, hashpwsalt(password))
+  else
+    changeset
+  end
+end&lt;/code&gt;&lt;/pre&gt;
+      &lt;/div&gt;
+&lt;p&gt;We can test the password_hash in a model test:&lt;/p&gt;
+&lt;div class=&quot;gatsby-highlight&quot;&gt;
+      &lt;pre class=&quot;language-none&quot;&gt;&lt;code&gt;test &quot;password_hash value gets set to a hash&quot; do
+  changeset = User.changeset(%User{}, @valid_attrs)
+  assert Comeonin.Bcrypt.checkpw(@valid_attrs.password, Ecto.Changeset.get_change(changeset, :password_hash))
+end&lt;/code&gt;&lt;/pre&gt;
+      &lt;/div&gt;
+&lt;p&gt;You will obviously have to write more and better tests then this for a real system.&lt;/p&gt;
+&lt;p&gt;Also, remember to change the view of users so it returns no password, or password_hash.&lt;/p&gt;
+&lt;p&gt;The controller code and tests in full. You will see features omitted, such as validations of emails etc.&lt;/p&gt;
+&lt;div class=&quot;gatsby-highlight&quot;&gt;
+      &lt;pre class=&quot;language-none&quot;&gt;&lt;code&gt;defmodule AppName.UserControllerTest do
+  use AppName.ConnCase
+
+  alias AppName.User
+  @valid_attrs %{email: &quot;some content&quot;, password: &quot;validPassword&quot;}
+  @invalid_attrs %{}
+
+  setup do
+    conn = conn() |&gt; put_req_header(&quot;accept&quot;, &quot;application/json&quot;)
+    {:ok, conn: conn}
+  end
+
+  test &quot;creates and renders resource when data is valid&quot;, %{conn: conn} do
+    conn = post conn, registration_path(conn, :create), user: @valid_attrs
+    assert json_response(conn, 201)[&quot;data&quot;][&quot;id&quot;]
+    assert Repo.get_by(User, email: @valid_attrs.email)
+  end
+
+  test &quot;does not create resource and renders errors when data is invalid&quot;, %{conn: conn} do
+    conn = post conn, registration_path(conn, :create), user: @invalid_attrs
+    assert json_response(conn, 422)[&quot;errors&quot;] != %{}
+  end
+
+  test &quot;Users should have unique emails&quot;, %{conn: conn} do
+    post conn, registration_path(conn, :create), user: @valid_attrs
+    conn = post conn, registration_path(conn, :create), user: @valid_attrs
+    errors = json_response(conn, 422)[&quot;errors&quot;]
+    assert errors != %{}
+    assert Map.has_key?(errors, &quot;email&quot;)
+    assert Map.get(errors, &quot;email&quot;) == [&quot;has already been taken&quot;]
+  end
+end&lt;/code&gt;&lt;/pre&gt;
+      &lt;/div&gt;
+&lt;p&gt;And the controller itself:&lt;/p&gt;
+&lt;div class=&quot;gatsby-highlight&quot;&gt;
+      &lt;pre class=&quot;language-none&quot;&gt;&lt;code&gt;defmodule AppName.RegistrationController do
+  use AppName.Web, :controller
+
+  alias AppName.User
+
+  plug :scrub_params, &quot;user&quot; when action in [:create]
+
+  def create(conn, %{&quot;user&quot; =&gt; user_params}) do
+    changeset = User.changeset(%User{}, user_params)
+
+    case Repo.insert(changeset) do
+      {:ok, user} -&gt;
+        conn
+        |&gt; put_status(:created)
+        |&gt; render(AppName.UserView, &quot;show.json&quot;, user: user)
+      {:error, changeset} -&gt;
+        conn
+        |&gt; put_status(:unprocessable_entity)
+        |&gt; render(AppName.ChangesetView, &quot;error.json&quot;, changeset: changeset)
+    end
+  end
+end&lt;/code&gt;&lt;/pre&gt;
+      &lt;/div&gt;
+&lt;p&gt;Now we have something that allows us to create new users. Let´s enable Sign ins.&lt;/p&gt;
+&lt;h2&gt;Sign ins&lt;/h2&gt;
+&lt;p&gt;The user posts email and password, the server responds with 4xx if something went wrong. If the password matches the one stored in the database the server responds with 2xx and a Token.&lt;/p&gt;
+&lt;p&gt;Start by adding a new route&lt;/p&gt;
+&lt;div class=&quot;gatsby-highlight&quot;&gt;
+      &lt;pre class=&quot;language-none&quot;&gt;&lt;code&gt;get &quot;/auth/login&quot;, SessionController, :login&lt;/code&gt;&lt;/pre&gt;
+      &lt;/div&gt;
+&lt;p&gt;Create the controller and tests.&lt;/p&gt;
+&lt;p&gt;The tests will be something like this:&lt;/p&gt;
+&lt;div class=&quot;gatsby-highlight&quot;&gt;
+      &lt;pre class=&quot;language-none&quot;&gt;&lt;code&gt;defmodule AppName.SessionControllerTest do
+  use AppName.ConnCase
+
+  alias AppName.User
+  @valid_attrs %{email: &quot;some content&quot;, password: &quot;validPassword&quot;}
+  @invalid_attrs %{email: &quot;non-existing-user@example.com&quot;, password: &quot;no-password&quot;}
+
+  setup do
+    changeset = User.changeset(%User{}, @valid_attrs)
+    {:ok, user} = Repo.insert changeset
+    token = User.generate_token(user)
+
+    conn = conn() |&gt; put_req_header(&quot;accept&quot;, &quot;application/json&quot;)
+    {:ok, conn: conn, user: user, token: token}
+  end
+
+  test &quot;Cannot authenticate a non existing user&quot;, %{conn: conn} do
+    conn = get conn, session_path(conn, :login), user: @invalid_attrs
+    assert json_response(conn, 422)
+  end
+
+  test &quot;Authenticate a valid user&quot;, %{conn: conn} do
+    conn = get conn, session_path(conn, :login), user: @valid_attrs
+    assert json_response(conn, 200)[&quot;data&quot;][&quot;token&quot;] != nil
+  end
+end&lt;/code&gt;&lt;/pre&gt;
+      &lt;/div&gt;
+&lt;p&gt;The &lt;code&gt;generate_token&lt;/code&gt; method is placed in the model to keep everything together, but could easily be placed in another file.&lt;/p&gt;
+&lt;p&gt;The controller for this looks &lt;/p&gt;
+&lt;div class=&quot;gatsby-highlight&quot;&gt;
+      &lt;pre class=&quot;language-none&quot;&gt;&lt;code&gt;defmodule AppName.SessionController do
+  use AppName.Web, :controller
+
+  alias AppName.User
+
+  def login(conn, %{&quot;user&quot; =&gt; user_params}) do
+    if user = Repo.get_by(User, email: user_params[&quot;email&quot;]) do
+
+      token = User.generate_token(user)
+
+      conn
+      |&gt; put_status(200)
+      |&gt; render(AppName.SessionView, &quot;session.json&quot;, token: token)
+    else
+      conn
+      |&gt; put_status(:unprocessable_entity)
+      |&gt; render(AppName.SessionView, &quot;error.json&quot;, message: &quot;Nope&quot;)
+    end
+  end
+end&lt;/code&gt;&lt;/pre&gt;
+      &lt;/div&gt;
+&lt;p&gt;We generate the token via a helper method in the model. It looks like this:&lt;/p&gt;
+&lt;div class=&quot;gatsby-highlight&quot;&gt;
+      &lt;pre class=&quot;language-none&quot;&gt;&lt;code&gt;def generate_token(user) do
+  %{user_id: user.id}
+  |&gt; token
+  |&gt; with_signer(hs256(&quot;secret-change-me&quot;))
+  |&gt; sign
+  |&gt; get_compact
+end&lt;/code&gt;&lt;/pre&gt;
+      &lt;/div&gt;
+&lt;p&gt;All the magic is &lt;a href=&quot;https://github.com/bryanjos/joken&quot;&gt;Joken&lt;/a&gt;, and you should read more about the options for it.&lt;/p&gt;
+&lt;p&gt;In short is contains the data on the second line (e.g. user_id: 1) but is signed so anyone with the secret can validate that the user is actually signed in without having to look up a random string token in the database. We can pass values such as the user id but also role: “admin” etc. We can use this later to get the current user for each request. Do not put anything secret in the claims part of the token, since it is readable by everyone.&lt;/p&gt;
+&lt;p&gt;Alright. That is it! We have a way to register user and a way to authenticate a user.&lt;/p&gt;
+&lt;p&gt;Now we only need to ensure that a unauthenticated user does not have access to thing s/he should not. This is the fun part.&lt;/p&gt;
+&lt;h3&gt;Validating an authenticated user&lt;/h3&gt;
+&lt;p&gt;We will define some routes that are protected, for this example we will do a &lt;code&gt;/auth/validate&lt;/code&gt; that responds with 200 if the user is authenticated. If not the response will be &lt;code&gt;401, Unauthticated&lt;/code&gt;.&lt;/p&gt;
+&lt;p&gt;We will use Mellon to parse the header and provide an interface to validate the token. With mellon the token can be anything, it just hands the data to any function you define and you can handle the validations yourself.&lt;/p&gt;
+&lt;p&gt;Check out &lt;a href=&quot;https://github.com/sajmoon/mellon&quot;&gt;Mellon&lt;/a&gt; for more information.&lt;/p&gt;
+&lt;p&gt;In your routes create a new pipeline and a route that is protected.&lt;/p&gt;
+&lt;div class=&quot;gatsby-highlight&quot;&gt;
+      &lt;pre class=&quot;language-none&quot;&gt;&lt;code&gt;pipeline :authenticated do
+  plug Mellon, validator: {AppName.Validation, :validate, []}, header: &quot;api-token&quot;
+end
+
+scope &quot;/api/&quot;, AppName do
+  pipe_through :api
+  pipe_through :authenticated
+  get &quot;/auth/validate&quot;, SessionController, :validate
+end&lt;/code&gt;&lt;/pre&gt;
+      &lt;/div&gt;
+&lt;p&gt;and the controller:&lt;/p&gt;
+&lt;div class=&quot;gatsby-highlight&quot;&gt;
+      &lt;pre class=&quot;language-none&quot;&gt;&lt;code&gt;def validate(conn, _params) do
+  conn
+  |&gt; put_status(200)
+  |&gt; render(AppName.UserView, &quot;show.json&quot;, user: %User{email: &quot;test&quot;})
+end&lt;/code&gt;&lt;/pre&gt;
+      &lt;/div&gt;
+&lt;p&gt;The content to the view is temporary, and should probably be the user object itself.&lt;/p&gt;
+&lt;p&gt;To test this (before you add the &lt;code&gt;pipe_through :authenticated&lt;/code&gt;) you can write some tests such as these:&lt;/p&gt;
+&lt;div class=&quot;gatsby-highlight&quot;&gt;
+      &lt;pre class=&quot;language-none&quot;&gt;&lt;code&gt;test &quot;validate token&quot;, %{conn: conn, token: token} do
+  conn = put_req_header(conn, &quot;api-token&quot;, &quot;Token: &quot; &lt;&gt; token)
+  conn = get conn, session_path(conn, :validate)
+  assert json_response(conn, 200)
+end
+
+test &quot;validate fails if invalid token&quot;, %{conn: conn} do
+  conn = put_req_header(conn, &quot;api-token&quot;, &quot;Token: invalid-token&quot;)
+  conn = get conn, session_path(conn, :validate)
+  assert json_response(conn, 401)
+end&lt;/code&gt;&lt;/pre&gt;
+      &lt;/div&gt;
+&lt;p&gt;You should see one or both fail.&lt;/p&gt;
+&lt;p&gt;The pipeline will pass all request through the Mellon Plug, which will call &lt;code&gt;AppName.Validation.validate/1&lt;/code&gt; with the information needed to authenticate or reject the request.&lt;/p&gt;
+&lt;p&gt;The validate method gets the conn and token. We use a helper method in the model to verify the token, and then pass the claims (the information we put in the token: user_id: user.id) in the connection.
+Mellon will assign it to the connection so we can use it in the controller. Which is good for more granular access controller.&lt;/p&gt;
+&lt;p&gt;The validator looks like this.&lt;/p&gt;
+&lt;div class=&quot;gatsby-highlight&quot;&gt;
+      &lt;pre class=&quot;language-none&quot;&gt;&lt;code&gt;defmodule AppName.Validation do
+  import Joken
+  alias AppName.User
+
+  def validate({conn, token}) do
+    User.verify_token(token)
+    |&gt; handle(conn)
+  end
+
+  defp handle(%{error: nil, claims: claims}, conn) do
+    {:ok, claims, conn}
+  end
+  defp handle(%{error: error}, conn) do
+    {:error, [], conn}
+  end
+end&lt;/code&gt;&lt;/pre&gt;
+      &lt;/div&gt;
+&lt;h2&gt;Conclusion&lt;/h2&gt;
+&lt;p&gt;That it! We have a way to create users, authenticate users, and validate that the user is signed in with a valid token.&lt;/p&gt;
+&lt;p&gt;To do this we use &lt;a href=&quot;https://github.com/sajmoon/mellon&quot;&gt;Mellon&lt;/a&gt; to parse the headers, &lt;a href=&quot;https://github.com/bryanjos/joken&quot;&gt;Joken&lt;/a&gt; to create the token, and &lt;a href=&quot;https://github.com/elixircnx/comeonin&quot;&gt;comeonin&lt;/a&gt; to encrypt the password stored in the database.&lt;/p&gt;</content:encoded></item><item><title><![CDATA[Angular: Caching of remote data in services.]]></title><description><![CDATA[Often data displayed to the user doesn’t change that often. And when that is the case caching is vital. Not only so your site doesn’t make…]]></description><link>https://sajmoon.github.io/2015-11-08-angular-caching-of-data-in-services/</link><guid isPermaLink="false">https://sajmoon.github.io/2015-11-08-angular-caching-of-data-in-services/</guid><pubDate>Sun, 08 Nov 2015 00:24:04 GMT</pubDate><content:encoded>&lt;p&gt;Often data displayed to the user doesn’t change that often. And when that is the case caching is vital. Not only so your site doesn’t make lots of unnecessary requests, putting the load on your servers, but mostly for user experience.&lt;/p&gt;
+&lt;p&gt;Switching between two states in an Angular application built with &lt;a href=&quot;https://github.com/angular-ui/ui-router&quot;&gt;ui-router&lt;/a&gt; might do a new request each time. With a slow connection that will be a problem. But even with a faster connection the content of the site will be blank until the fetch is complete creating a “flash” when the content arrives.&lt;/p&gt;
+&lt;p&gt;To test how slower internet connections work on your application you can throttle the page in Chrome. In the &lt;code&gt;developer console&lt;/code&gt; under the &lt;code&gt;Network&lt;/code&gt; tab you can set a limit.&lt;/p&gt;
+&lt;p&gt;All code will be in &lt;code&gt;CoffeeScript&lt;/code&gt;.&lt;/p&gt;
+&lt;h2&gt;How we started out.&lt;/h2&gt;
+&lt;p&gt;In this case I had a factory for the $resource. Several actions were defined. In this article I will only talk about one to keep it brief and on point.&lt;/p&gt;
+&lt;p&gt;The factory looked something like this:&lt;/p&gt;
+&lt;div class=&quot;gatsby-highlight&quot;&gt;
+      &lt;pre class=&quot;language-language-javascript&quot;&gt;&lt;code&gt;App.factory &quot;News&quot;, ($resource) -&gt;
+  $resource &quot;/api/v1/news/:action&quot;,
+    {
+      action: &quot;@action&quot;
+    },
+    {
+      other_action: {
+        method: &quot;GET&quot;,
+        params: { action: &quot;some_other_action&quot; }
+      }
+    }&lt;/code&gt;&lt;/pre&gt;
+      &lt;/div&gt;
+&lt;p&gt;We used that factory in the controller as follows:&lt;/p&gt;
+&lt;div class=&quot;gatsby-highlight&quot;&gt;
+      &lt;pre class=&quot;language-language-javascript&quot;&gt;&lt;code&gt;App.controller &quot;NewsController&quot;, class NewsController
+  constructor: (News) -&gt;
+    News.get (data) =&gt;
+      // data contained the request.
+      @functionToSetAllVariablesNeedByViews(data)
+
+  functionToSetAllVariablesNeedByViews: (data) -&gt;
+    // Ignored for brevity&lt;/code&gt;&lt;/pre&gt;
+      &lt;/div&gt;
+&lt;p&gt;Simple, clean and to the point. Of course it could be improved etc. We will get to that. The problem was when the user navigated to the state connected to this controller, it always did a request to the backend. That was by design, we couldn’t cache it. The data needs to be pristine. The browser on the other hand did the request, got a 304: Not modified and displayed the data.&lt;/p&gt;
+&lt;p&gt;We got this middle state when no data was displayed.&lt;/p&gt;
+&lt;h2&gt;Caching in a service.&lt;/h2&gt;
+&lt;p&gt;To fix this we could start by setting the &lt;code&gt;cache: true&lt;/code&gt;option of $resource. And have to deal with cache invalidations etc. A requirement is that the data should always be the latest, so it might be or become a headache.&lt;/p&gt;
+&lt;p&gt;Instead, creating a Service to wrap the factory with two methods. &lt;code&gt;getData&lt;/code&gt; that returns the cached value, and &lt;code&gt;request&lt;/code&gt; that handles http requests.&lt;/p&gt;
+&lt;p&gt;Here it goes:&lt;/p&gt;
+&lt;div class=&quot;gatsby-highlight&quot;&gt;
+      &lt;pre class=&quot;language-language-javascript&quot;&gt;&lt;code&gt;App.service &quot;NewsService&quot;, class NewsService
+  constructor: (News, $q) -&gt;
+    @News = News // This is the original factory.
+    @data = {}
+    @q = $q
+
+  getData: =&gt;
+    deferred = @q.defer()
+    deferred.resolve(@data)
+
+    return deferred.promise
+
+  request: =&gt;
+    @News.get().$promise
+    .then (data) =&gt;
+      @data = data&lt;/code&gt;&lt;/pre&gt;
+      &lt;/div&gt;
+&lt;p&gt;Simple. We also change what to return. We always return promises. Because of the nature of promises, we can chain them, and guarantee order of execution. That is what the controller has to deal with.&lt;/p&gt;
+&lt;p&gt;We are using the fact that angular services are singletons. Any controller where we request the service to be injected into will have the same instance, thus the same cached data.&lt;/p&gt;
+&lt;div class=&quot;gatsby-highlight&quot;&gt;
+      &lt;pre class=&quot;language-language-javascript&quot;&gt;&lt;code&gt;App.controller &quot;NewsController&quot;, class NewsController
+  constructor: (NewsService) -&gt;
+    @newsService = NewsService
+
+    @newsService.getData()
+      .then(@setData)
+      .then =&gt;
+        @newsService.request()
+      .then @setData
+      .catch (e) -&gt;
+        console.error &quot;Error: Could not fetch News.&quot;, e
+
+  setData: (data) =&gt;
+    // Ignored for brevity&lt;/code&gt;&lt;/pre&gt;
+      &lt;/div&gt;
+&lt;p&gt;The controller askes for the cached value by calling &lt;code&gt;getData&lt;/code&gt;. That data is the same as the result from the last request. If this is the first request, the data would be empty.
+Then we ask the service to do a request to the backend. When that resolves we set the data as we always do, with &lt;code&gt;setData()&lt;/code&gt;.&lt;/p&gt;
+&lt;p&gt;The service stores the the payload from the request, so we have a cached value next time.&lt;/p&gt;
+&lt;h2&gt;Conclusion.&lt;/h2&gt;
+&lt;p&gt;It’s not a perfect solution. We need to add logic to cancel the request if the user makes another request before the first request is completed.&lt;/p&gt;
+&lt;p&gt;But in general this is a viable solution. It fits the requirements perfectly. The user always gets new and fresh data, and there is never an unnecessary delay before the data is displayed.&lt;/p&gt;
+&lt;p&gt;Since we did not change anything in the original factory we also have ensured that all functionality in our application works as before. The News Factory was used in several places, and now we do not have to change them all at the same time. That should of course be refactored later.&lt;/p&gt;</content:encoded></item><item><title><![CDATA[Playing around with Elixir Process]]></title><description><![CDATA[Elixir and Process In Erlang and Elixir we talk about process the way you would talk about threads in some other language. They are not…]]></description><link>https://sajmoon.github.io/2015-10-25-playing-around-with-elixir-processes/</link><guid isPermaLink="false">https://sajmoon.github.io/2015-10-25-playing-around-with-elixir-processes/</guid><pubDate>Sun, 25 Oct 2015 14:35:00 GMT</pubDate><content:encoded>&lt;h1&gt;Elixir and Process&lt;/h1&gt;
+&lt;p&gt;In Erlang and Elixir we talk about process the way you would talk about threads in some other language. They are not system process. You cannot see them using &lt;code&gt;ps&lt;/code&gt; or &lt;code&gt;top&lt;/code&gt;. They are managed and created by the Erlang VM.&lt;/p&gt;
+&lt;p&gt;And the Erlang VM is pretty good at managing them.&lt;/p&gt;
+&lt;h2&gt;Create a process&lt;/h2&gt;
+&lt;div class=&quot;gatsby-highlight&quot;&gt;
+      &lt;pre class=&quot;language-language-elixir&quot;&gt;&lt;code&gt;iex(1)&gt; pid = spawn(fn -&gt; IO.puts &quot;im alive&quot; end)
+im alive
+#PID&lt;0.61.0&gt;
+
+iex(3)&gt; Process.alive? pid
+false&lt;/code&gt;&lt;/pre&gt;
+      &lt;/div&gt;
+&lt;p&gt;So we spawned a process with the job to execute the anonymous function we passed to it, and then it quit.
+Cool. What else can we do?&lt;/p&gt;
+&lt;h2&gt;Why send messages?&lt;/h2&gt;
+&lt;p&gt;A big part of what makes the Erlang concurrency model so great is the use of messages. By starting a processes to do one thing and then communicate with that process through messages you have built a system that scales very easily to be global. We don’t really care that the process we are sending a message to is a local process. It could just as easily be in some datacenter on the other side of the world. No worries. We build a system ready to be scaled.&lt;/p&gt;
+&lt;h2&gt;How to send messages.&lt;/h2&gt;
+&lt;p&gt;A message is sent either to a &lt;code&gt;pid&lt;/code&gt;(process id) or to a named process. Lets start by sending messages to a pid.&lt;/p&gt;
+&lt;p&gt;Start iex.&lt;/p&gt;
+&lt;div class=&quot;gatsby-highlight&quot;&gt;
+      &lt;pre class=&quot;language-language-elixir&quot;&gt;&lt;code&gt;iex(1)&gt; self
+#PID&lt;0.57.0&gt;
+iex(2)&gt; send(self, &quot;hello&quot;)
+&quot;hello&quot;
+iex(3)&gt; flush
+&quot;hello&quot;
+:ok&lt;/code&gt;&lt;/pre&gt;
+      &lt;/div&gt;
+&lt;p&gt;Self returns the pid of the process we are in now. In this case iex itself.
+Send takes two parameters, a &lt;code&gt;pid&lt;/code&gt; and the message.
+We have not yet configured our process to listen for messages, but a short hand is to &lt;code&gt;flush&lt;/code&gt; the mailbox for the current process. That will list all messages received.&lt;/p&gt;
+&lt;p&gt;Alright. Sending and flushing all done.&lt;/p&gt;
+&lt;h2&gt;Receiving messages&lt;/h2&gt;
+&lt;p&gt;So if processes talks through messages we need a way to send and listen to messages that is being sent around.&lt;/p&gt;
+&lt;p&gt;Let’s create a small &lt;code&gt;Worker&lt;/code&gt; process. Create a file called &lt;code&gt;processes.ex&lt;/code&gt;.&lt;/p&gt;
+&lt;div class=&quot;gatsby-highlight&quot;&gt;
+      &lt;pre class=&quot;language-language-elixir&quot;&gt;&lt;code&gt;defmodule ElixirTest.BasicWorker do
+  def loop do
+    receive do
+      {sender_pid, _} -&gt;
+        send(sender_pid, {:ok, :pong})
+        loop
+    end
+  end
+end&lt;/code&gt;&lt;/pre&gt;
+      &lt;/div&gt;
+&lt;p&gt;It is just a echo service.&lt;/p&gt;
+&lt;p&gt;How to use it then?&lt;/p&gt;
+&lt;div class=&quot;gatsby-highlight&quot;&gt;
+      &lt;pre class=&quot;language-language-elixir&quot;&gt;&lt;code&gt;iex(1)&gt; c(&quot;processes.ex&quot;)&lt;/code&gt;&lt;/pre&gt;
+      &lt;/div&gt;
+&lt;p&gt;Compiles the file so we can use the modules from iex. Then spawn a process. Remember to save the pid.&lt;/p&gt;
+&lt;div class=&quot;gatsby-highlight&quot;&gt;
+      &lt;pre class=&quot;language-language-elixir&quot;&gt;&lt;code&gt;iex(2)&gt; pid = spawn(ElixirTest.BasicWorker, :loop, [])
+#PID&lt;0.74.0&gt;&lt;/code&gt;&lt;/pre&gt;
+      &lt;/div&gt;
+&lt;p&gt;After that send a message to it and check the &lt;code&gt;mail box&lt;/code&gt;, lacking a better term.&lt;/p&gt;
+&lt;div class=&quot;gatsby-highlight&quot;&gt;
+      &lt;pre class=&quot;language-language-elixir&quot;&gt;&lt;code&gt;iex(3)&gt; send(pid, {self, :ok})
+{#PID&lt;0.57.0&gt;, :ok}
+iex(4)&gt; flush
+{:ok, :pong}
+:ok&lt;/code&gt;&lt;/pre&gt;
+      &lt;/div&gt;
+&lt;p&gt;Awesome. Our process replied. We could just keep on sending messages.&lt;/p&gt;
+&lt;div class=&quot;gatsby-highlight&quot;&gt;
+      &lt;pre class=&quot;language-language-elixir&quot;&gt;&lt;code&gt;iex(18)&gt; send(pid, {self, :ok})
+{#PID&lt;0.57.0&gt;, :ok}
+iex(19)&gt; send(pid, {self, :ok})
+{#PID&lt;0.57.0&gt;, :ok}
+iex(20)&gt; flush
+{:ok, :pong}
+{:ok, :pong}
+:ok&lt;/code&gt;&lt;/pre&gt;
+      &lt;/div&gt;
+&lt;p&gt;And since everything Elixir is pattern matching we could send very specific messages.&lt;/p&gt;
+&lt;h2&gt;What about async?&lt;/h2&gt;
+&lt;p&gt;What processing a message takes some time? Think a costly http request or some calculations, will the iex prompt freeze? Let’s see.&lt;/p&gt;
+&lt;p&gt;Modify your worker to include a delay to simulate some heavy work.&lt;/p&gt;
+&lt;div class=&quot;gatsby-highlight&quot;&gt;
+      &lt;pre class=&quot;language-language-elixir&quot;&gt;&lt;code&gt;defmodule ElixirTest.BasicWorker do
+  def loop do
+    receive do
+      {sender_pid, _} -&gt;
+        :timer.sleep(1000)
+        send(sender_pid, {:ok, :pong})
+        loop
+    end
+  end
+end&lt;/code&gt;&lt;/pre&gt;
+      &lt;/div&gt;
+&lt;p&gt;Reload or recompile the module.&lt;/p&gt;
+&lt;div class=&quot;gatsby-highlight&quot;&gt;
+      &lt;pre class=&quot;language-language-elixir&quot;&gt;&lt;code&gt;iex(21)&gt; r(ElixirTest.BasicWorker)&lt;/code&gt;&lt;/pre&gt;
+      &lt;/div&gt;
+&lt;p&gt;And try it out!&lt;/p&gt;
+&lt;div class=&quot;gatsby-highlight&quot;&gt;
+      &lt;pre class=&quot;language-language-elixir&quot;&gt;&lt;code&gt;iex(26)&gt; send(pid, {self, :ok})
+{#PID&lt;0.57.0&gt;, :ok}
+iex(27)&gt; flush
+:ok
+iex(28)&gt; flush
+{:ok, :pong}
+:ok&lt;/code&gt;&lt;/pre&gt;
+      &lt;/div&gt;
+&lt;p&gt;The first flush has not received any message from your process but still you are free to keep on doing stuff.&lt;/p&gt;
+&lt;p&gt;This is not weird or anything special. &lt;code&gt;send&lt;/code&gt; have to be async, otherwise whats the point? But it’s good to be sure.&lt;/p&gt;
+&lt;h2&gt;Sending messages to a dead process&lt;/h2&gt;
+&lt;p&gt;Everything dies. So how would send behave if the process died?&lt;/p&gt;
+&lt;p&gt;Let us kill it.&lt;/p&gt;
+&lt;div class=&quot;gatsby-highlight&quot;&gt;
+      &lt;pre class=&quot;language-language-elixir&quot;&gt;&lt;code&gt;iex(31)&gt; Process.exit(pid, :kill)
+true
+iex(32)&gt; Process.alive? pid
+false
+iex(33)&gt; send(pid, {self, :ok})
+{#PID&lt;0.57.0&gt;, :ok}&lt;/code&gt;&lt;/pre&gt;
+      &lt;/div&gt;
+&lt;p&gt;We can still send messages. &lt;code&gt;send&lt;/code&gt; doesn’t wait for a replie so if the process is listening or not doesn’t really matter.&lt;/p&gt;
+&lt;div class=&quot;gatsby-highlight&quot;&gt;
+      &lt;pre class=&quot;language-language-elixir&quot;&gt;&lt;code&gt;iex(35)&gt; flush
+:ok&lt;/code&gt;&lt;/pre&gt;
+      &lt;/div&gt;
+&lt;p&gt;After a flush we can see that nothing has been sent to our iex process. Well, the worker is dead so that is to be expected.&lt;/p&gt;
+&lt;h2&gt;Kill iex&lt;/h2&gt;
+&lt;p&gt;Iex, our interactive elixir console, is just a process as anything else. We know the pid. So we can do stuff with it, like kill it.&lt;/p&gt;
+&lt;div class=&quot;gatsby-highlight&quot;&gt;
+      &lt;pre class=&quot;language-language-elixir&quot;&gt;&lt;code&gt;iex(40)&gt; self
+#PID&lt;0.57.0&gt;
+iex(41)&gt; Process.exit(self, :exit)
+** (EXIT from #PID&lt;0.57.0&gt;) :exit
+
+Interactive Elixir (1.1.1) - press Ctrl+C to exit (type h() ENTER for help)
+iex(1)&gt; self
+#PID&lt;0.23081.0&gt;&lt;/code&gt;&lt;/pre&gt;
+      &lt;/div&gt;
+&lt;p&gt;It restarted it self.&lt;/p&gt;
+&lt;p&gt;That is not true, but it was restarted. We got a new pid, so it is not the same process.&lt;/p&gt;
+&lt;p&gt;The iex is part of an application, which has a supervisor. Supervisors have one job, and that is to handle crashed processes. We can see our current supervisor tree and the applications running on our BEAM.&lt;/p&gt;
+&lt;div class=&quot;gatsby-highlight&quot;&gt;
+      &lt;pre class=&quot;language-language-elixir&quot;&gt;&lt;code&gt;iex(4)&gt; :observer.start
+:ok&lt;/code&gt;&lt;/pre&gt;
+      &lt;/div&gt;
+&lt;p&gt;A gui application will start, where you can browse around and do stuff.&lt;/p&gt;
+&lt;p&gt;Click the tab Applications and you will see iex listed to the left. The graph shows the tree of processes for that application.&lt;/p&gt;
+&lt;p&gt;You will see a Supervisor. Klick on that blob and in the menu select Kill. You will see it does not come back.&lt;/p&gt;
+&lt;p&gt;In the running iex we see a message:&lt;/p&gt;
+&lt;div class=&quot;gatsby-highlight&quot;&gt;
+      &lt;pre class=&quot;language-language-elixir&quot;&gt;&lt;code&gt;iex(5)&gt;
+23:21:16.631 [info]  Application iex exited: killed&lt;/code&gt;&lt;/pre&gt;
+      &lt;/div&gt;
+&lt;p&gt;Killed and closed.&lt;/p&gt;
+&lt;h3&gt;What do we know about our process?&lt;/h3&gt;
+&lt;p&gt;Restart iex and spawn one of our small workers. We will use &lt;code&gt;Process.info&lt;/code&gt; to learn something about it.&lt;/p&gt;
+&lt;div class=&quot;gatsby-highlight&quot;&gt;
+      &lt;pre class=&quot;language-language-elixir&quot;&gt;&lt;code&gt;iex(2)&gt; pid = spawn(ElixirTest.BasicWorker, :loop, [])
+#PID&lt;0.68.0&gt;
+iex(3)&gt; self
+#PID&lt;0.57.0&gt;
+iex(4)&gt; Process.info(pid)
+[current_function: {ElixirTest.BasicWorker, :loop, 0},
+ initial_call: {ElixirTest.BasicWorker, :loop, 0}, status: :waiting,
+ message_queue_len: 0, messages: [], links: [], dictionary: [],
+ trap_exit: false, error_handler: :error_handler, priority: :normal,
+ group_leader: #PID&lt;0.26.0&gt;, total_heap_size: 233, heap_size: 233,
+ stack_size: 2, reductions: 1,
+ garbage_collection: [min_bin_vheap_size: 46422, min_heap_size: 233,
+  fullsweep_after: 65535, minor_gcs: 0], suspending: []]&lt;/code&gt;&lt;/pre&gt;
+      &lt;/div&gt;
+&lt;p&gt;Lots of information! We can see what the process is doing right now with the &lt;code&gt;current_function&lt;/code&gt; and &lt;code&gt;status&lt;/code&gt;. We can see messageges waiting to be processed. We can see the &lt;strong&gt;heap size&lt;/strong&gt; and more memory information.&lt;/p&gt;
+&lt;p&gt;Set the delay in our worker to something long, 20 seconds or so. Send 4 messages or so to the process. Check the info now.&lt;/p&gt;
+&lt;div class=&quot;gatsby-highlight&quot;&gt;
+      &lt;pre class=&quot;language-language-elixir&quot;&gt;&lt;code&gt;iex(10)&gt; send(pid, {self, :ping})
+{#PID&lt;0.57.0&gt;, :ping}
+iex(11)&gt; send(pid, {self, :ping})
+{#PID&lt;0.57.0&gt;, :ping}
+iex(12)&gt; send(pid, {self, :ping})
+{#PID&lt;0.57.0&gt;, :ping}
+iex(13)&gt; send(pid, {self, :ping})
+{#PID&lt;0.57.0&gt;, :ping}
+iex(14)&gt; send(pid, {self, :ping})
+{#PID&lt;0.57.0&gt;, :ping}
+iex(15)&gt; Process.info(pid)
+[current_function: {:timer, :sleep, 1},
+ initial_call: {ElixirTest.BasicWorker, :loop, 0}, status: :waiting,
+ message_queue_len: 4,
+ messages: [{#PID&lt;0.57.0&gt;, :ping}, {#PID&lt;0.57.0&gt;, :ping}, {#PID&lt;0.57.0&gt;, :ping},
+  {#PID&lt;0.57.0&gt;, :ping}], links: [], dictionary: [], trap_exit: false,
+ error_handler: :error_handler, priority: :normal, group_leader: #PID&lt;0.26.0&gt;,
+ total_heap_size: 233, heap_size: 233, stack_size: 4, reductions: 5,
+ garbage_collection: [min_bin_vheap_size: 46422, min_heap_size: 233,
+  fullsweep_after: 65535, minor_gcs: 0], suspending: []]&lt;/code&gt;&lt;/pre&gt;
+      &lt;/div&gt;
+&lt;p&gt;The process now have &lt;strong&gt;&lt;em&gt;message&lt;/em&gt;queue_len: 4&lt;/strong&gt;, meaning it has messages waiting. Since the process only handles one message at a time, the messages to iex will come at 20seconds intervals.&lt;/p&gt;
+&lt;h3&gt;Parallell process&lt;/h3&gt;
+&lt;p&gt;So we found a problem. Our worker is async. But it does not do work in parallell. This will definitely be a problem. To solve this we create a server which only has one job. Listen to messages, and for each message start a worker process that handles the heavy calculations (:timer.sleep in our case).&lt;/p&gt;
+&lt;p&gt;Show me some code!&lt;/p&gt;
+&lt;div class=&quot;gatsby-highlight&quot;&gt;
+      &lt;pre class=&quot;language-language-elixir&quot;&gt;&lt;code&gt;defmodule ElixirTest.BasicWorker do
+  def execute sender_pid do
+    :timer.sleep(10000)
+    send(sender_pid, {:ok, :pong})
+  end
+end
+
+defmodule ElixirTest.BasicServer do
+  def loop do
+    receive do
+      {sender_pid, _} -&gt;
+        worker_pid = spawn(ElixirTest.BasicWorker, :execute, [sender_pid])
+        loop
+    end
+  end
+end&lt;/code&gt;&lt;/pre&gt;
+      &lt;/div&gt;
+&lt;p&gt;For each message the server spawns a worker that does all the calculations and after sends a message to our iex pid.&lt;/p&gt;
+&lt;div class=&quot;gatsby-highlight&quot;&gt;
+      &lt;pre class=&quot;language-language-elixir&quot;&gt;&lt;code&gt;iex(7)&gt; send(server_pid, {self, :ping})
+{#PID&lt;0.57.0&gt;, :ping}
+iex(8)&gt; send(server_pid, {self, :ping})
+{#PID&lt;0.57.0&gt;, :ping}
+iex(9)&gt; send(server_pid, {self, :ping})
+{#PID&lt;0.57.0&gt;, :ping}
+iex(10)&gt; send(server_pid, {self, :ping})
+{#PID&lt;0.57.0&gt;, :ping}
+iex(11)&gt; Process.info(server_pid)
+[current_function: {ElixirTest.BasicServer, :loop, 0},
+ initial_call: {ElixirTest.BasicServer, :loop, 0}, status: :waiting,
+ message_queue_len: 0, messages: [], links: [], dictionary: [],
+ trap_exit: false, error_handler: :error_handler, priority: :normal,
+ group_leader: #PID&lt;0.26.0&gt;, total_heap_size: 233, heap_size: 233,
+ stack_size: 1, reductions: 1149,
+ garbage_collection: [min_bin_vheap_size: 46422, min_heap_size: 233,
+  fullsweep_after: 65535, minor_gcs: 0], suspending: []]
+iex(12)&gt; flush
+:ok&lt;/code&gt;&lt;/pre&gt;
+      &lt;/div&gt;
+&lt;p&gt;No messages in the queue. All have been processed. Or started at least. We still haven’t received any messages. Wait around 10 seconds and the messages should start to come in.&lt;/p&gt;
+&lt;div class=&quot;gatsby-highlight&quot;&gt;
+      &lt;pre class=&quot;language-language-elixir&quot;&gt;&lt;code&gt;ex(15)&gt; flush
+{:ok, :pong}
+{:ok, :pong}
+:ok&lt;/code&gt;&lt;/pre&gt;
+      &lt;/div&gt;
+&lt;p&gt;Cool. So we built a async worker, which didn’t do any work in parallel. Then we modified it with a dispatcher and it got some parallel super powers.&lt;/p&gt;</content:encoded></item><item><title><![CDATA[Elixir: A simple server with Plug]]></title><description><![CDATA[If you want to build a web service with Elixir, you are probably using some framework such as  Phoenix . And that is all fine. You probably…]]></description><link>https://sajmoon.github.io/2015-10-25-elixir-a-simple-server-with-plug/</link><guid isPermaLink="false">https://sajmoon.github.io/2015-10-25-elixir-a-simple-server-with-plug/</guid><pubDate>Sun, 25 Oct 2015 13:44:50 GMT</pubDate><content:encoded>&lt;p&gt;If you want to build a web service with Elixir, you are probably using some framework such as &lt;a href=&quot;http://www.phoenixframework.org/&quot;&gt;Phoenix&lt;/a&gt;. And that is all fine. You probably should. But Phoenix does a lot of things in the background that are semi hidden from you as a developer. So it is no way to learn the inner workings of Elixir.&lt;/p&gt;
+&lt;p&gt;So by building a small, simple service, using &lt;a href=&quot;https://github.com/elixir-lang/plug&quot;&gt;Plug&lt;/a&gt; you could learn something.&lt;/p&gt;
+&lt;p&gt;Lets start.&lt;/p&gt;
+&lt;h2&gt;Getting started&lt;/h2&gt;
+&lt;p&gt;I have some data I would like to present as an api or through a web page. So to my existing project I add the dependencies we need. &lt;code&gt;Plug&lt;/code&gt;and &lt;code&gt;Cowboy&lt;/code&gt;. &lt;/p&gt;
+&lt;div class=&quot;gatsby-highlight&quot;&gt;
+      &lt;pre class=&quot;language-language-elixir&quot;&gt;&lt;code&gt;defp deps do
+  # Excluding other dependencies.
+  {:cowboy, &quot;~&gt; 1.0.3&quot;},
+  {:plug, &quot;~&gt; 1.0&quot;},
+end&lt;/code&gt;&lt;/pre&gt;
+      &lt;/div&gt;
+&lt;p&gt;Both Cowboy and Plug is an Erlang/Elixir application in it self. That is the Erlang/Elixir way to divide a project into modules or components. That basically means we communicate with them by sending messages to them.&lt;/p&gt;
+&lt;p&gt;It also means we have to make sure they are started.&lt;/p&gt;
+&lt;p&gt;We do that in the &lt;code&gt;def application do&lt;/code&gt; block. Add both cowboy and plug. We also have to have a &lt;code&gt;mod&lt;/code&gt; element. &lt;/p&gt;
+&lt;div class=&quot;gatsby-highlight&quot;&gt;
+      &lt;pre class=&quot;language-language-elixir&quot;&gt;&lt;code&gt;[applications:
+   [:logger, :httpotion, :cowboy, :plug],
+   mod: {HexVersion.Api, []}
+]&lt;/code&gt;&lt;/pre&gt;
+      &lt;/div&gt;
+&lt;p&gt;This tells mix how to start your application, what dependencies needs to be started etc. We are going to define a supervisor to controll our application so we need to ensure that is starts and stops as the applications starts. We do this by defining a module callback. This is &lt;code&gt;mod:&lt;/code&gt;.
+mod takes one tuple parameter on the form &lt;code&gt;{m, a}&lt;/code&gt;. &lt;strong&gt;m&lt;/strong&gt; stands for Module, and &lt;strong&gt;a&lt;/strong&gt; for Arguments. It just tells mix to start our supervisor in HexVersion.Api.&lt;/p&gt;
+&lt;p&gt;So lets create that supervisor.&lt;/p&gt;
+&lt;h2&gt;Supervisor&lt;/h2&gt;
+&lt;p&gt;A supervisor keeps track of all “workers” under it, and can restart one if it crashes. This is a standard component of the &lt;em&gt;Erlang/OTP pattern&lt;/em&gt;. OTP is a way to design applications to be fault tolerant. It is a big and important aspect of both erlang and elixir.&lt;/p&gt;
+&lt;p&gt;Anyways, back to the supervisor.&lt;/p&gt;
+&lt;div class=&quot;gatsby-highlight&quot;&gt;
+      &lt;pre class=&quot;language-language-elixir&quot;&gt;&lt;code&gt;defmodule HexVersion.Api do
+  use Application
+
+  def start(_type, _args) do
+    import Supervisor.Spec, warn: false
+
+    children = [
+      worker(HexVersion.Web, [])
+    ]
+
+    opts = [strategy: :one_for_one, name: HexVersion.Supervisor]
+    Supervisor.start_link(children, opts)
+  end
+end&lt;/code&gt;&lt;/pre&gt;
+      &lt;/div&gt;
+&lt;p&gt;Alright. We define a method &lt;code&gt;start&lt;/code&gt; that is the method which will be called on boot, since we added it to the &lt;code&gt;def application do&lt;/code&gt;.&lt;/p&gt;
+&lt;p&gt;At the last line of that block we run &lt;code&gt;Supervisor.start_link(children, opts)&lt;/code&gt;. We create a supervisor which will keep track of all children. The children is a list of OTP compliant modules. They need to have a &lt;code&gt;start_link&lt;/code&gt; function.
+&lt;code&gt;opts&lt;/code&gt; tells the supervisor when and how to restart crashed process. &lt;code&gt;:one_for_one&lt;/code&gt; starts one process if one crashes. We could restart every process if for example they depend on each other.&lt;/p&gt;
+&lt;p&gt;Cool, we have a supervisor that starts our web worker. We do not have a web worker though.&lt;/p&gt;
+&lt;p&gt;So create a simple worker that takes a connection and responds with a 200, “ok”. Simple enough. Its a good start though.&lt;/p&gt;
+&lt;h2&gt;Web Worker&lt;/h2&gt;
+&lt;p&gt;This is where the plug magic comes in. &lt;/p&gt;
+&lt;div class=&quot;gatsby-highlight&quot;&gt;
+      &lt;pre class=&quot;language-language-elixir&quot;&gt;&lt;code&gt;defmodule HexVersion.Web do
+  use Plug.Router
+  require Logger
+
+  plug Plug.Logger
+  plug :match
+  plug :dispatch
+
+  def init(options) do
+    options
+  end
+
+  def start_link do
+    {:ok, _} = Plug.Adapters.Cowboy.http HexVersion.Web, []
+  end
+
+  get &quot;/&quot; do
+    conn
+    |&gt; send_resp(200, &quot;ok&quot;)
+    |&gt; halt
+  end
+end&lt;/code&gt;&lt;/pre&gt;
+      &lt;/div&gt;
+&lt;p&gt;You can read more about &lt;a href=&quot;https://github.com/elixir-lang/plug&quot;&gt;Plug&lt;/a&gt; from the github page.&lt;/p&gt;
+&lt;p&gt;We define a route, ”/” and define what should happen when that route matches. In this case we just send a response with status &lt;code&gt;200&lt;/code&gt; and the text “ok”.&lt;/p&gt;
+&lt;p&gt;But the &lt;code&gt;start_link&lt;/code&gt; and &lt;code&gt;init&lt;/code&gt; then? This is a function that tells the supervisor how to start a process of this type.&lt;/p&gt;
+&lt;p&gt;Right. Shall we test it?&lt;/p&gt;
+&lt;p&gt;Start your application.
+&lt;code&gt;$ iex -S mix&lt;/code&gt;&lt;/p&gt;
+&lt;p&gt;Make a request to the service.
+&lt;code&gt;$ curl localhost:4000&lt;/code&gt;&lt;/p&gt;
+&lt;p&gt;That request returns “ok”. Awesome. If you look in your iex session you will see the logger at work.&lt;/p&gt;
+&lt;div class=&quot;gatsby-highlight&quot;&gt;
+      &lt;pre class=&quot;language-none&quot;&gt;&lt;code&gt;14:06:47.973 [info]  GET /
+14:06:47.974 [info]  Sent 200 in 1ms&lt;/code&gt;&lt;/pre&gt;
+      &lt;/div&gt;
+&lt;p&gt;It works great doing requests using the terminal. Lets try a browser.&lt;/p&gt;
+&lt;p&gt;It works! We get the correct text. Check the log from your application.&lt;/p&gt;
+&lt;div class=&quot;gatsby-highlight&quot;&gt;
+      &lt;pre class=&quot;language-none&quot;&gt;&lt;code&gt;14:28:32.611 [info]  GET /favicon.ico
+
+14:28:32.642 [error] #PID&lt;0.285.0&gt; running HexVersion.Web terminated
+Server: localhost:4000 (http)
+Request: GET /favicon.ico
+** (exit) an exception was raised:
+    ** (FunctionClauseError) no function clause matching in HexVersion.Web.do_match/4
+        (hex_version) lib/hex_version/web.ex:19: HexVersion.Web.do_match(%Plug.Conn{adapter: {Plug.Adapters.Cowboy.Conn, :...}, assigns: %{}, before_send: 
+
+... etc etc.. Removed for brevity
+
+        (hex_version) lib/hex_version/web.ex:1: HexVersion.Web.plug_builder_call/2
+        (plug) lib/plug/adapters/cowboy/handler.ex:15: Plug.Adapters.Cowboy.Handler.upgrade/4
+        (cowboy) src/cowboy_protocol.erl:442: :cowboy_protocol.execute/4&lt;/code&gt;&lt;/pre&gt;
+      &lt;/div&gt;
+&lt;p&gt;Okey, thats a stack trace. So what happened? Well the browser did some extra requests. For example one to get the favicon. We did not have one, since the only route we have specified is &lt;code&gt;&quot;/&quot;&lt;/code&gt; so when the browser executes the request to &lt;code&gt;&quot;/favicon.ico&quot;&lt;/code&gt;, Plug cannot match it.&lt;/p&gt;
+&lt;p&gt;The line to look for is at the top: &lt;code&gt;(FunctionClauseError) no function clause matching in HexVersion.Web.do_match/4&lt;/code&gt;.&lt;/p&gt;
+&lt;p&gt;We get the same results if we from the terminal would curl a route that we have not specified, say for example &lt;code&gt;/nope&lt;/code&gt;.&lt;/p&gt;
+&lt;div class=&quot;gatsby-highlight&quot;&gt;
+      &lt;pre class=&quot;language-none&quot;&gt;&lt;code&gt;14:32:50.334 [info]  GET /nope
+
+14:32:50.398 [error] #PID&lt;0.293.0&gt; running HexVersion.Web terminated
+Server: localhost:4000 (http)
+Request: GET /nope
+** (exit) an exception was raised:
+    ** (FunctionClauseError) no function clause matching in HexVersion.Web.do_match/4&lt;/code&gt;&lt;/pre&gt;
+      &lt;/div&gt;
+&lt;p&gt;To fix this we need to provide a route or a matcher that takes any request that we haven’t specified a matcher for. A wildcard.&lt;/p&gt;
+&lt;div class=&quot;gatsby-highlight&quot;&gt;
+      &lt;pre class=&quot;language-language-elixir&quot;&gt;&lt;code&gt;match _ do
+  conn
+  |&gt; send_resp(404, &quot;Nothing here&quot;)
+  |&gt; halt
+end&lt;/code&gt;&lt;/pre&gt;
+      &lt;/div&gt;
+&lt;p&gt;Simple enough. No more stack traces.&lt;/p&gt;
+&lt;p&gt;However, still no favicon. Either we don’t need a favicon (an api for example), or we just hid the problem.&lt;/p&gt;
+&lt;p&gt;There are plugs to help you serve static assets such as favicons, or .html files. Check out the plug site for more on that.&lt;/p&gt;
+&lt;h2&gt;Conclusion&lt;/h2&gt;
+&lt;p&gt;Well, we got our service up and running. It is a very simple example, but it’s free from Phoenix. Phoneix is easy to use and it is very good, but you might not always need it, or you might wounder what actually goes on inside it. This is whats happending. Phoneix uses Plug, and matches, and routes. It comes with a supervisor and all just wired up for you. Which is nice. But be sure you understand what actually is going on. &lt;/p&gt;</content:encoded></item><item><title><![CDATA[Build Bomberman Game in Elm]]></title><description><![CDATA[To learn something I often need an entire project. It’s not very nice to just read docs, and APIs etc. We all need to code. So this is me…]]></description><link>https://sajmoon.github.io/2015-09-29-build-bomberman-game-in-elm/</link><guid isPermaLink="false">https://sajmoon.github.io/2015-09-29-build-bomberman-game-in-elm/</guid><pubDate>Tue, 29 Sep 2015 19:20:43 GMT</pubDate><content:encoded>&lt;p&gt;To learn something I often need an entire project. It’s not very nice to just read docs, and APIs etc. We all need to code. So this is me doing just that. &lt;/p&gt;
+&lt;p&gt;I will try to build something similar to Bomberman.&lt;/p&gt;
+&lt;h3&gt;Render a simple map&lt;/h3&gt;
+&lt;p&gt;We should have something to call a map. A list of lists of Booleans should be enough to start us off.&lt;/p&gt;
+&lt;div class=&quot;gatsby-highlight&quot;&gt;
+      &lt;pre class=&quot;language-none&quot;&gt;&lt;code&gt;generateMap = [
+    [ True, False, True, True, True, False],
+    [True, False, False, False, True, True],
+    [True, True, False, False, True, True],
+    [True, False, True, True, True, True],
+    [True, False, True, True, True, True]
+  ]&lt;/code&gt;&lt;/pre&gt;
+      &lt;/div&gt;
+&lt;p&gt;To render those lists we can do the following.&lt;/p&gt;
+&lt;div class=&quot;gatsby-highlight&quot;&gt;
+      &lt;pre class=&quot;language-none&quot;&gt;&lt;code&gt;renderMap : List ( List Bool) -&gt; Element
+renderMap map =
+  map
+    |&gt; List.map renderRow
+    |&gt; List.map (flow right)
+    |&gt; flow down
+    |&gt; container (cellSize * columns) (cellSize * rows) topLeft
+
+
+renderRow : List Bool -&gt; List Element
+renderRow row = List.map renderCell row
+
+renderCell : Bool -&gt; Element
+renderCell on =
+  spacer cellSize cellSize
+  |&gt; color (if on then (rgb 0 0 0) else (rgb 255 255 255))&lt;/code&gt;&lt;/pre&gt;
+      &lt;/div&gt;
+&lt;p&gt;It will render each cell in either black or white depending on the boolean value.&lt;/p&gt;
+&lt;p&gt;And finally a starting point: &lt;/p&gt;
+&lt;div class=&quot;gatsby-highlight&quot;&gt;
+      &lt;pre class=&quot;language-none&quot;&gt;&lt;code&gt;cellSize = 10
+(columns, rows) = (35, 35)
+
+main : Element
+main =
+  renderMap generateMap&lt;/code&gt;&lt;/pre&gt;
+      &lt;/div&gt;
+&lt;p&gt;Start a server &lt;code&gt;elm-reactor&lt;/code&gt; and check out &lt;code&gt;http://0.0.0.0:8000/&lt;/code&gt;&lt;/p&gt;
+&lt;p&gt;I found an example of the Game of Life in elm. You can read it &lt;a href=&quot;http://sonnym.github.io/2014/05/05/writing-game-of-life-in-elm/&quot;&gt;here.&lt;/a&gt;&lt;/p&gt;</content:encoded></item><item><title><![CDATA[Start from zero with Elm]]></title><description><![CDATA[Elm is a functional front end language that compiles down to javascript. It looks neat so let’s start from scratch by building something…]]></description><link>https://sajmoon.github.io/2015-09-29-start-from-zero-with-elm/</link><guid isPermaLink="false">https://sajmoon.github.io/2015-09-29-start-from-zero-with-elm/</guid><pubDate>Tue, 29 Sep 2015 16:56:07 GMT</pubDate><content:encoded>&lt;p&gt;Elm is a functional front end language that compiles down to javascript. It looks neat so let’s start from scratch by building something simple for the web.&lt;/p&gt;
+&lt;h3&gt;Classic Hello World&lt;/h3&gt;
+&lt;p&gt;We should start with a classic hello world, ‘cause why not?&lt;/p&gt;
+&lt;div class=&quot;gatsby-highlight&quot;&gt;
+      &lt;pre class=&quot;language-none&quot;&gt;&lt;code&gt;$ mkdir project-name
+$ touch Main.elm
+$ vi Main.elm&lt;/code&gt;&lt;/pre&gt;
+      &lt;/div&gt;
+&lt;h4&gt;Code&lt;/h4&gt;
+&lt;p&gt;Main.elm:&lt;/p&gt;
+&lt;div class=&quot;gatsby-highlight&quot;&gt;
+      &lt;pre class=&quot;language-none&quot;&gt;&lt;code&gt;import Html exposing (text)
+main = text &quot;Hello World&quot;&lt;/code&gt;&lt;/pre&gt;
+      &lt;/div&gt;
+&lt;h4&gt;Testing it out in the browser.&lt;/h4&gt;
+&lt;div class=&quot;gatsby-highlight&quot;&gt;
+      &lt;pre class=&quot;language-none&quot;&gt;&lt;code&gt;$ elm-reactor
+Elm Reactor 0.3.2 (Elm Platform 0.15.1)
+Listening on http://0.0.0.0:8000/&lt;/code&gt;&lt;/pre&gt;
+      &lt;/div&gt;
+&lt;p&gt;Look in the browser and you will see we have an error.&lt;/p&gt;
+&lt;div class=&quot;gatsby-highlight&quot;&gt;
+      &lt;pre class=&quot;language-none&quot;&gt;&lt;code&gt;Downloading elm-lang/core
+Packages configured successfully!
+Error when searching for modules imported by module &apos;Main&apos;:
+    Could not find module &apos;Html&apos;
+
+Potential problems could be:
+  * Misspelled the module name
+  * Need to add a source directory or new dependency to elm-package.json&lt;/code&gt;&lt;/pre&gt;
+      &lt;/div&gt;
+&lt;p&gt;Woops! We should install the &lt;code&gt;html&lt;/code&gt;package.&lt;/p&gt;
+&lt;div class=&quot;gatsby-highlight&quot;&gt;
+      &lt;pre class=&quot;language-none&quot;&gt;&lt;code&gt;elm-package install evancz/elm-html&lt;/code&gt;&lt;/pre&gt;
+      &lt;/div&gt;
+&lt;p&gt;You will have to press (y) a couple of times.&lt;/p&gt;
+&lt;p&gt;Restart the server and we have a working HTML Hello World.&lt;/p&gt;
+&lt;h4&gt;What do we have now?&lt;/h4&gt;
+&lt;p&gt;If we look in our project directory where we only created a &lt;code&gt;Main.elm&lt;/code&gt; file, we now have a lot more going on.&lt;/p&gt;
+&lt;div class=&quot;gatsby-highlight&quot;&gt;
+      &lt;pre class=&quot;language-none&quot;&gt;&lt;code&gt;$ ls
+Main.elm         elm-package.json elm-stuff        elm.js&lt;/code&gt;&lt;/pre&gt;
+      &lt;/div&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;code&gt;elm-package.json&lt;/code&gt; is just like any other package manager file (think &lt;em&gt;package.json&lt;/em&gt; for &lt;em&gt;npm&lt;/em&gt;) with dependencies etc.&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;elm-stuff&lt;/code&gt; is the directory containing all dependencies. &lt;/li&gt;
+&lt;li&gt;&lt;code&gt;elm.js&lt;/code&gt; is the elm library code.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;We got all those from running &lt;code&gt;elm-reactor&lt;/code&gt;. It downloaded some dependencies for us and created the elm-package.json file for us.&lt;/p&gt;
+&lt;h4&gt;Compiling&lt;/h4&gt;
+&lt;p&gt;In this simple example we are using the development server part of elm, the &lt;code&gt;elm-reactor&lt;/code&gt;. That is all good, but some times you would like your page to be an actual .html that is ready to be served.&lt;/p&gt;
+&lt;p&gt;&lt;code&gt;elm make Main.elm --output index.html&lt;/code&gt;&lt;/p&gt;
+&lt;p&gt;This will compile our code, and provide us with an index.html file containing everything that is needed.&lt;/p&gt;
+&lt;h2&gt;Let do it again without html.&lt;/h2&gt;
+&lt;p&gt;The html module was not really needed. We could use other methods of displaying graphics.&lt;/p&gt;
+&lt;div class=&quot;gatsby-highlight&quot;&gt;
+      &lt;pre class=&quot;language-none&quot;&gt;&lt;code&gt;import Graphics.Element exposing (..)
+import Text
+  
+main : Element
+main =
+  leftAligned(Text.fromString &quot;Hi everybody!&quot;)&lt;/code&gt;&lt;/pre&gt;
+      &lt;/div&gt;
+&lt;p&gt;Excluding the imports, the first part is &lt;code&gt;main : Element&lt;/code&gt; which just defines what type main should return. Main should always return an Element.&lt;/p&gt;
+&lt;p&gt;We cannot just return Text.fromString “text” to main. Text is not an element. So we wrapp it in &lt;code&gt;leftAligned&lt;/code&gt; which returns an &lt;code&gt;Element&lt;/code&gt;. All good! In the browser we get the expected output.&lt;/p&gt;
+&lt;h1&gt;Conclusions&lt;/h1&gt;
+&lt;p&gt;Well that was simple. Actually it was way to simple. But it’s a start.&lt;/p&gt;</content:encoded></item><item><title><![CDATA[Start from scratch with React/Redux]]></title><description><![CDATA[Using a javascript front end framework is very nice. You might start with tools like Yeoman for scaffolding out everything you need. However…]]></description><link>https://sajmoon.github.io/2015-09-16-start-from-scratch-with-reactredux/</link><guid isPermaLink="false">https://sajmoon.github.io/2015-09-16-start-from-scratch-with-reactredux/</guid><pubDate>Wed, 16 Sep 2015 12:31:19 GMT</pubDate><content:encoded>&lt;p&gt;Using a javascript front end framework is very nice. You might start with tools like Yeoman for scaffolding out everything you need.&lt;/p&gt;
+&lt;p&gt;However, you really shouldn’t. You get tons of feature you don’t need and the setup can be complicated or impossible for you to debug or tweak.&lt;/p&gt;
+&lt;p&gt;So let us setup the environment from scratch using nothing but npm.&lt;/p&gt;
+&lt;div class=&quot;gatsby-highlight&quot;&gt;
+      &lt;pre class=&quot;language-language-bash&quot;&gt;&lt;code&gt;$ mkdir app-name
+$ cd app-name
+$ npm init
+$ mkdir dist
+$ touch dist/index.html
+$ mkdir src
+$ touch src/index.jsx&lt;/code&gt;&lt;/pre&gt;
+      &lt;/div&gt;
+&lt;p&gt;index.html:&lt;/p&gt;
+&lt;div class=&quot;gatsby-highlight&quot;&gt;
+      &lt;pre class=&quot;language-language-html&quot;&gt;&lt;code&gt;&lt;html&gt;
+&lt;body&gt;
+  &lt;div id=&quot;app&quot;&gt;&lt;/div&gt;
+  &lt;script src=&quot;bundle.js&quot;&gt;&lt;/script&gt;
+&lt;/body&gt;
+&lt;/html&gt;&lt;/code&gt;&lt;/pre&gt;
+      &lt;/div&gt;
+&lt;p&gt;index.jsx:&lt;/p&gt;
+&lt;div class=&quot;gatsby-highlight&quot;&gt;
+      &lt;pre class=&quot;language-language-javascript&quot;&gt;&lt;code&gt;console.log(&apos;Hello world&apos;);&lt;/code&gt;&lt;/pre&gt;
+      &lt;/div&gt;
+&lt;p&gt;With this simple console.log statement we can ensure that it has started correctly.&lt;/p&gt;
+&lt;h2&gt;Building and starting a server.&lt;/h2&gt;
+&lt;p&gt;&lt;code&gt;npm install --save-dev webpack webpack-dev-server&lt;/code&gt;&lt;/p&gt;
+&lt;p&gt;&lt;code&gt;npm install --save-dev babel-core babel-loader&lt;/code&gt; For es6 and jsx support.&lt;/p&gt;
+&lt;p&gt;Add them to webpack.config.js:&lt;/p&gt;
+&lt;div class=&quot;gatsby-highlight&quot;&gt;
+      &lt;pre class=&quot;language-language-javascript&quot;&gt;&lt;code&gt;  module: {
+    loaders: [{
+      test: /\.jsx?$/,
+      exclude: /node_modules/,
+      loader: &apos;babel&apos;
+    }]
+  },
+  resolve: {
+    extensions: [&apos;&apos;, &apos;.js&apos;, &apos;.jsx&apos;]
+  },&lt;/code&gt;&lt;/pre&gt;
+      &lt;/div&gt;
+&lt;p&gt;We can now build with webpack: &lt;code&gt;./node_modules/webpack/bin/webpack.js&lt;/code&gt;
+Serve a development server: &lt;code&gt;./node_modules/webpack-dev-server/bin/webpack-dev-server.js&lt;/code&gt;&lt;/p&gt;
+&lt;p&gt;We can make handy shortcuts for npm:&lt;/p&gt;
+&lt;div class=&quot;gatsby-highlight&quot;&gt;
+      &lt;pre class=&quot;language-language-javascript&quot;&gt;&lt;code&gt;&quot;scripts&quot;: {
+  &quot;build&quot;: &quot;./node_modules/webpack/bin/webpack.js&quot;,
+  &quot;start&quot;: &quot;./node_modules/webpack-dev-server/bin/webpack-dev-server.js&quot;
+}&lt;/code&gt;&lt;/pre&gt;
+      &lt;/div&gt;
+&lt;p&gt;We can use it like this&lt;/p&gt;
+&lt;div class=&quot;gatsby-highlight&quot;&gt;
+      &lt;pre class=&quot;language-language-bash&quot;&gt;&lt;code&gt;$ npm run build
+$ npm run start&lt;/code&gt;&lt;/pre&gt;
+      &lt;/div&gt;
+&lt;h3&gt;React:&lt;/h3&gt;
+&lt;p&gt;&lt;code&gt;npm install --save react&lt;/code&gt; and
+&lt;code&gt;npm install --save-dev react-hot-loader&lt;/code&gt;&lt;/p&gt;
+&lt;p&gt;Modify webpack.config.js&lt;/p&gt;
+&lt;div class=&quot;gatsby-highlight&quot;&gt;
+      &lt;pre class=&quot;language-language-javascript&quot;&gt;&lt;code&gt;var path = require(&quot;path&quot;);
+var webpack = require(&apos;webpack&apos;);
+
+module.exports = {
+ entry: [
+   &apos;webpack-dev-server/client?http://localhost:8080&apos;,
+   &apos;webpack/hot/only-dev-server&apos;,
+   &apos;./src/index.jsx&apos;
+ ],
+ module: {
+   loaders: [{
+     test: /\.jsx?$/,
+     exclude: /node-modules/,
+     include: path.join(__dirname, &quot;src&quot;),
+     loader: &apos;react-hot!babel&apos;
+   }]
+ },
+ resolve: {
+   extensions: [&apos;&apos;, &apos;.js&apos;, &apos;.jsx&apos;]
+ },
+ output: {
+   path: __dirname + &apos;/dist&apos;,
+   publicPath: &apos;/&apos;,
+   filename: &apos;bundle.js&apos;
+ },
+ devServer: {
+  contentBase: &apos;./dist&apos;,
+   hot: true
+ },
+ plugins: [
+   new webpack.HotModuleReplacementPlugin()
+ ]
+};&lt;/code&gt;&lt;/pre&gt;
+      &lt;/div&gt;
+&lt;p&gt;If you run &lt;code&gt;npm run start&lt;/code&gt; and check console output you should see something like this: &lt;/p&gt;
+&lt;div class=&quot;gatsby-highlight&quot;&gt;
+      &lt;pre class=&quot;language-none&quot;&gt;&lt;code&gt;Hello world (FROM THE CONSOLE.LOG)
+[WDS] Hot Module Replacement enabled.&lt;/code&gt;&lt;/pre&gt;
+      &lt;/div&gt;
+&lt;h2&gt;Testing&lt;/h2&gt;
+&lt;p&gt;Now that we have a working dev server. Lets add support for testing.&lt;/p&gt;
+&lt;p&gt;&lt;code&gt;npm install --save-dev mocha chai&lt;/code&gt;&lt;/p&gt;
+&lt;p&gt;&lt;code&gt;npm install --save-dev jsdom@3&lt;/code&gt;&lt;/p&gt;
+&lt;p&gt;&lt;code&gt;npm install --save-dev chai-immutable&lt;/code&gt;&lt;/p&gt;
+&lt;p&gt;&lt;code&gt;npm install --save immutable&lt;/code&gt;&lt;/p&gt;
+&lt;p&gt;Open &lt;code&gt;test/test_helper.js&lt;/code&gt; and add the following:&lt;/p&gt;
+&lt;div class=&quot;gatsby-highlight&quot;&gt;
+      &lt;pre class=&quot;language-language-javascript&quot;&gt;&lt;code&gt;import jsdom from &apos;jsdom&apos;;
+import chai from &apos;chai&apos;;
+import chaiImmutable from &apos;chai-immutable&apos;;
+
+const doc = jsdom.jsdom(&apos;&lt;!doctype html&gt;&lt;html&gt;&lt;body&gt;&lt;/body&gt;&lt;/html&gt;&apos;);
+const win = doc.defaultView;
+
+global.document = doc;
+global.window = win;
+
+Object.keys(window).forEach((key) =&gt; {
+  if (!(key in global)) {
+    global[key] = window[key];
+  }
+});
+
+chai.use(chaiImmutable);&lt;/code&gt;&lt;/pre&gt;
+      &lt;/div&gt;
+&lt;p&gt;add these to scripts in package.json:&lt;/p&gt;
+&lt;div class=&quot;gatsby-highlight&quot;&gt;
+      &lt;pre class=&quot;language-language-bash&quot;&gt;&lt;code&gt;   &quot;test&quot;: &quot;mocha --compilers js:babel-core/register --require ./test/test_helper.j    s &apos;test/**/*.@(js|jsx)&apos;&quot;,
+   &quot;test:watch&quot;: &quot;npm run test -- --watch&quot;&lt;/code&gt;&lt;/pre&gt;
+      &lt;/div&gt;
+&lt;p&gt;Running tests is simple:&lt;/p&gt;
+&lt;p&gt;&lt;code&gt;$ npm test&lt;/code&gt; or to invoke the watch command &lt;code&gt;npm test:watch&lt;/code&gt;&lt;/p&gt;
+&lt;h3&gt;Conclusion.&lt;/h3&gt;
+&lt;p&gt;This is just a note for me to remember some steps during setup/bootstraping a project.&lt;/p&gt;
+&lt;p&gt;You really don’t have to use stuff like Yeoman and boilerplate code to get up and running, and if you do use scaffolding tools, you often get more code then you need that does stuff you really don’t understand. Keep it simple, and evolve your stack as you need.&lt;/p&gt;</content:encoded></item><item><title><![CDATA[React with Bourbon]]></title><description><![CDATA[What will we do? We will create a simple react/flux application using yeoman. Then we will install Bourbon and Neat and configure gulp to…]]></description><link>https://sajmoon.github.io/2015-08-28-react-with-bourbon-2/</link><guid isPermaLink="false">https://sajmoon.github.io/2015-08-28-react-with-bourbon-2/</guid><pubDate>Fri, 28 Aug 2015 21:32:25 GMT</pubDate><content:encoded>&lt;h2&gt;What will we do?&lt;/h2&gt;
+&lt;p&gt;We will create a simple react/flux application using yeoman. Then we will install Bourbon and Neat and configure gulp to include those in our build. Then all that is left is to test that it works.&lt;/p&gt;
+&lt;h2&gt;Yeoman&lt;/h2&gt;
+&lt;p&gt;Yeoman is a generator for getting started quickly. You can read about it at &lt;a href=&quot;http://yeoman.io/&quot;&gt;http://yeoman.io/&lt;/a&gt;.&lt;/p&gt;
+&lt;p&gt;We have to install a react/flux generator; we will use &lt;a href=&quot;https://github.com/banderson/generator-flux-react&quot;&gt;this.&lt;/a&gt;&lt;/p&gt;
+&lt;div class=&quot;gatsby-highlight&quot;&gt;
+      &lt;pre class=&quot;language-none&quot;&gt;&lt;code&gt;$ npm install -g yo
+$ npm install -g generator-flux&lt;/code&gt;&lt;/pre&gt;
+      &lt;/div&gt;
+&lt;p&gt;This will install both globally.&lt;/p&gt;
+&lt;h3&gt;Generate app&lt;/h3&gt;
+&lt;p&gt;Create a folder where you will store your app. In that folder run the &lt;code&gt;yo&lt;/code&gt; command.&lt;/p&gt;
+&lt;div class=&quot;gatsby-highlight&quot;&gt;
+      &lt;pre class=&quot;language-none&quot;&gt;&lt;code&gt;$ yo flux&lt;/code&gt;&lt;/pre&gt;
+      &lt;/div&gt;
+&lt;p&gt;You will be asked some questions. Name your app, and give it a description. When you are asked what UI framework you want select &lt;code&gt;UI Frameworks: None (Vanilla JS/HTML/CSS)&lt;/code&gt;. Then yeoman will not install any extra libraries.&lt;/p&gt;
+&lt;p&gt;Start server in dev mode: &lt;code&gt;npm run dev&lt;/code&gt;
+The developer mode recompiles and reloads the browser when changes are detected.
+When you install new dependencies you might have to restart it manually.&lt;/p&gt;
+&lt;h3&gt;Bourbon/Neat&lt;/h3&gt;
+&lt;div class=&quot;gatsby-highlight&quot;&gt;
+      &lt;pre class=&quot;language-none&quot;&gt;&lt;code&gt;$ npm install node-bourbon --save
+$ npm install node-neat --save&lt;/code&gt;&lt;/pre&gt;
+      &lt;/div&gt;
+&lt;p&gt;Make sure you use &lt;code&gt;--save&lt;/code&gt; to add the dependencies to your &lt;code&gt;package.json&lt;/code&gt;.&lt;/p&gt;
+&lt;p&gt;Now you can mport bourbon and neat in .scss file&lt;/p&gt;
+&lt;p&gt;in &lt;code&gt;src/styles/main.scss&lt;/code&gt; add:&lt;/p&gt;
+&lt;div class=&quot;gatsby-highlight&quot;&gt;
+      &lt;pre class=&quot;language-none&quot;&gt;&lt;code&gt;@import &quot;bourbon&quot;;
+@import &quot;neat&quot;;&lt;/code&gt;&lt;/pre&gt;
+      &lt;/div&gt;
+&lt;p&gt;This will crash your devserver since none of those could be found. To fix this we have to configure the build tool (&lt;code&gt;gulp&lt;/code&gt;) so it knows the paths to both bourbon and neat.&lt;/p&gt;
+&lt;h3&gt;Gulp&lt;/h3&gt;
+&lt;p&gt;Open gulp/config.js, and require neat.&lt;/p&gt;
+&lt;div class=&quot;gatsby-highlight&quot;&gt;
+      &lt;pre class=&quot;language-none&quot;&gt;&lt;code&gt;var neat = require(&apos;node-neat&apos;).includePaths;&lt;/code&gt;&lt;/pre&gt;
+      &lt;/div&gt;
+&lt;p&gt;Also in gulp/config.js, modify the sass block to include a setting:
+ettings:&lt;/p&gt;
+&lt;div class=&quot;gatsby-highlight&quot;&gt;
+      &lt;pre class=&quot;language-none&quot;&gt;&lt;code&gt;{
+  indentedSyntax: false, // Enable .sass syntax?
+  includePaths: neat,
+  imagePath: &apos;/images&apos; // Used by the image-url helper
+}&lt;/code&gt;&lt;/pre&gt;
+      &lt;/div&gt;
+&lt;p&gt;only the &lt;code&gt;includePaths: neat,&lt;/code&gt; is new.&lt;/p&gt;
+&lt;p&gt;And we are up an running. We can test this by taking the first example from the bourbon page.&lt;/p&gt;
+&lt;h3&gt;Test it!&lt;/h3&gt;
+&lt;p&gt;Update your stylesheet, &lt;code&gt;src/styles/main.scss&lt;/code&gt;, with something that would only work if you had bourbon configured correctly.&lt;/p&gt;
+&lt;p&gt;I got this example from the bourbon page &lt;a href=&quot;http://bourbon.io/&quot;&gt;http://bourbon.io/&lt;/a&gt;.&lt;/p&gt;
+&lt;div class=&quot;gatsby-highlight&quot;&gt;
+      &lt;pre class=&quot;language-none&quot;&gt;&lt;code&gt;body {
+  @include linear-gradient(to top, red, orange);
+}&lt;/code&gt;&lt;/pre&gt;
+      &lt;/div&gt;
+&lt;p&gt;Check out your page now, and you’ll see some strange gradients. So now make it pretty.&lt;/p&gt;
+&lt;p&gt;Setup complete.&lt;/p&gt;</content:encoded></item><item><title><![CDATA[Setting up a S3 bucket for file upload]]></title><description><![CDATA[Amazon has great products, and S3 is definitely one great product. However, the administration console is confusing at best. You can do…]]></description><link>https://sajmoon.github.io/2015-07-30-setting-up-a-s3-bucket-for-fileupload/</link><guid isPermaLink="false">https://sajmoon.github.io/2015-07-30-setting-up-a-s3-bucket-for-fileupload/</guid><pubDate>Thu, 30 Jul 2015 12:23:30 GMT</pubDate><content:encoded>&lt;p&gt;Amazon has great products, and S3 is definitely one great product. However, the administration console is confusing at best. You can do anything in a lot of different ways and still it takes some fiddling to make it work.&lt;/p&gt;
+&lt;p&gt;Assuming you have an account, otherwise you should create one. You get some free stuff to play around with. Enough to have some fun with. &lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;Sign into the administration console &lt;a href=&quot;https://console.aws.amazon.com&quot;&gt;here.&lt;/a&gt; &lt;/li&gt;
+&lt;li&gt;Create an s3 bucket.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;When you have a bucket you need a way to access it from your client. You can use the API with the root credentials, but it is risky. If someone gets hold of them they can do anything. And obviously you will be charged for it. Amazon provides a way to grant limited access to a user. That way the user can only modify that bucket and for example not spin up 10 compute instances and do some bitcoin mining. &lt;/p&gt;
+&lt;p&gt;Amazon calls these sub-accounts &lt;strong&gt;‘IMA’&lt;/strong&gt;. Let’s create one. &lt;/p&gt;
+&lt;p&gt;Create IMA from the &lt;a href=&quot;https://console.aws.amazon.com/iam/&quot;&gt;console&lt;/a&gt;. You should save the credentials since you can never access them again. If you lose them you will have to generate new ones.&lt;/p&gt;
+&lt;p&gt;An IMA is per default not allowed to do anything, not even sign in. If you give the user a password you can try your policies via the web interface. That is convenient and speeds it up a bit. &lt;/p&gt;
+&lt;h1&gt;Create a policy&lt;/h1&gt;
+&lt;p&gt;Amazon grants and blocks permissions with policies. They can be used to give a user permission to an entire bucket or a single file. &lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;A tip is to create the policies in small increments. It makes it way easier to debug what is happening. If you sign in you can try it out from the Web interface. &lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;p&gt;Assuming we have an IMA that can sign in, we should allow it to list all buckets.&lt;/p&gt;
+&lt;div class=&quot;gatsby-highlight&quot;&gt;
+      &lt;pre class=&quot;language-none&quot;&gt;&lt;code&gt;{
+    &quot;Version&quot;: &quot;2015-07-17&quot;,
+    &quot;Statement&quot;: [
+        {
+            &quot;Sid&quot;: &quot;AllowGroupToSeeBucketListInTheConsole&quot;,
+            &quot;Action&quot;: [
+                &quot;s3:ListAllMyBuckets&quot;
+            ],
+            &quot;Effect&quot;: &quot;Allow&quot;,
+            &quot;Resource&quot;: [
+                &quot;arn:aws:s3:::*&quot;
+            ]
+        }
+    ]
+}&lt;/code&gt;&lt;/pre&gt;
+      &lt;/div&gt;
+&lt;p&gt;This is a policy that allows the user to list all buckets. Make sure you name it.
+To activate it you should attach it to a user.&lt;/p&gt;
+&lt;p&gt;To &lt;strong&gt;attach it&lt;/strong&gt; to a user:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;Go to the IMA dashboard &lt;/li&gt;
+&lt;li&gt;Click &lt;strong&gt;user&lt;/strong&gt;. &lt;/li&gt;
+&lt;li&gt;Select your new IMA user.&lt;/li&gt;
+&lt;li&gt;Attach policy&lt;/li&gt;
+&lt;li&gt;Select the policy you created before.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;When you sing in as the IMA user you created and attached the policy to, you will be able to list all buckets. Hopefully, you have buckets to list.&lt;/p&gt;
+&lt;p&gt;If you try to upload a file from the web GUI you will notice that you are not allowed to do so. Since everything is blocker per default and the policy only allows listing of buckets via the action &lt;code&gt;&quot;s3:ListAllMyBuckets&quot;&lt;/code&gt;. You can add more actions to the list or create new blocks for other actions. For the listing of buckets we allow it for all s3 resources via the config &lt;code&gt;&quot;Resource&quot;: [&quot;arn:aws:s3:::*&quot;]&lt;/code&gt;.&lt;/p&gt;
+&lt;h2&gt;Upload and read files.&lt;/h2&gt;
+&lt;p&gt;We can update the policy to the following: &lt;/p&gt;
+&lt;div class=&quot;gatsby-highlight&quot;&gt;
+      &lt;pre class=&quot;language-none&quot;&gt;&lt;code&gt;{
+    &quot;Version&quot;: &quot;2015-07-17&quot;,
+    &quot;Statement&quot;: [
+        {
+            &quot;Sid&quot;: &quot;AllowGroupToSeeBucketListInTheConsole&quot;,
+            &quot;Action&quot;: [
+                &quot;s3:ListAllMyBuckets&quot;
+            ],
+            &quot;Effect&quot;: &quot;Allow&quot;,
+            &quot;Resource&quot;: [
+                &quot;arn:aws:s3:::*&quot;
+            ]
+        },
+        {
+         &quot;Sid&quot;:&quot;AllowListBucketIfSpecificPrefixIsIncludedInRequest&quot;,
+         &quot;Action&quot;:[&quot;s3:ListBucket&quot;],
+         &quot;Effect&quot;:&quot;Allow&quot;,
+         &quot;Resource&quot;:[&quot;arn:aws:s3:::bucketname&quot;],
+         &quot;Condition&quot;:{
+            &quot;StringLike&quot;:{&quot;s3:prefix&quot;:[&quot;uploads/*&quot;]
+            }
+         }
+      },
+        {
+            &quot;Sid&quot;: &quot;AllowUploadAndReadFilesInUploadDirectory&quot;,
+            &quot;Effect&quot;: &quot;Allow&quot;,
+            &quot;Action&quot;: [
+                &quot;s3:GetObject&quot;,
+                &quot;s3:PutObject&quot;
+            ],
+            &quot;Resource&quot;: [
+                &quot;arn:aws:s3:::bucketname/uploads/*&quot;
+            ]
+        }
+    ]
+}&lt;/code&gt;&lt;/pre&gt;
+      &lt;/div&gt;
+&lt;p&gt;This will allow the user to list files in the bucket called &lt;code&gt;bucketname&lt;/code&gt; as specified in the &lt;code&gt;AllowListBucketIfSpecificPrefixIsIncludedInRequest&lt;/code&gt; and upload and download files to the uploads directory as specified by &lt;code&gt;AllowUploadAndReadFilesInUploadDirectory&lt;/code&gt;.&lt;/p&gt;
+&lt;p&gt;Good, we are done. You can try it out from the web GUI again, as the same policies apply to both API access and web access.&lt;/p&gt;
+&lt;p&gt;Start coding and use the credentials you saved before or create new ones. You should rotated credentials often.&lt;/p&gt;
+&lt;h2&gt;Policy simulator&lt;/h2&gt;
+&lt;p&gt;There is a tool called policy simulator provided by Amazon. It has the potential to be useful but I did not find it that useful. However for completeness you should try it out. &lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;IAM console: &lt;a href=&quot;https://console.aws.amazon.com/iam&quot;&gt;https://console.aws.amazon.com/iam&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;Click user in left menu&lt;/li&gt;
+&lt;li&gt;Click simulate policy &lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2&gt;S3 access with Elixir.&lt;/h2&gt;
+&lt;p&gt;You should read this &lt;a href=&quot;http://blog.jordan-dimov.com/accessing-the-amazon-aws-from-elixir-using-erlcloud/&quot;&gt;awesome post&lt;/a&gt; about working with S3 using &lt;a href=&quot;https://github.com/gleber/erlcloud&quot;&gt;erlcloud lib&lt;/a&gt; from elixir.&lt;/p&gt;</content:encoded></item><item><title><![CDATA[Setup logging in JBOSS with jboss cli.]]></title><description><![CDATA[Logging in JBOSS. Let us setup  some logging rules for JBoss. We want our log to be split between two files. A  server.log  that contains…]]></description><link>https://sajmoon.github.io/2015-07-22-setup-logging-in-jboss-with-jboss-cli/</link><guid isPermaLink="false">https://sajmoon.github.io/2015-07-22-setup-logging-in-jboss-with-jboss-cli/</guid><pubDate>Wed, 22 Jul 2015 17:39:11 GMT</pubDate><content:encoded>&lt;h1&gt;Logging in JBOSS.&lt;/h1&gt;
+&lt;p&gt;Let us setup  some logging rules for JBoss.&lt;/p&gt;
+&lt;p&gt;We want our log to be split between two files. A &lt;code&gt;server.log&lt;/code&gt; that contains information about the server; registration of modules etc, and än &lt;code&gt;application.log&lt;/code&gt; that contains logs from file in our packages.&lt;/p&gt;
+&lt;p&gt;Let us use the jboss-cli. First connect to your server. We need to add the following properties. These should be set by the script that installs JBoss for you.&lt;/p&gt;
+&lt;p&gt;Add these properties:&lt;/p&gt;
+&lt;div class=&quot;gatsby-highlight&quot;&gt;
+      &lt;pre class=&quot;language-none&quot;&gt;&lt;code&gt;/subsystem=logging/periodic-rotating-file-handler=HandlerName:add(autoflush=true,encoding=&quot;UTF-8&quot;,file={&quot;path&quot;=&gt;&quot;app.log&quot;,&quot;relative-to&quot;=&gt;&quot;jboss.server.log.dir&quot;},suffix=&quot;.yyyy-MM-dd&quot;,append=&quot;true&quot;),
+/subsystem=logging/periodic-rotating-file-handler=HandlerName:write-attribute(name=named-formatter, value=&quot;PATTERN&quot;) ,
+/subsystem=logging/logger=com.company:add,
+/subsystem=logging/logger=com.company:assign-handler(name=&quot;HandlerName&quot;),
+/subsystem=logging/logger=com.company:write-attribute(name=&quot;level&quot;, value=&quot;DEBUG&quot;),
+/subsystem=logging/logger=com.company:write-attribute(name=&quot;use-parent-handlers&quot;, value=&quot;false&quot;)&lt;/code&gt;&lt;/pre&gt;
+      &lt;/div&gt;
+&lt;p&gt;This will rotate logs when needed, and logs everything to its correct file.&lt;/p&gt;
+&lt;p&gt;&lt;code&gt;HandlerName&lt;/code&gt;can be changed to whatever you want.
+You should also set the correct packagename instead of &lt;code&gt;com.company&lt;/code&gt;and you can rename the logfile. These rules match the package name of your files, so you can have different rules for all the different modules. &lt;/p&gt;
+&lt;p&gt;You can read more in these old docs from the &lt;a href=&quot;https://access.redhat.com/documentation/en-US/JBoss_Enterprise_Application_Platform/6/html/Administration_and_Configuration_Guide/Configure_a_File_Log_Handler_in_the_CLI1.html&quot;&gt;redhat documentation.&lt;/a&gt;&lt;/p&gt;</content:encoded></item><item><title><![CDATA[Change file encoding in the terminal.]]></title><description><![CDATA[The problem We have a large legacy project that we are converting from an ant build to maven and from SunAS to JBOSS. We had some problems…]]></description><link>https://sajmoon.github.io/2015-07-14-change-file-encoding-in-the-terminal/</link><guid isPermaLink="false">https://sajmoon.github.io/2015-07-14-change-file-encoding-in-the-terminal/</guid><pubDate>Tue, 14 Jul 2015 15:01:16 GMT</pubDate><content:encoded>&lt;h1&gt;The problem&lt;/h1&gt;
+&lt;p&gt;We have a large legacy project that we are converting from an ant build to maven and from SunAS to JBOSS. We had some problems with file encoding. Special characters, such as Swedish letters, where encoded incorrectly.&lt;/p&gt;
+&lt;p&gt;So lets use the shell to help us with this.&lt;/p&gt;
+&lt;p&gt;Can we list  all files of a certain encoding? Sure.&lt;/p&gt;
+&lt;div class=&quot;gatsby-highlight&quot;&gt;
+      &lt;pre class=&quot;language-shell&quot;&gt;&lt;code&gt;$ find . -type f -exec file --mime {} \; | grep &quot;charset=utf-16&quot;
+./ship/src/main/resources/sql/load_mysql.sql: text/plain; charset=utf-8
+./ship/target/archive-tmp/fileSetFormatter.185046416.tmp/load_mysql.sql.654988221.filtered: text/plain; charset=utf-8
+./ship/target/archive-tmp/fileSetFormatter.185046416.tmp/sql/load_app_mysql.sql: text/plain; charset=utf-8
+etc&lt;/code&gt;&lt;/pre&gt;
+      &lt;/div&gt;
+&lt;p&gt;This list includes everything from &lt;code&gt;.git/&lt;/code&gt; to files generated by the build. &lt;/p&gt;
+&lt;p&gt;We can see the encoding at the end. Lets list all encodings in our app.&lt;/p&gt;
+&lt;div class=&quot;gatsby-highlight&quot;&gt;
+      &lt;pre class=&quot;language-shell&quot;&gt;&lt;code&gt;find . -type f -exec file --mime {} \; | grep &quot;charset&quot; | awk &apos;{print $3}&apos; | sort | uniq
+charset=binary
+charset=iso-8859-1
+charset=unknown-8bit
+charset=us-ascii
+charset=utf-8&lt;/code&gt;&lt;/pre&gt;
+      &lt;/div&gt;
+&lt;p&gt;We can also list all files with a certain encoding.&lt;/p&gt;
+&lt;div class=&quot;gatsby-highlight&quot;&gt;
+      &lt;pre class=&quot;language-shell&quot;&gt;&lt;code&gt;find . -type f -exec file --mime {} \; | grep &quot;charset=us-ascii&quot;&lt;/code&gt;&lt;/pre&gt;
+      &lt;/div&gt;
+&lt;p&gt;Extract the filename of all files.&lt;/p&gt;
+&lt;div class=&quot;gatsby-highlight&quot;&gt;
+      &lt;pre class=&quot;language-shell&quot;&gt;&lt;code&gt;find . -type f -exec file --mime {} \; | grep &quot;charset=iso-8859-1&quot; | awk &apos;{print $1}&apos; | rev | cut -c 2- | rev&lt;/code&gt;&lt;/pre&gt;
+      &lt;/div&gt;
+&lt;h2&gt;iconv&lt;/h2&gt;
+&lt;p&gt;List supported encodings.&lt;/p&gt;
+&lt;div class=&quot;gatsby-highlight&quot;&gt;
+      &lt;pre class=&quot;language-shell&quot;&gt;&lt;code&gt;iconv -l&lt;/code&gt;&lt;/pre&gt;
+      &lt;/div&gt;
+&lt;p&gt;convert a file to utf8.&lt;/p&gt;
+&lt;div class=&quot;gatsby-highlight&quot;&gt;
+      &lt;pre class=&quot;language-shell&quot;&gt;&lt;code&gt;iconv -f iso-8859-1 -t utf-8 ./src/main/webapp/WEB-INF/BcuLogin.properties &gt; .src/main/webapp/WEB-INF/BcuLogin.properties2&lt;/code&gt;&lt;/pre&gt;
+      &lt;/div&gt;
+&lt;p&gt;As you can see we save a new file with the correct encoding. I could not get iconv to overwrite the original. You can ofcourse store in a temp file etc.&lt;/p&gt;
+&lt;p&gt;However &lt;code&gt;recode&lt;/code&gt; is another tool, and it supports overwrite.&lt;/p&gt;
+&lt;h2&gt;recode&lt;/h2&gt;
+&lt;p&gt;Simply converts from one encoding to the other. Overwriting the original file.&lt;/p&gt;
+&lt;div class=&quot;gatsby-highlight&quot;&gt;
+      &lt;pre class=&quot;language-shell&quot;&gt;&lt;code&gt;recode iso-8859-1..utf8 ./src/main/webapp/WEB-INF/BcuLogin.properties     &lt;/code&gt;&lt;/pre&gt;
+      &lt;/div&gt;
+&lt;h2&gt;Putting it all together&lt;/h2&gt;
+&lt;div class=&quot;gatsby-highlight&quot;&gt;
+      &lt;pre class=&quot;language-shell&quot;&gt;&lt;code&gt;find . -type f -exec file --mime {} \; | grep &quot;charset=iso-8859-1&quot; | awk &apos;{print $1}&apos; | rev | cut -c 2- | rev | parallel recode iso-8859-1..utf8 {}&lt;/code&gt;&lt;/pre&gt;
+      &lt;/div&gt;
+&lt;p&gt;This lists all of a specific encoding, parses the filename, and re-encodes it with utf8.&lt;/p&gt;</content:encoded></item><item><title><![CDATA[Goolge map directive - Angular]]></title><description><![CDATA[A simple way to add a Map to your webapplication. This example uses a directive in which we pass two paramters: city and address. To include…]]></description><link>https://sajmoon.github.io/2015-05-08-goolge-map-directive-angular/</link><guid isPermaLink="false">https://sajmoon.github.io/2015-05-08-goolge-map-directive-angular/</guid><pubDate>Fri, 08 May 2015 12:46:56 GMT</pubDate><content:encoded>&lt;p&gt;A simple way to add a Map to your webapplication. This example uses a directive in which we pass two paramters: city and address.&lt;/p&gt;
+&lt;div class=&quot;gatsby-highlight&quot;&gt;
+      &lt;pre class=&quot;language-angular&quot;&gt;&lt;code&gt;directives.directive(&quot;simpleMap&quot;, function() {
+  return  {
+    restrict: &apos;AE&apos;,
+    replace: true,
+    scope: {
+      city: &apos;@&apos;,
+      address: &apos;@&apos;
+    },
+    template: &quot;&lt; iframe id=&apos;clientLocationMap&apos; src=&apos;&apos; height=&apos;250&apos; width=&apos;100%&apos; frameborder=&apos;0&apos; rullning=&apos;no&apos; marginheight=&apos;0&apos; marginwidth=&apos;0&apos;&gt;&lt;/ iframe&gt;&quot;,
+    link: function(scope, element, attrs) {
+
+      attrs.$set(&apos;src&apos;,&quot;https://www.google.com/maps/embed/v1/place?key=AIzaSyD2HZFYGa0xssWVdp6KokHnM3GvKHXEQ7o&amp;zoom=15&amp;q=&quot; + scope.city + &quot;,&quot; + scope.address);
+      scope.$watch(&apos;city&apos;, function(newValue, oldValue) {
+        if (newValue == oldValue) {
+          return;
+        }
+
+        attrs.$set(&apos;src&apos;,&quot;https://www.google.com/maps/embed/v1/place?key=AIzaSyD2HZFYGa0xssWVdp6KokHnM3GvKHXEQ7o&amp;zoom=15&amp;q=&quot; + scope.city + &quot;,&quot; + scope.address);
+      });
+
+      scope.$watch(&apos;address&apos;, function(newValue, oldValue) {
+        if (newValue == oldValue) {
+          return;
+        }
+
+        attrs.$set(&apos;src&apos;,&quot;https://www.google.com/maps/embed/v1/place?key=AIzaSyD2HZFYGa0xssWVdp6KokHnM3GvKHXEQ7o&amp;zoom=15&amp;q=&quot; + scope.city + &quot;,&quot; + scope.address);
+      });
+    }
+  };
+});&lt;/code&gt;&lt;/pre&gt;
+      &lt;/div&gt;
+&lt;p&gt;To include it on your page you use our new tag, but remember to pass along the search terms.&lt;/p&gt;
+&lt;div class=&quot;gatsby-highlight&quot;&gt;
+      &lt;pre class=&quot;language-none&quot;&gt;&lt;code&gt;&lt; simple-map city=&quot;{{client.city}}&quot; address=&quot;{{client.address}}&quot;&gt;&lt; /simple-map&gt;&lt;/code&gt;&lt;/pre&gt;
+      &lt;/div&gt;</content:encoded></item><item><title><![CDATA[Postfix - Redirect all outgoing mails to local user]]></title><description><![CDATA[While developing an application I often have to test, and use the email feature. Either I register and use my normal email, or a dump…]]></description><link>https://sajmoon.github.io/2015-04-22-postfix-redirect-all-outgoing-mails-to-local-user/</link><guid isPermaLink="false">https://sajmoon.github.io/2015-04-22-postfix-redirect-all-outgoing-mails-to-local-user/</guid><pubDate>Wed, 22 Apr 2015 10:47:17 GMT</pubDate><content:encoded>&lt;p&gt;While developing an application I often have to test, and use the email feature. Either I register and use my normal email, or a dump mailbox to collect the spam from development. But you can also redirect all outgoing email from postfix to a local users mailbox.&lt;/p&gt;
+&lt;h2&gt;Start postfix&lt;/h2&gt;
+&lt;p&gt;OS X ships with postfixed installed, you just have to start it.&lt;/p&gt;
+&lt;div class=&quot;gatsby-highlight&quot;&gt;
+      &lt;pre class=&quot;language-none&quot;&gt;&lt;code&gt;sudo launchctl start org.postfix.master &lt;/code&gt;&lt;/pre&gt;
+      &lt;/div&gt;
+&lt;p&gt;The command to stop it is very similar&lt;/p&gt;
+&lt;div class=&quot;gatsby-highlight&quot;&gt;
+      &lt;pre class=&quot;language-none&quot;&gt;&lt;code&gt;sudo launchctl stop org.postfix.master &lt;/code&gt;&lt;/pre&gt;
+      &lt;/div&gt;
+&lt;h2&gt;Redirect&lt;/h2&gt;
+&lt;p&gt;Open &lt;code&gt;/etc/postfix/main.cf&lt;/code&gt; and add the following to the end of the file.&lt;/p&gt;
+&lt;div class=&quot;gatsby-highlight&quot;&gt;
+      &lt;pre class=&quot;language-none&quot;&gt;&lt;code&gt;canonical_maps = regexp:/etc/postfix/canonical-redirect&lt;/code&gt;&lt;/pre&gt;
+      &lt;/div&gt;
+&lt;p&gt;If it does not exists create &lt;code&gt;/etc/postfix/canonical-redirect&lt;/code&gt; and add some regexp to it.&lt;/p&gt;
+&lt;div class=&quot;gatsby-highlight&quot;&gt;
+      &lt;pre class=&quot;language-none&quot;&gt;&lt;code&gt;/^.*$/ username&lt;/code&gt;&lt;/pre&gt;
+      &lt;/div&gt;
+&lt;p&gt;This will redirect all outgoing mails to the inbox of the user specified.&lt;/p&gt;
+&lt;p&gt;Restart postfix using the stop and start command&lt;/p&gt;
+&lt;div class=&quot;gatsby-highlight&quot;&gt;
+      &lt;pre class=&quot;language-none&quot;&gt;&lt;code&gt;sudo launchctl start org.postfix.master 
+sudo launchctl stop org.postfix.master &lt;/code&gt;&lt;/pre&gt;
+      &lt;/div&gt;
+&lt;h2&gt;Check inbox&lt;/h2&gt;
+&lt;p&gt;With the &lt;code&gt;mail&lt;/code&gt; command we see all mails.&lt;/p&gt;
+&lt;div class=&quot;gatsby-highlight&quot;&gt;
+      &lt;pre class=&quot;language-none&quot;&gt;&lt;code&gt;$ mail
+Mail version 8.1 6/6/93.  Type ? for help.
+&quot;/var/mail/simon&quot;: 1 message 1 new
+&gt;N  1 simon@Simons-MacBook  Wed Apr 22 12:33  27/1083  &quot;http://localhost:8080: Reset Your Password&quot;
+?&lt;/code&gt;&lt;/pre&gt;
+      &lt;/div&gt;
+&lt;p&gt;Type ‘1’ and hit enter to open that email.&lt;/p&gt;</content:encoded></item><item><title><![CDATA[Elixir testing - Tag tests in ExUnit]]></title><description><![CDATA[Scope tests in ExUnit to reduce code duplication and have cleaner code. Update July 2016!  This blog post is old, and things change. ExUnit…]]></description><link>https://sajmoon.github.io/2015-04-21-elixir-testing-tag-tests-in-exunit/</link><guid isPermaLink="false">https://sajmoon.github.io/2015-04-21-elixir-testing-tag-tests-in-exunit/</guid><pubDate>Tue, 21 Apr 2015 12:18:03 GMT</pubDate><content:encoded>&lt;p&gt;Scope tests in ExUnit to reduce code duplication and have cleaner code.&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;Update July 2016!&lt;/strong&gt; This blog post is old, and things change. ExUnit now supports grouping with &lt;code&gt;describe&lt;/code&gt;. Read more &lt;a href=&quot;http://blog.simonstrom.xyz/grouping-tests-with-exunit-elixir/&quot;&gt;here&lt;/a&gt;.&lt;/p&gt;
+&lt;h2&gt;Rspec nesting&lt;/h2&gt;
+&lt;p&gt;People with ruby, and rspec, background use &lt;code&gt;describe&lt;/code&gt; to group tests that are similar or require the same setup. You can nest &lt;code&gt;describe&lt;/code&gt; so all tests in the inner describe have the same setup.&lt;/p&gt;
+&lt;div class=&quot;gatsby-highlight&quot;&gt;
+      &lt;pre class=&quot;language-none&quot;&gt;&lt;code&gt;describe &quot;User&quot; do
+  describe &quot;.top&quot; do
+    before { FactoryGirl.create_list(:user, 3) }
+    it { expect(User.top(2)).to have(2).item }
+  end
+end&lt;/code&gt;&lt;/pre&gt;
+      &lt;/div&gt;
+&lt;p&gt;Example taken from &lt;a href=&quot;http://betterspecs.org/&quot;&gt;betterspecs.org&lt;/a&gt;.&lt;/p&gt;
+&lt;p&gt;This allows us to specify conditions (&lt;code&gt;before&lt;/code&gt;) that are executed for all &lt;code&gt;it&lt;/code&gt; inside &lt;code&gt;.top&lt;/code&gt; but not any other specs.&lt;/p&gt;
+&lt;p&gt;Pretty handy.&lt;/p&gt;
+&lt;h2&gt;ExUnit @tag&lt;/h2&gt;
+&lt;p&gt;Elixirs ExUnit does not provide grouping tests in a module using a &lt;code&gt;dsl&lt;/code&gt; like rspec. Instead we should use &lt;code&gt;@tag&lt;/code&gt;.&lt;/p&gt;
+&lt;p&gt;&lt;code&gt;@tag&lt;/code&gt; is quite powerful.&lt;/p&gt;
+&lt;h3&gt;Timeout&lt;/h3&gt;
+&lt;p&gt;A first a simple example using tags.&lt;/p&gt;
+&lt;p&gt;Given we have a test we expect to fail due to a timeout running the test will take the default 3000ms to fail. Using tags we can change this using &lt;code&gt;@tag timeout: 30&lt;/code&gt; and the test fails way faster.&lt;/p&gt;
+&lt;h3&gt;Excluding tests&lt;/h3&gt;
+&lt;p&gt;Assume we have lots of tests, some depending on an external api (not mocked) and some that do not depend on the service. Running all tests would take time. &lt;strong&gt;External APIs are slow by design.&lt;/strong&gt; Or imagine the service is down/you do not have access to the a connection then the tests will always fail.&lt;/p&gt;
+&lt;p&gt;Failing tests are a pain when developing new features. &lt;strong&gt;Which failure is your fault?&lt;/strong&gt; So to clean this up you only want to run tests that do not require an external source. This can be achived using &lt;code&gt;@tag&lt;/code&gt;.&lt;/p&gt;
+&lt;p&gt;For each test requiring a network connection add the tag &lt;code&gt;external: true&lt;/code&gt;, and when running the tests add &lt;code&gt;--exclude external&lt;/code&gt;.&lt;/p&gt;
+&lt;div class=&quot;gatsby-highlight&quot;&gt;
+      &lt;pre class=&quot;language-none&quot;&gt;&lt;code&gt;mix test --exclude external
+Excluding tags: [:external]
+
+...............
+
+Finished in 1.0 seconds (0.1s on load, 0.8s on tests)
+15 tests, 0 failures&lt;/code&gt;&lt;/pre&gt;
+      &lt;/div&gt;
+&lt;p&gt;You could configure ExUnit to always exclude the external tag.
+Modify &lt;code&gt;test_helper.exs&lt;/code&gt;:&lt;/p&gt;
+&lt;div class=&quot;gatsby-highlight&quot;&gt;
+      &lt;pre class=&quot;language-none&quot;&gt;&lt;code&gt;ExUnit.configure exclude: [external: true]
+ExUnit.start&lt;/code&gt;&lt;/pre&gt;
+      &lt;/div&gt;
+&lt;p&gt;When you want to run all tests use &lt;code&gt;--include external&lt;/code&gt;.&lt;/p&gt;
+&lt;div class=&quot;gatsby-highlight&quot;&gt;
+      &lt;pre class=&quot;language-none&quot;&gt;&lt;code&gt;mix test --include external:true
+Including tags: [external: &quot;true&quot;]
+Excluding tags: [external: true]
+
+................
+
+Finished in 1.0 seconds (0.1s on load, 0.8s on tests)&lt;/code&gt;&lt;/pre&gt;
+      &lt;/div&gt;
+&lt;h3&gt;Grouping tests&lt;/h3&gt;
+&lt;p&gt;We start with an example:&lt;/p&gt;
+&lt;div class=&quot;gatsby-highlight&quot;&gt;
+      &lt;pre class=&quot;language-none&quot;&gt;&lt;code&gt;setup context do
+  before(context)
+  :ok
+end
+
+defp before(%{token: token}) do
+  %Token{name: &quot;token1&quot;, relic: token}
+  |&gt; Repo.insert
+end
+
+defp before(_params) do
+end
+     
+test &quot;assert no saved tokens&quot; do
+  assert 0 == Repo.all(Token) |&gt; Enum.count
+end
+
+@tag token: &quot;A_TOKEN&quot;
+test &quot;assert one saved tokens&quot; do
+  assert 1 == Repo.all(Token) |&gt; Enum.count
+end
+
+@tag token: &quot;MyToken&quot;
+test &quot;can access value from :token&quot;, context do
+  assert &quot;MyToken&quot; == context[:token]
+end&lt;/code&gt;&lt;/pre&gt;
+      &lt;/div&gt;
+&lt;p&gt;Running these using mix&lt;/p&gt;
+&lt;div class=&quot;gatsby-highlight&quot;&gt;
+      &lt;pre class=&quot;language-none&quot;&gt;&lt;code&gt;mix test
+...
+Finished in 0.1 seconds (0.07s on load, 0.1s on tests)
+3 tests, 0 failures&lt;/code&gt;&lt;/pre&gt;
+      &lt;/div&gt;
+&lt;p&gt;Here we have 3 tests. The first one have no tag, and thus no Token. It has neither a token value, nor have it been saved to the persistence layer. The other tests use &lt;code&gt;@tag token: &amp;#x3C;string&gt;&lt;/code&gt; and thus the before clause matches, a token is stored and in the test we can access the token value. &lt;/p&gt;
+&lt;p&gt;To access the tag value we use &lt;code&gt;context&lt;/code&gt;which is passed to the test as such &lt;code&gt;test &quot;some string&quot;, context do&lt;/code&gt;.&lt;/p&gt;
+&lt;p&gt;Ofcource we can use the token tag så exclude all tests that dependece on it.&lt;/p&gt;
+&lt;div class=&quot;gatsby-highlight&quot;&gt;
+      &lt;pre class=&quot;language-none&quot;&gt;&lt;code&gt;mix test --exclude token
+Excluding tags: [:token]
+.
+Finished in 0.1 seconds (0.07s on load, 0.09s on tests)
+1 tests, 0 failures&lt;/code&gt;&lt;/pre&gt;
+      &lt;/div&gt;
+&lt;h3&gt;Conclusion&lt;/h3&gt;
+&lt;p&gt;ExUnit &lt;code&gt;tag&lt;/code&gt; is very nice. But I’d like to be able to group tests in a similar way as you can with rspec. I think its way easier to follow. Maybe that is just a simple little macro, but that is way over my head.&lt;/p&gt;
+&lt;p&gt;Happy coding.&lt;/p&gt;</content:encoded></item><item><title><![CDATA[Problems deploying Phoenix to Heroku]]></title><description><![CDATA[I tried to deploy a sample Phoenix application to Heroku so I read some blogposts about it etc. Didn’t get it to work.  There were…]]></description><link>https://sajmoon.github.io/2015-04-17-phoenix-ecto-on-heroku-2/</link><guid isPermaLink="false">https://sajmoon.github.io/2015-04-17-phoenix-ecto-on-heroku-2/</guid><pubDate>Fri, 17 Apr 2015 18:59:35 GMT</pubDate><content:encoded>&lt;p&gt;I tried to deploy a sample Phoenix application to Heroku so I read some blogposts about it etc. Didn’t get it to work. &lt;/p&gt;
+&lt;p&gt;There were essentialiy two probelms.&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;Migrations.&lt;/li&gt;
+&lt;li&gt;Assets.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2&gt;Preconditions&lt;/h2&gt;
+&lt;ul&gt;
+&lt;li&gt;Elixir 1.0.4&lt;/li&gt;
+&lt;li&gt;Erlang 17.5&lt;/li&gt;
+&lt;li&gt;Phoenix 0.11.0&lt;/li&gt;
+&lt;li&gt;Ecto 0.10.0&lt;/li&gt;
+&lt;li&gt;&lt;a href=&quot;https://github.com/HashNuke/heroku-buildpack-elixir/tree/36f2ff22d0236589256d9044091b950b7cc565d2&quot;&gt;HashNuke heroku-buildpack-elixit (&lt;em&gt;17 April 2015&lt;/em&gt;)&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2&gt;Migrations&lt;/h2&gt;
+&lt;div class=&quot;gatsby-highlight&quot;&gt;
+      &lt;pre class=&quot;language-none&quot;&gt;&lt;code&gt;heroku run ecto migrate --no-create&lt;/code&gt;&lt;/pre&gt;
+      &lt;/div&gt;
+&lt;p&gt;You need the &lt;code&gt;--no-create&lt;/code&gt;, otherwise mix complains that the db could not be created. The error message is sort of disguised.&lt;/p&gt;
+&lt;div class=&quot;gatsby-highlight&quot;&gt;
+      &lt;pre class=&quot;language-bash&quot;&gt;&lt;code&gt;** &lt;span class=&quot;token punctuation&quot;&gt;(&lt;/span&gt;Mix&lt;span class=&quot;token punctuation&quot;&gt;)&lt;/span&gt; The database &lt;span class=&quot;token keyword&quot;&gt;for&lt;/span&gt; repo Cronos.Repo couldn&apos;t be created, reason given: Error: You must &lt;span class=&quot;token function&quot;&gt;install&lt;/span&gt; at least one postgresql-client-&lt;span class=&quot;token operator&quot;&gt;&amp;lt;&lt;/span&gt;version&lt;span class=&quot;token operator&quot;&gt;&gt;&lt;/span&gt; package.
+&lt;/code&gt;&lt;/pre&gt;
+      &lt;/div&gt;
+&lt;h2&gt;Assets&lt;/h2&gt;
+&lt;p&gt;I deployed my app, and it was just plain HTML. No css.
+Instead i got &lt;code&gt;404 NOT FOUND&lt;/code&gt; for all assets.&lt;/p&gt;
+&lt;p&gt;Apperantly heroku builds and compiles the app, collects all dependencies &lt;strong&gt;but&lt;/strong&gt; does not compile sass. So the repo you published to Heroku does not have any css at all.  Turns out that &lt;code&gt;/priv/static/css&lt;/code&gt; and &lt;code&gt;priv/static/js&lt;/code&gt; are included in the standard &lt;code&gt;.gitignore&lt;/code&gt; for Phoenix applications.&lt;/p&gt;
+&lt;p&gt;So as a quickfix we just have to &lt;em&gt;unigore&lt;/em&gt; those files. Push the new commit and voila!&lt;/p&gt;
+&lt;p&gt;However, compiled css and js in the repo is not very nice is it. I asked around abit and googled some; no solution at the moment. If you find any, let me know.&lt;/p&gt;</content:encoded></item><item><title><![CDATA[Elixir: Play a game with Phoenix channels.]]></title><description><![CDATA[Let us play a game with channels in  Phoenix ! A simple multiplayer game where the users is handed cards and are to take a some tricks…]]></description><link>https://sajmoon.github.io/1970-01-01-elixir-play-a-game-with-phoenix-channels/</link><guid isPermaLink="false">https://sajmoon.github.io/1970-01-01-elixir-play-a-game-with-phoenix-channels/</guid><pubDate>Thu, 01 Jan 1970 00:00:00 GMT</pubDate><content:encoded>&lt;p&gt;Let us play a game with channels in &lt;a href=&quot;http://www.phoenixframework.org/&quot;&gt;Phoenix&lt;/a&gt;! A simple multiplayer game where the users is handed cards and are to take a some tricks. Using channels we can make a real time app like this in a breeze (I hope).&lt;/p&gt;
+&lt;h3&gt;Rules&lt;/h3&gt;
+&lt;p&gt;We are going to make a game called &lt;a href=&quot;https://en.wikipedia.org/wiki/Oh_Hell&quot;&gt;Oh hell&lt;/a&gt;. Each player is handed a hand.
+The player then have to guess how many tricks he will take. The player has to follow color, and the user with the “highest” card wins. There is Trump, a suite that is higher then the other. The user how guesses that he will take the most tricks decides which color will be the trump that round.&lt;/p&gt;
+&lt;h3&gt;User interactions.&lt;/h3&gt;
+&lt;p&gt;User joins the game lobby.
+When 4 joined the game starts.
+Each player is handed 10 cards.
+All players guess how many tricks they will win that round.
+One player decides trump, he also starts the round by selecting one card from his hand.
+The other players take turn to place a card.
+The one how wins this round gets a trick and starts the next round.
+When all players have played all cards, we see how many tricks each player has and if it matche the number the said the would get. Score is given accordingly.&lt;/p&gt;
+&lt;p&gt;This game is called Plump in Swedish, and &lt;a href=&quot;https://en.wikipedia.org/wiki/Oh_Hell&quot;&gt;Oh hell&lt;/a&gt; in english.&lt;/p&gt;
+&lt;h2&gt;Development&lt;/h2&gt;
+&lt;p&gt;We are going to start with the user interaction, since thats the channel part.&lt;/p&gt;
+&lt;p&gt;Create a new phoenix project &lt;code&gt;mix phoenix.new plump&lt;/code&gt;.
+Build and compile everything you like then create a channel.&lt;/p&gt;
+&lt;div class=&quot;gatsby-highlight&quot;&gt;
+      &lt;pre class=&quot;language-language-bash&quot;&gt;&lt;code&gt;~/C/plump ❯❯❯ mix phoenix.gen.channel Game games
+* creating web/channels/game_channel.ex
+* creating test/channels/game_channel_test.exs
+
+Add the channel to your `web/channels/user_socket.ex` handler, for example:
+
+    channel &quot;games:lobby&quot;, Plump.GameChannel&lt;/code&gt;&lt;/pre&gt;
+      &lt;/div&gt;
+&lt;p&gt;After you add your channel handler as described about we got a basic channel setup.&lt;/p&gt;
+&lt;p&gt;Open test test file. We get a setup block and three tests from the generator.&lt;/p&gt;
+&lt;p&gt;Let’s add our own test.&lt;/p&gt;
+&lt;h3&gt;Let all users know a new user has joined.&lt;/h3&gt;
+&lt;p&gt;Every time a user joins push a message letting everybody know there is a new friend in the lobby. Create a test to ensure we broadcast it to everyone.&lt;/p&gt;
+&lt;div class=&quot;gatsby-highlight&quot;&gt;
+      &lt;pre class=&quot;language-language-elixir&quot;&gt;&lt;code&gt;  test &quot;user joins channel a welcome message is sent&quot;, %{socket: socket} do
+    assert_broadcast &quot;user:join&quot;, %{id: 1}
+  end&lt;/code&gt;&lt;/pre&gt;
+      &lt;/div&gt;
+&lt;p&gt;Run the tests and it breaks.&lt;/p&gt;
+&lt;div class=&quot;gatsby-highlight&quot;&gt;
+      &lt;pre class=&quot;language-language-elixir&quot;&gt;&lt;code&gt;1) test user joins channel a welcome message is sent (Plump.GameChannelTest)
+     test/channels/game_channel_test.exs:12
+     No message matching %Phoenix.Socket.Broadcast{event: &quot;user:join&quot;, payload: %{id: 1}} after 100ms.
+     The process mailbox is empty.
+     stacktrace:
+       test/channels/game_channel_test.exs:13&lt;/code&gt;&lt;/pre&gt;
+      &lt;/div&gt;
+&lt;p&gt;Our channel defines a join method that was generated by phoenix. So if we want to broadcast a message on join here might be the place to do that. This is how the code generated looks.&lt;/p&gt;
+&lt;div class=&quot;gatsby-highlight&quot;&gt;
+      &lt;pre class=&quot;language-language-elixir&quot;&gt;&lt;code&gt;  def join(&quot;games:lobby&quot;, payload, socket) do
+    if authorized?(payload) do
+      {:ok, socket}
+    else
+      {:error, %{reason: &quot;unauthorized&quot;}}
+    end
+  end&lt;/code&gt;&lt;/pre&gt;
+      &lt;/div&gt;
+&lt;p&gt;First lets remove all the authorization that is going on. If you check the method &lt;code&gt;authorized?&lt;/code&gt; it always returns true. It’s something that tells us where to put our implementation later when we need authentication. &lt;/p&gt;
+&lt;p&gt;To broadcast on join we test a naïve solution. Call &lt;code&gt;broadcast socket &quot;user:join&quot;, %{id: 1}&lt;/code&gt; doesn’t work. Elixir provides us with a nice error message.&lt;/p&gt;
+&lt;div class=&quot;gatsby-highlight&quot;&gt;
+      &lt;pre class=&quot;language-language-elixir&quot;&gt;&lt;code&gt;def join(&quot;games:lobby&quot;, payload, socket) do
+  broadcast socket, &quot;shout&quot;, payload
+  {:ok, socket}
+end&lt;/code&gt;&lt;/pre&gt;
+      &lt;/div&gt;
+&lt;p&gt;Running the tests gives us this:&lt;/p&gt;
+&lt;div class=&quot;gatsby-highlight&quot;&gt;
+      &lt;pre class=&quot;language-language-elixir&quot;&gt;&lt;code&gt;5) test shout broadcasts to games:lobby (Plump.GameChannelTest)
+     test/channels/game_channel_test.exs:27
+     ** (EXIT from #PID&lt;0.249.0&gt;) an exception was raised:
+         ** (RuntimeError) `push` and `broadcast` can only be called after the socket has finished joining.
+     To push a message on join, send to self and handle in handle_info/2, ie:
+
+         def join(topic, auth_msg, socket) do
+           ...
+           send(self, :after_join)
+           {:ok, socket}
+         end
+
+         def handle_info(:after_join, socket) do
+           push socket, &quot;feed&quot;, %{list: feed_items(socket)}
+           {:noreply, socket}
+         end
+
+             (phoenix) lib/phoenix/channel.ex:346: Phoenix.Channel.assert_joined!/1
+             (phoenix) lib/phoenix/channel.ex:288: Phoenix.Channel.broadcast/3
+             (plump) web/channels/game_channel.ex:5: Plump.GameChannel.join/3
+             (phoenix) lib/phoenix/channel/server.ex:154: Phoenix.Channel.Server.init/1
+             (stdlib) gen_server.erl:328: :gen_server.init_it/6
+             (stdlib) proc_lib.erl:240: :proc_lib.init_p_do_apply/3&lt;/code&gt;&lt;/pre&gt;
+      &lt;/div&gt;
+&lt;p&gt;It tells us exactly why it didn’t work. We need to finish the join method and handle the broadcast later. Lets implement the exact solution provided to us.&lt;/p&gt;
+&lt;div class=&quot;gatsby-highlight&quot;&gt;
+      &lt;pre class=&quot;language-language-elixir&quot;&gt;&lt;code&gt;  def join(&quot;games:lobby&quot;, payload, socket) do
+    send(self, :after_join)
+    {:ok, socket}
+  end
+
+  def handle_info(:after_join, socket) do
+    broadcast socket, &quot;user:join&quot;, %{id: 1}
+    {:noreply, socket}
+  end&lt;/code&gt;&lt;/pre&gt;
+      &lt;/div&gt;
+&lt;p&gt;Tests are green!&lt;/p&gt;
+&lt;p&gt;What happens when a second user joins? Refactor the tests, create a helper method to join users to the channel and test for the expected behavior.&lt;/p&gt;
+&lt;div class=&quot;gatsby-highlight&quot;&gt;
+      &lt;pre class=&quot;language-language-elixir&quot;&gt;&lt;code&gt;defp join_channel channel_name, id do
+  {:ok, _, socket} =
+    socket(&quot;user_id&quot;, %{})
+    |&gt; subscribe_and_join(GameChannel, channel_name)
+
+  {:ok, socket}
+end
+
+setup do
+  {:ok, socket} = join_channel &quot;games:lobby&quot;, 1
+
+  {:ok, socket: socket}
+end
+
+test &quot;user joins channel a welcome message is sent&quot;, %{socket: socket} do
+  assert_broadcast &quot;user:join&quot;, %{id: 1}
+end
+
+test &quot;two users in a channel&quot;, %{socket: socket} do
+  assert_broadcast &quot;user:join&quot;, %{id: 1}
+  user_2 = join_channel &quot;games:lobby&quot;, 2
+  assert_broadcast &quot;user:join&quot;, %{id: 2}
+end&lt;/code&gt;&lt;/pre&gt;
+      &lt;/div&gt;
+&lt;p&gt;Run the tests and they fail, since we hard coded what id should be sent with the broadcast.&lt;/p&gt;
+&lt;p&gt;We modify how we connect to the server. We pass along a struct with the id of the user.&lt;/p&gt;
+&lt;div class=&quot;gatsby-highlight&quot;&gt;
+      &lt;pre class=&quot;language-language-elixir&quot;&gt;&lt;code&gt;defp join_channel channel_name, id do
+  {:ok, _, socket} =
+    socket(&quot;user_id&quot;, %{})
+    |&gt; subscribe_and_join(GameChannel, channel_name, %{id: id})
+
+  {:ok, socket}
+end&lt;/code&gt;&lt;/pre&gt;
+      &lt;/div&gt;
+&lt;p&gt;And in our implementation we claim the payload of the message and send it to all connected users with the &lt;code&gt;broadcast&lt;/code&gt; method.&lt;/p&gt;
+&lt;div class=&quot;gatsby-highlight&quot;&gt;
+      &lt;pre class=&quot;language-language-elixir&quot;&gt;&lt;code&gt;def join(&quot;games:lobby&quot;, payload, socket) do
+  send(self, {:after_join, payload})
+  {:ok, socket}
+end
+
+def handle_info({:after_join, payload}, socket) do
+  broadcast socket, &quot;user:join&quot;, payload
+  {:noreply, socket}
+end&lt;/code&gt;&lt;/pre&gt;
+      &lt;/div&gt;
+&lt;p&gt;And we are all green!&lt;/p&gt;
+&lt;h3&gt;Keep a list of all active users.&lt;/h3&gt;
+&lt;p&gt;We could use a database for this, but it seems a bit overkill. &lt;code&gt;Ecto&lt;/code&gt; gives us a presistant layer to store things in. But we don’t need persistance now. Let us instead keep some state in an &lt;code&gt;Agent&lt;/code&gt;. It will not be persisted but we could learn something about Agent. That sounds fun, everybody goes “Wee”!&lt;/p&gt;
+&lt;p&gt;We start by writing some tests. We want the state to be initialized with a count of 0, and increased when we add users. The test file is located in &lt;code&gt;test/lib/game_store_test.exs&lt;/code&gt;.&lt;/p&gt;
+&lt;div class=&quot;gatsby-highlight&quot;&gt;
+      &lt;pre class=&quot;language-language-elixir&quot;&gt;&lt;code&gt;defmodule Plump.GameStoreTest do
+  use ExUnit.Case, async: false
+
+  setup do
+    {:ok, bucket} = Plump.GameStore.start_link
+    {:ok, bucket: bucket}
+  end
+
+  test &quot;Initialized with count 0&quot; do
+    assert Plump.GameStore.count == 0
+  end
+
+  test &quot;add a player increases count of players&quot; do
+    Plump.GameStore.add(%{id: 1})
+    assert Plump.GameStore.count == 1
+  end
+end&lt;/code&gt;&lt;/pre&gt;
+      &lt;/div&gt;
+&lt;p&gt;To implement this behavior we create the file &lt;code&gt;GameStore&lt;/code&gt;as &lt;code&gt;lib/plump/game_store_test.exs&lt;/code&gt;.&lt;/p&gt;
+&lt;div class=&quot;gatsby-highlight&quot;&gt;
+      &lt;pre class=&quot;language-language-elixir&quot;&gt;&lt;code&gt;defmodule Plump.GameStore do
+  def start_link do
+    Agent.start_link(fn -&gt; %{count: 0} end, name: __MODULE__)
+    {:ok, self}
+  end
+
+  def count do
+    Agent.get(__MODULE__, fn %{count: count} -&gt;
+      count
+    end)
+  end
+
+  def add user do
+    Agent.update(__MODULE__, fn %{count: count} -&gt;
+      %{count: count + 1}
+    end)
+  end
+end&lt;/code&gt;&lt;/pre&gt;
+      &lt;/div&gt;
+&lt;p&gt;This is a simple agent that only stores a count, we will need to modify this later to keep track of the users too.&lt;/p&gt;
+&lt;p&gt;We have made some decisions about the agent that we might want to reconsider. The agent is named, thus we can only have one. This is fine, but you should be aware that the agent is unique because of it.&lt;/p&gt;
+&lt;p&gt;Also, the test setup block returns the bucket pid, aka the pid to the agent. That is not necessary since we have named it and could be removed. However, the pattern matching for &lt;code&gt;{:ok, bucket}&lt;/code&gt;also serves to ensure that starting the Agent returned &lt;code&gt;:ok&lt;/code&gt;. So it’s like an assertion.&lt;/p&gt;
+&lt;h3&gt;Display the stats when new users join.&lt;/h3&gt;
+&lt;p&gt;So, all the work we put in to create the Agent should be used. When a new users joins we want to know how many users have joined so far.&lt;/p&gt;
+&lt;p&gt;We modify the tests.&lt;/p&gt;
+&lt;div class=&quot;gatsby-highlight&quot;&gt;
+      &lt;pre class=&quot;language-language-elixir&quot;&gt;&lt;code&gt;test &quot;user joins channel a message is sent, and nr of players in channel&quot; do
+  assert_broadcast &quot;user:join&quot;, %{id: 1}
+  assert_broadcast &quot;user:stats&quot;, %{count: 1}
+end
+
+test &quot;two users in a channel&quot; do
+  assert_broadcast &quot;user:join&quot;, %{id: 1}
+  assert_broadcast &quot;user:stats&quot;, %{count: 1}
+  join_channel &quot;games:lobby&quot;, 2
+  assert_broadcast &quot;user:join&quot;, %{id: 2}
+  assert_broadcast &quot;user:stats&quot;, %{count: 2}
+end&lt;/code&gt;&lt;/pre&gt;
+      &lt;/div&gt;
+&lt;p&gt;That is the behavior we want. Now over to the implementation.&lt;/p&gt;
+&lt;div class=&quot;gatsby-highlight&quot;&gt;
+      &lt;pre class=&quot;language-language-elixir&quot;&gt;&lt;code&gt;def join(&quot;games:lobby&quot;, payload, socket) do
+  Plump.GameStore.add payload
+  send(self, {:after_join, payload})
+  {:ok, socket}
+end
+
+def handle_info({:after_join, payload}, socket) do
+  broadcast socket, &quot;user:join&quot;, payload
+  count = Plump.GameStore.count
+  broadcast socket, &quot;user:stats&quot;, %{count: count}
+  {:noreply, socket}
+end&lt;/code&gt;&lt;/pre&gt;
+      &lt;/div&gt;
+&lt;p&gt;This is pretty straight forward; when a user joins we add it to the agent, and broadcast the updated statistics to all users.&lt;/p&gt;
+&lt;p&gt;Already here we see a problem in our design. GameStore.count returns a primitive value, but that is clear that we should have named that function statistics and it should have returned a struct &lt;code&gt;%{count: count}&lt;/code&gt;. That would have made it easy to extend with information about running games, when the time comes.&lt;/p&gt;
+&lt;p&gt;This will still not make our tests green. For that we need to start the agent before the tests.&lt;/p&gt;
+&lt;div class=&quot;gatsby-highlight&quot;&gt;
+      &lt;pre class=&quot;language-language-elixir&quot;&gt;&lt;code&gt;setup do
+  {:ok, bucket} = Plump.GameStore.start_link()
+  {:ok, socket} = join_channel &quot;games:lobby&quot;, 1
+
+  {:ok, socket: socket}
+end&lt;/code&gt;&lt;/pre&gt;
+      &lt;/div&gt;
+&lt;p&gt;This step is needed because we have not added the Agent to our application tree yet. This works for now.&lt;/p&gt;
+&lt;h3&gt;Refactoring.&lt;/h3&gt;
+&lt;p&gt;As we can see above, we have some methods that could use a new name and a new return type.&lt;/p&gt;
+&lt;p&gt;We start with how we want to use it:&lt;/p&gt;
+&lt;div class=&quot;gatsby-highlight&quot;&gt;
+      &lt;pre class=&quot;language-language-elixir&quot;&gt;&lt;code&gt;def handle_info({:after_join, payload}, socket) do
+  broadcast socket, &quot;user:join&quot;, payload
+  statistics = Plump.GameStore.statistics
+  broadcast socket, &quot;user:stats&quot;, statistics
+  {:noreply, socket}
+end&lt;/code&gt;&lt;/pre&gt;
+      &lt;/div&gt;
+&lt;p&gt;Fix the GameStore accordingly.&lt;/p&gt;
+&lt;div class=&quot;gatsby-highlight&quot;&gt;
+      &lt;pre class=&quot;language-language-elixir&quot;&gt;&lt;code&gt;def statistics do
+  Agent.get(__MODULE__, fn %{count: count} -&gt;
+    %{count: count}
+  end)
+end&lt;/code&gt;&lt;/pre&gt;
+      &lt;/div&gt;
+&lt;p&gt;And the tests.&lt;/p&gt;
+&lt;div class=&quot;gatsby-highlight&quot;&gt;
+      &lt;pre class=&quot;language-language-elixir&quot;&gt;&lt;code&gt;test &quot;Initialized with count 0&quot; do
+  %{count: count} = Plump.GameStore.statistics
+  assert count == 0
+end
+
+test &quot;add a player increases count of players&quot; do
+  Plump.GameStore.add(%{id: 1})
+  %{count: count} = Plump.GameStore.statistics
+  assert count == 1
+end&lt;/code&gt;&lt;/pre&gt;
+      &lt;/div&gt;
+&lt;p&gt;Also refactor how the &lt;code&gt;:after_join&lt;/code&gt; is handles.&lt;/p&gt;
+&lt;div class=&quot;gatsby-highlight&quot;&gt;
+      &lt;pre class=&quot;language-language-elixir&quot;&gt;&lt;code&gt;def handle_info({:after_join, payload}, socket) do
+  statistics = Plump.GameStore.statistics
+
+  %{socket: socket, statistics: statistics}
+  |&gt; broadcast_user_join(payload)
+  |&gt; broadcast_statistics()
+
+  {:noreply, socket}
+end
+
+defp broadcast_user_join %{socket: socket, statistics: statistics} = params, payload do
+  broadcast socket, &quot;user:join&quot;, payload
+  params
+end
+
+defp broadcast_statistics %{socket: socket, statistics: statistics} = params do
+  broadcast socket, &quot;user:stats&quot;, statistics
+  params
+end&lt;/code&gt;&lt;/pre&gt;
+      &lt;/div&gt;
+&lt;p&gt;Perfect. Each of the private functions return the &lt;code&gt;socket&lt;/code&gt; so we can continue the pipe.&lt;/p&gt;
+&lt;h3&gt;Start the game.&lt;/h3&gt;
+&lt;p&gt;When we have 4 players we should start the game.
+Every game should have an own channel.
+The players should get cards.
+Let’s start with that.&lt;/p&gt;
+&lt;div class=&quot;gatsby-highlight&quot;&gt;
+      &lt;pre class=&quot;language-language-elixir&quot;&gt;&lt;code&gt;test &quot;If 4 players, the game should start&quot;, %{socket: socket} do
+  join_channel &quot;games:lobby&quot;, 2
+  join_channel &quot;games:lobby&quot;, 3
+  join_channel &quot;games:lobby&quot;, 4
+
+  assert_broadcast &quot;user:stats&quot;, %{count: 4}
+
+  assert_broadcast &quot;game:start&quot;, %{users: [1, 2, 3, 4]}
+end&lt;/code&gt;&lt;/pre&gt;
+      &lt;/div&gt;
+&lt;p&gt;We join the game, and add 3 more players. This is a bit ugly and should be change. Now we don’t want the first user to be added automatically.&lt;/p&gt;
+&lt;p&gt;Remove the join_channel statement from the setup block, and add the user 1 to the game where needed.&lt;/p&gt;
+&lt;p&gt;Run the tests and they fail. I decided to send a list of all users who are to be in the current game as payload.&lt;/p&gt;
+&lt;p&gt;Implementation time!&lt;/p&gt;
+&lt;div class=&quot;gatsby-highlight&quot;&gt;
+      &lt;pre class=&quot;language-language-elixir&quot;&gt;&lt;code&gt;def handle_info({:after_join, payload}, socket) do
+  statistics = Plump.GameStore.statistics
+
+  %{socket: socket, statistics: statistics}
+  |&gt; broadcast_user_join(payload)
+  |&gt; broadcast_statistics()
+  |&gt; start_game()
+
+  {:noreply, socket}
+end
+
+defp start_game %{socket: socket, statistics: %{count: 4}} = params do
+  broadcast socket, &quot;game:start&quot;, %{users: [1,2,3,4]}
+  {:ok, params}
+end
+defp start_game params do
+  {:error, params}
+end&lt;/code&gt;&lt;/pre&gt;
+      &lt;/div&gt;
+&lt;p&gt;We have hard coded the user ids. To fix this we need to fix our store.&lt;/p&gt;
+&lt;p&gt;We should store all users, and all games created. Not just a count of each.&lt;/p&gt;
+&lt;p&gt;We update the tests and the store.&lt;/p&gt;
+&lt;div class=&quot;gatsby-highlight&quot;&gt;
+      &lt;pre class=&quot;language-language-elixir&quot;&gt;&lt;code&gt;test &quot;list players&quot; do
+  Plump.GameStore.add(%{id: 1})
+
+  assert 1 == Plump.GameStore.players
+  |&gt; HashDict.to_list()
+  |&gt; Enum.count()
+end
+
+test &quot;create a new game&quot; do
+  %{game_count: count} = Plump.GameStore.statistics
+  assert count == 0
+
+  Plump.GameStore.new_game(%{game_id: 1})
+  %{game_count: count} = Plump.GameStore.statistics
+  assert count == 1
+
+  assert 1 == Plump.GameStore.games
+  |&gt; HashDict.to_list()
+  |&gt; Enum.count()
+end&lt;/code&gt;&lt;/pre&gt;
+      &lt;/div&gt;
+&lt;p&gt;These tests assume we have a &lt;code&gt;games&lt;/code&gt; and &lt;code&gt;players&lt;/code&gt; method returning a HashDict of players.&lt;/p&gt;
+&lt;p&gt;Let’s change the store to match. We also update the games counter to a new name, &lt;code&gt;games_count&lt;/code&gt;.&lt;/p&gt;
+&lt;p&gt;We initialize the state we need.&lt;/p&gt;
+&lt;div class=&quot;gatsby-highlight&quot;&gt;
+      &lt;pre class=&quot;language-language-elixir&quot;&gt;&lt;code&gt;def start_link do
+  Agent.start_link(fn -&gt; %{count: 0, game_count: 0, users: HashDict.new, games: HashDict.new} end, name: __MODULE__)
+  {:ok, self}
+end&lt;/code&gt;&lt;/pre&gt;
+      &lt;/div&gt;
+&lt;p&gt;And create the methods to return the players and games.&lt;/p&gt;
+&lt;div class=&quot;gatsby-highlight&quot;&gt;
+      &lt;pre class=&quot;language-language-elixir&quot;&gt;&lt;code&gt;def players do
+  Agent.get(__MODULE__, fn %{users: users} = state -&gt;
+    users
+  end)
+end
+
+def games do
+  Agent.get(__MODULE__, fn %{games: games} = state -&gt;
+    games
+  end)
+end&lt;/code&gt;&lt;/pre&gt;
+      &lt;/div&gt;
+&lt;p&gt;To add them to the respective list we need to modify the add user and new_games methods.&lt;/p&gt;
+&lt;div class=&quot;gatsby-highlight&quot;&gt;
+      &lt;pre class=&quot;language-language-elixir&quot;&gt;&lt;code&gt;def new_game game do
+  Agent.update(__MODULE__, fn %{game_count: game_count, games: games} = state -&gt;
+    games = HashDict.put(games, game.game_id, game)
+    %{state | game_count: game_count + 1, games: games}
+  end)
+end&lt;/code&gt;&lt;/pre&gt;
+      &lt;/div&gt;
+&lt;p&gt;Alright, we create the failing test to test the user id list and a game id. We are using 1 for now.&lt;/p&gt;
+&lt;div class=&quot;gatsby-highlight&quot;&gt;
+      &lt;pre class=&quot;language-language-elixir&quot;&gt;&lt;code&gt;test &quot;broadcast of new games contains user ids&quot; do
+  join_channel &quot;games:lobby&quot;, 10
+  join_channel &quot;games:lobby&quot;, 20
+  join_channel &quot;games:lobby&quot;, 30
+  join_channel &quot;games:lobby&quot;, 40
+
+  assert_broadcast &quot;user:stats&quot;, %{count: 4}
+
+  assert_broadcast &quot;game:start&quot;, %{users: [10, 20, 30, 40], game_id: 1}
+end&lt;/code&gt;&lt;/pre&gt;
+      &lt;/div&gt;
+&lt;p&gt;We return a list of keys.&lt;/p&gt;
+&lt;div class=&quot;gatsby-highlight&quot;&gt;
+      &lt;pre class=&quot;language-language-elixir&quot;&gt;&lt;code&gt;defp start_game %{socket: socket, statistics: %{count: 4}} = params do
+  players = Plump.GameStore.players()
+
+  player_keys = players
+  |&gt; HashDict.keys()
+  |&gt; Enum.sort()
+
+  game_id = 1
+  Plump.GameStore.new_game %{game_id: game_id, players: players}
+
+  broadcast socket, &quot;game:start&quot;, %{users: player_keys, game_id: game_id}
+  {:ok, params}
+end&lt;/code&gt;&lt;/pre&gt;
+      &lt;/div&gt;
+&lt;p&gt;We have some major problems with our implementation so far. For example if more people then 4 join, what happens?&lt;/p&gt;
+&lt;h3&gt;Game room&lt;/h3&gt;
+&lt;p&gt;That way the user can see if s/he was selected to join the game. That is it for the lobby part of the game. Next we need to move the selected players to a game room for that specific game and hand them cards.&lt;/p&gt;
+&lt;div class=&quot;gatsby-highlight&quot;&gt;
+      &lt;pre class=&quot;language-language-bash&quot;&gt;&lt;code&gt;$ mix phoenix.gen.channel Room rooms                                                                                                                             master
+* creating web/channels/room_channel.ex
+* creating test/channels/room_channel_test.exs
+
+Add the channel to your `web/channels/user_socket.ex` handler, for example:
+
+    channel &quot;rooms:lobby&quot;, Plump.RoomChannel&lt;/code&gt;&lt;/pre&gt;
+      &lt;/div&gt;
+&lt;p&gt;We create a room channel to handle the gameplay. Make sure to add it with a wildcard.&lt;/p&gt;
+&lt;div class=&quot;gatsby-highlight&quot;&gt;
+      &lt;pre class=&quot;language-language-elixir&quot;&gt;&lt;code&gt;channel &quot;rooms:*&quot;, Plump.RoomChannel&lt;/code&gt;&lt;/pre&gt;
+      &lt;/div&gt;
+&lt;p&gt;Also clear out the test and channel code generated for us by Phoenix generators.&lt;/p&gt;</content:encoded></item><item><title><![CDATA[(Untitled)]]></title><description><![CDATA[Setting up a small (minimal cluster) with several services running on. Basics Create cluster Make sure you store all configurations in…]]></description><link>https://sajmoon.github.io/1970-01-01-untitled/</link><guid isPermaLink="false">https://sajmoon.github.io/1970-01-01-untitled/</guid><pubDate>Thu, 01 Jan 1970 00:00:00 GMT</pubDate><content:encoded>&lt;p&gt;Setting up a small (minimal cluster) with several services running on.&lt;/p&gt;
+&lt;h2&gt;Basics&lt;/h2&gt;
+&lt;ul&gt;
+&lt;li&gt;Create cluster&lt;/li&gt;
+&lt;/ul&gt;
+&lt;div class=&quot;gatsby-highlight&quot;&gt;
+      &lt;pre class=&quot;language-none&quot;&gt;&lt;code&gt;gcloud container clusters clustername&lt;/code&gt;&lt;/pre&gt;
+      &lt;/div&gt;
+&lt;blockquote&gt;
+&lt;p&gt;Make sure you store all configurations in deployment.yaml files so you can easily modify your setup later. &lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;ul&gt;
+&lt;li&gt;Create a persistent disc space.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;div class=&quot;gatsby-highlight&quot;&gt;
+      &lt;pre class=&quot;language-none&quot;&gt;&lt;code&gt;gcloud compute disks create --size 10GB my-disk&lt;/code&gt;&lt;/pre&gt;
+      &lt;/div&gt;
+&lt;p&gt;Add volume configuration to your deployment.yaml file.&lt;/p&gt;
+&lt;div class=&quot;gatsby-highlight&quot;&gt;
+      &lt;pre class=&quot;language-none&quot;&gt;&lt;code&gt;      ports:
+         ...
+      volumeMounts:
+          # This name must match the volumes.name below.
+        - name: my-persistent-storage
+          mountPath: /var/lib/application
+volumes:
+    - name: my-persistent-storage
+      gcePersistentDisk:
+        # This disk must already exist.
+        pdName: my-disk
+        fsType: ext4&lt;/code&gt;&lt;/pre&gt;
+      &lt;/div&gt;</content:encoded></item><item><title><![CDATA[Social Sharing buttons for websites]]></title><description><![CDATA[Share on Social Tweet Share on Facebook Plus on Google+ Share on LinkedIn Pin on Pinterest Share on VK Share on Xing Share on Tumblr Share…]]></description><link>https://sajmoon.github.io/1970-01-01-social-sharing-buttons-for-websites/</link><guid isPermaLink="false">https://sajmoon.github.io/1970-01-01-social-sharing-buttons-for-websites/</guid><pubDate>Thu, 01 Jan 1970 00:00:00 GMT</pubDate><content:encoded>&lt;h1&gt;Share on Social&lt;/h1&gt;
+&lt;p&gt;&lt;a target=&quot;_blank&quot; href=&quot;https://twitter.com/intent/tweet?text=YOUR-TITLE&amp;url=YOUR-URL&amp;via=TWITTER-HANDLE&quot;&gt;Tweet&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;&lt;a target=&quot;_blank&quot; href=&quot;https://www.facebook.com/sharer/sharer.php?u=YOUR-URL&quot;&gt;Share on Facebook&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;&lt;a target=&quot;_blank&quot; href=&quot;https://plus.google.com/share?url=YOUR-URL&quot;&gt;Plus on Google+&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;&lt;a target=&quot;_blank&quot; href=&quot;https://www.linkedin.com/shareArticle?mini=true&amp;url=YOUR-URL&amp;title=YOUR-TITLE&amp;summary=YOUR-SUMMARY&amp;source=YOUR-URL&quot;&gt;Share on LinkedIn&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;&lt;a target=&quot;_blank&quot; href=&quot;https://pinterest.com/pin/create/button/?url=YOUR-URL&amp;description=YOUR-DESCRIPTION&amp;media=YOUR-IMAGE-SRC&quot;&gt;Pin on Pinterest&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;&lt;a target=&quot;_blank&quot; href=&quot;https://vk.com/share.php?url=YOUR-URL&amp;title=YOUR-TITLE&amp;description=YOUR-DESCRIPTION&amp;image=YOUR-IMAGE-SRC&amp;noparse=true&quot;&gt;Share on VK&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;&lt;a target=&quot;_blank&quot; href=&quot;https://www.xing-share.com/app/user?op=share;sc_p=xing-share;url=YOUR-URL&quot;&gt;Share on Xing&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;&lt;a target=&quot;_blank&quot; href=&quot;http://www.tumblr.com/share/link?url=YOUR-URL&amp;description=YOUR-DESCRIPTION&quot;&gt;Share on Tumblr&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;&lt;a target=&quot;_blank&quot; href=&quot;http://www.reddit.com/submit?url=YOUR_URL&amp;title=YOUR_TITLE&quot;&gt;Share on Reddit&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;&lt;a href=&quot;https://github.com/cferdinandi/social-sharing&quot;&gt;https://github.com/cferdinandi/social-sharing&lt;/a&gt;&lt;/p&gt;</content:encoded></item><item><title><![CDATA[How to use mocking in Elixir]]></title><description><![CDATA[Testing an external service. We cannot run tests against for example Amazon S3 every time we change something in our code base. It’s not…]]></description><link>https://sajmoon.github.io/1970-01-01-use-mock-in-elixir/</link><guid isPermaLink="false">https://sajmoon.github.io/1970-01-01-use-mock-in-elixir/</guid><pubDate>Thu, 01 Jan 1970 00:00:00 GMT</pubDate><content:encoded>&lt;h1&gt;Testing an external service.&lt;/h1&gt;
+&lt;p&gt;We cannot run tests against for example Amazon S3 every time we change something in our code base. It’s not practical. &lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;It is slow.&lt;/li&gt;
+&lt;li&gt;It is not reliable; the API might be down. If the test fails, is it your fault?&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;So we mock. We mock the external library or service away and what we have left is the code that actually matters to us.&lt;/p&gt;
+&lt;h2&gt;Example time&lt;/h2&gt;
+&lt;p&gt;We want to upload files from a website to a server. The file is to be stored in the cloud (&lt;a href=&quot;http://aws.amazon.com/s3/&quot;&gt;S3&lt;/a&gt;). We might do some processing as well. A good example might be to create a thumbnail of the uploaded image. Then we should respond to the client with either &lt;em&gt;success&lt;/em&gt; or &lt;em&gt;fail&lt;/em&gt; message.&lt;/p&gt;
+&lt;h2&gt;What do we mock?&lt;/h2&gt;
+&lt;p&gt;We mock only what we cannot control, what is not our responsibility. Both APIs and external libs should already be tested by the authors. If not, you really shouldn’t use them. &lt;/p&gt;
+&lt;p&gt;There is a library to work with S3 in Elixir called &lt;a href=&quot;https://github.com/stavro/arc/&quot;&gt;arc&lt;/a&gt;. We should asume(or check the source and enusre that it is) that arc actually is tested and works. So what we implement mearly uses arc.&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;Then we &lt;em&gt;mock a successfull response&lt;/em&gt; from arc, and ==ensure that our application behaves accoringly==. And we mock a failure response from arc and &lt;em&gt;enusre&lt;/em&gt; that our application displays the correct error messages.&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;h3&gt;Mock library for Elixir&lt;/h3&gt;
+&lt;p&gt;There is tools for this, one is &lt;a href=&quot;https://github.com/jjh42/mock&quot;&gt;mock&lt;/a&gt;. Internally it uses &lt;a href=&quot;https://github.com/eproxus/meck&quot;&gt;meck&lt;/a&gt; which is an erlang library.&lt;/p&gt;
+&lt;h3&gt;An actual test!&lt;/h3&gt;
+&lt;div class=&quot;gatsby-highlight&quot;&gt;
+      &lt;pre class=&quot;language-defmodule filezilla.uploader do&quot;&gt;&lt;code&gt;  require Logger
+  alias Filezilla.ImageUpload, as: ImageUpload
+
+  def handle_file(upload) do
+    Logger.info &quot;handle file&quot;
+
+     Filezilla.S3.upload(upload)
+     |&gt; handle_upload()
+  end
+
+  defp handle_upload({:ok, filename}) do
+    {:ok, filename}
+  end
+  defp handle_upload({:error, reasone}) do
+    {:error}
+  end
+
+  defp upload_file(upload) do
+    IO.inspect upload
+    path = upload
+
+
+    # upload_path = &quot;/uploads/&quot; &lt;&gt; filename
+
+    # IO.inspect path
+    # access_key_id = System.get_env(&quot;AWS_ACCESS_KEY_ID&quot;) |&gt; String.to_char_list
+    # secret_access_key = &quot;Simon&quot; |&gt; String.to_char_list #System.get_env(&quot;AWS_SECRET_ACCESS_KEY&quot;) |&gt; String.to_char_list
+    # s3 = :erlcloud_s3.new(access_key_id, secret_access_key)
+
+    # buckets = :erlcloud_s3.list_objects(&apos;wolandtraveldev2&apos;, s3)
+    # IO.inspect buckets
+
+    # log = :erlcloud_s3.get_object(&apos;wolandtraveldev2&apos;, &apos;logs/2015-07-22-23-47-20-7D72E489B22FD59B&apos;)
+    # IO.inspect log
+
+    # output = :erlcloud_s3.put_object(&apos;wolandtraveldev2&apos;, &apos;key1&apos;, &apos;value1&apos;)
+    # IO.inspect output
+
+    # Hn7)UcXgmHQp
+
+    # {:ok, binary} = File.read(path)
+    # IO.inspect output
+    #
+    upload_path
+  end
+end&lt;/code&gt;&lt;/pre&gt;
+      &lt;/div&gt;
+&lt;div class=&quot;gatsby-highlight&quot;&gt;
+      &lt;pre class=&quot;language-none&quot;&gt;&lt;code&gt;defmodule Filezilla.S3 do
+  @base_path &quot;uploads/&quot;
+
+  def upload file do
+      s3_filename = @base_path &lt;&gt; file.filename |&gt; String.to_char_list
+
+      File.read(file.path)
+      |&gt; send_file(s3_filename)
+        # {:ok, binary} -&gt; send_file(s3_filename)
+  end
+
+  defp send_file({:error, msg}, _s3_filename), do: {:error, msg}
+  defp send_file({:ok, binary}, s3_filename) do
+    try do
+      s3 = authenticate
+      :erlcloud_s3.put_object(&apos;wolandtraveldev2&apos;, s3_filename, binary, s3)
+      |&gt; handle_upload(s3_filename)
+    rescue
+      RuntimeError -&gt; {:error, &quot;&quot;}
+    end
+  end
+
+  defp authenticate do
+    access_key_id = System.get_env(&quot;AWS_ACCESS_KEY_ID&quot;) |&gt; String.to_char_list
+    secret_access_key = System.get_env(&quot;AWS_SECRET_ACCESS_KEY&quot;) |&gt; String.to_char_list
+    :erlcloud_s3.new(access_key_id, secret_access_key)
+  end
+
+  defp handle_upload([version_id: vid], file) do
+    {:ok, file}
+  end
+  defp handle_upload({:aws_error, reason}) do
+    {:error, reason}
+  end
+  defp handle_upload({:error, :enoent}), do: {:error, :enoent}
+end&lt;/code&gt;&lt;/pre&gt;
+      &lt;/div&gt;
+&lt;p&gt;Plug.Upload tests: &lt;a href=&quot;https://github.com/elixir-lang/plug/blob/master/lib/plug/upload.ex&quot;&gt;https://github.com/elixir-lang/plug/blob/master/lib/plug/upload.ex&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;Arc uses erlcloud. See the tests: &lt;a href=&quot;https://github.com/stavro/arc/blob/master/test/storage/s3_test.exs&quot;&gt;https://github.com/stavro/arc/blob/master/test/storage/s3_test.exs&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;erlcloud it self: &lt;a href=&quot;https://github.com/gleber/erlcloud&quot;&gt;https://github.com/gleber/erlcloud&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;excellent short blog about erlcloud in elixir: &lt;a href=&quot;http://blog.jordan-dimov.com/accessing-the-amazon-aws-from-elixir-using-erlcloud/&quot;&gt;http://blog.jordan-dimov.com/accessing-the-amazon-aws-from-elixir-using-erlcloud/&lt;/a&gt;&lt;/p&gt;</content:encoded></item></channel></rss>
