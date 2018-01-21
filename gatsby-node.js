@@ -17,6 +17,7 @@ exports.createPages = ({ graphql, boundActionCreators }) => {
                 node {
                   fields {
                     slug
+                    path
                   }
                 }
               }
@@ -31,8 +32,9 @@ exports.createPages = ({ graphql, boundActionCreators }) => {
 
         // Create blog posts pages.
         _.each(result.data.allMarkdownRemark.edges, edge => {
+          const path = edge.node.fields.path
           createPage({
-            path: edge.node.fields.slug,
+            path: path,
             component: blogPost,
             context: {
               slug: edge.node.fields.slug,
@@ -53,6 +55,16 @@ exports.onCreateNode = ({ node, boundActionCreators, getNode }) => {
       name: `slug`,
       node,
       value,
+    })
+
+    const date = new Date(node.frontmatter.date)
+    const year = date.getFullYear()
+    const path = year + value
+
+    createNodeField({
+      node,
+      name: `path`,
+      value: path,
     })
   }
 }
