@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="UTF-8"?><rss xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:content="http://purl.org/rss/1.0/modules/content/" xmlns:atom="http://www.w3.org/2005/Atom" version="2.0"><channel><title><![CDATA[Tinkering with Code.]]></title><description><![CDATA[My blog. A dev log.]]></description><link>https://sajmoon.github.io</link><generator>RSS for Node</generator><lastBuildDate>Wed, 17 Jan 2018 19:25:31 GMT</lastBuildDate><item><title><![CDATA[Add methods to a Ruby class]]></title><description><![CDATA[We can always extend classes in Ruby. Both predefined and classes we create ourselfs. We say that classes are  always open . If you extend a…]]></description><link>https://sajmoon.github.io/ruby-add-methods-to-classes/</link><guid isPermaLink="false">https://sajmoon.github.io/ruby-add-methods-to-classes/</guid><pubDate>Tue, 16 Jan 2018 00:00:00 GMT</pubDate><content:encoded>&lt;p&gt;We can always extend classes in Ruby. Both predefined and classes we create ourselfs. We say that classes are &lt;em&gt;always open&lt;/em&gt;.&lt;/p&gt;
+<?xml version="1.0" encoding="UTF-8"?><rss xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:content="http://purl.org/rss/1.0/modules/content/" xmlns:atom="http://www.w3.org/2005/Atom" version="2.0"><channel><title><![CDATA[Tinkering with Code.]]></title><description><![CDATA[My blog. A dev log.]]></description><link>https://sajmoon.github.io</link><generator>RSS for Node</generator><lastBuildDate>Sun, 21 Jan 2018 20:23:56 GMT</lastBuildDate><item><title><![CDATA[Add methods to a Ruby class]]></title><description><![CDATA[We can always extend classes in Ruby. Both predefined and classes we create ourselfs. We say that classes are  always open . If you extend a…]]></description><link>https://sajmoon.github.io/ruby-add-methods-to-classes/</link><guid isPermaLink="false">https://sajmoon.github.io/ruby-add-methods-to-classes/</guid><pubDate>Tue, 16 Jan 2018 00:00:00 GMT</pubDate><content:encoded>&lt;p&gt;We can always extend classes in Ruby. Both predefined and classes we create ourselfs. We say that classes are &lt;em&gt;always open&lt;/em&gt;.&lt;/p&gt;
 &lt;p&gt;If you extend a built-in class be sure that it should be there. A string for example probably should not have methods to generate urls to a placeholder image, even if it could. It does not belong in the String class.&lt;/p&gt;
 &lt;h2&gt;Add an instance method to a built-in class.&lt;/h2&gt;
 &lt;p&gt;Add a method to Integers that returns a random value between 0 and the integer value.&lt;/p&gt;
@@ -159,50 +159,34 @@ date: &quot;2018-01-01&quot;
 &lt;p&gt;Read more about the playground and find examples &lt;a href=&quot;https://developer.apple.com/swift/playgrounds/&quot;&gt;here&lt;/a&gt;.&lt;/p&gt;
 &lt;h3&gt;Excersism&lt;/h3&gt;
 &lt;p&gt;Excersism is a great way to learn new things. You have a very small and well defined problem to solve. They provide test cases and your job is to make them pass.&lt;/p&gt;
-&lt;p&gt;Then you can get feedback on your solution from the community or read someone elses code. Then iterate and improve your solution. It’s quite awesome. Have a look &lt;a href=&quot;http://exercism.io/languages/swift/about&quot;&gt;http://exercism.io&lt;/a&gt;&lt;/p&gt;</content:encoded></item><item><title><![CDATA[Installed Gatsby]]></title><description><![CDATA[Started a gatsby blog. Will migrate old blog posts here later.]]></description><link>https://sajmoon.github.io/hello-world/</link><guid isPermaLink="false">https://sajmoon.github.io/hello-world/</guid><pubDate>Sat, 06 Jan 2018 00:00:00 GMT</pubDate><content:encoded>&lt;p&gt;Started a gatsby blog. Will migrate old blog posts here later.&lt;/p&gt;</content:encoded></item><item><title><![CDATA[Summary of Swift language features]]></title><description><![CDATA[As I started to learn Swift i wrote a list of things that where notworthy about the language. This is the result: A short summary of…]]></description><link>https://sajmoon.github.io/swift-language-feature-summary/</link><guid isPermaLink="false">https://sajmoon.github.io/swift-language-feature-summary/</guid><pubDate>Fri, 13 Jan 2017 20:52:03 GMT</pubDate><content:encoded>&lt;p&gt;As I started to learn Swift i wrote a list of things that where notworthy about the language. This is the result: A short summary of interesting Swift language features.&lt;/p&gt;
-&lt;h2&gt;Features&lt;/h2&gt;
-&lt;p&gt;Listed in no particular order.&lt;/p&gt;
+&lt;p&gt;Then you can get feedback on your solution from the community or read someone elses code. Then iterate and improve your solution. It’s quite awesome. Have a look &lt;a href=&quot;http://exercism.io/languages/swift/about&quot;&gt;http://exercism.io&lt;/a&gt;&lt;/p&gt;</content:encoded></item><item><title><![CDATA[Installed Gatsby]]></title><description><![CDATA[Started a gatsby blog. Will migrate old blog posts here later.]]></description><link>https://sajmoon.github.io/hello-world/</link><guid isPermaLink="false">https://sajmoon.github.io/hello-world/</guid><pubDate>Sat, 06 Jan 2018 00:00:00 GMT</pubDate><content:encoded>&lt;p&gt;Started a gatsby blog. Will migrate old blog posts here later.&lt;/p&gt;</content:encoded></item><item><title><![CDATA[Summary of Swift language features]]></title><description><![CDATA[Summary of Swift language features Swith value bining In a switch statement you can sort of pattern match on tuples. The complete example…]]></description><link>https://sajmoon.github.io/swift-language-feature-summary/</link><guid isPermaLink="false">https://sajmoon.github.io/swift-language-feature-summary/</guid><pubDate>Sat, 07 Jan 2017 20:52:03 GMT</pubDate><content:encoded>&lt;h1&gt;Summary of Swift language features&lt;/h1&gt;
 &lt;h3&gt;Swith value bining&lt;/h3&gt;
 &lt;p&gt;In a switch statement you can sort of pattern match on tuples.&lt;/p&gt;
 &lt;div class=&quot;gatsby-highlight&quot;&gt;
-      &lt;pre class=&quot;language-swift&quot;&gt;&lt;code&gt;&lt;span class=&quot;token keyword&quot;&gt;let&lt;/span&gt; anotherPoint &lt;span class=&quot;token operator&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;token punctuation&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;token number&quot;&gt;2&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;token number&quot;&gt;0&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;)&lt;/span&gt;
-&lt;span class=&quot;token keyword&quot;&gt;switch&lt;/span&gt; anotherPoint &lt;span class=&quot;token punctuation&quot;&gt;{&lt;/span&gt;
-&lt;span class=&quot;token keyword&quot;&gt;case&lt;/span&gt; &lt;span class=&quot;token punctuation&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;token keyword&quot;&gt;let&lt;/span&gt; x&lt;span class=&quot;token punctuation&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;token number&quot;&gt;0&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;)&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;:&lt;/span&gt;
-    &lt;span class=&quot;token function&quot;&gt;print&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;token string&quot;&gt;&quot;on the x-axis with an x value of &lt;span class=&quot;token interpolation&quot;&gt;&lt;span class=&quot;token delimiter variable&quot;&gt;\(&lt;/span&gt;x&lt;span class=&quot;token delimiter variable&quot;&gt;)&lt;/span&gt;&lt;/span&gt;&quot;&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;)&lt;/span&gt;
-&lt;span class=&quot;token keyword&quot;&gt;case&lt;/span&gt; &lt;span class=&quot;token punctuation&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;token number&quot;&gt;0&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;token keyword&quot;&gt;let&lt;/span&gt; y&lt;span class=&quot;token punctuation&quot;&gt;)&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;:&lt;/span&gt;
-    &lt;span class=&quot;token function&quot;&gt;print&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;token string&quot;&gt;&quot;on the y-axis with a y value of &lt;span class=&quot;token interpolation&quot;&gt;&lt;span class=&quot;token delimiter variable&quot;&gt;\(&lt;/span&gt;y&lt;span class=&quot;token delimiter variable&quot;&gt;)&lt;/span&gt;&lt;/span&gt;&quot;&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;)&lt;/span&gt;
-&lt;span class=&quot;token keyword&quot;&gt;case&lt;/span&gt; &lt;span class=&quot;token keyword&quot;&gt;let&lt;/span&gt; &lt;span class=&quot;token punctuation&quot;&gt;(&lt;/span&gt;x&lt;span class=&quot;token punctuation&quot;&gt;,&lt;/span&gt; y&lt;span class=&quot;token punctuation&quot;&gt;)&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;:&lt;/span&gt;
-    &lt;span class=&quot;token function&quot;&gt;print&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;token string&quot;&gt;&quot;somewhere else at (&lt;span class=&quot;token interpolation&quot;&gt;&lt;span class=&quot;token delimiter variable&quot;&gt;\(&lt;/span&gt;x&lt;span class=&quot;token delimiter variable&quot;&gt;)&lt;/span&gt;&lt;/span&gt;, &lt;span class=&quot;token interpolation&quot;&gt;&lt;span class=&quot;token delimiter variable&quot;&gt;\(&lt;/span&gt;y&lt;span class=&quot;token delimiter variable&quot;&gt;)&lt;/span&gt;&lt;/span&gt;)&quot;&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;)&lt;/span&gt;
-&lt;span class=&quot;token punctuation&quot;&gt;}&lt;/span&gt;
-&lt;span class=&quot;token comment&quot;&gt;// Prints &quot;on the x-axis with an x value of 2&quot;&lt;/span&gt;
-&lt;/code&gt;&lt;/pre&gt;
+      &lt;pre class=&quot;language-none&quot;&gt;&lt;code&gt;let anotherPoint = (2, 0)
+switch anotherPoint {
+case (let x, 0):
+    print(&quot;on the x-axis with an x value of \(x)&quot;)
+case (0, let y):
+    print(&quot;on the y-axis with a y value of \(y)&quot;)
+case let (x, y):
+    print(&quot;somewhere else at (\(x), \(y))&quot;)
+}
+// Prints &quot;on the x-axis with an x value of 2&quot;&lt;/code&gt;&lt;/pre&gt;
       &lt;/div&gt;
-&lt;p&gt;The complete example can be read &lt;a href=&quot;https://developer.apple.com/library/content/documentation/Swift/Conceptual/Swift_Programming_Language/ControlFlow.html#//apple_ref/doc/uid/TP40014097-CH9-ID120&quot;&gt;in the Swift documentation.&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;The complete example can be read [here.]&lt;a href=&quot;https://developer.apple.com/library/content/documentation/Swift/Conceptual/Swift_Programming_Language/ControlFlow.html#//apple_ref/doc/uid/TP40014097-CH9-ID120&quot;&gt;https://developer.apple.com/library/content/documentation/Swift/Conceptual/Swift&lt;em&gt;Programming&lt;/em&gt;Language/ControlFlow.html#//apple_ref/doc/uid/TP40014097-CH9-ID120&lt;/a&gt;)&lt;/p&gt;
 &lt;h3&gt;var title: String!&lt;/h3&gt;
 &lt;h3&gt;Guard&lt;/h3&gt;
 &lt;p&gt;Assignments are kept in scope&lt;/p&gt;
 &lt;h3&gt;Named function arguments&lt;/h3&gt;
-&lt;p&gt;Not strange in general but we are allowed to have two names for a paramter, an internal and an external. Pretty cool hand handy.&lt;/p&gt;
+&lt;p&gt;Not strange in general but we are allowed to have two names for a paramter, an internal and an external.&lt;/p&gt;
 &lt;div class=&quot;gatsby-highlight&quot;&gt;
-      &lt;pre class=&quot;language-swift&quot;&gt;&lt;code&gt;&lt;span class=&quot;token keyword&quot;&gt;func&lt;/span&gt; &lt;span class=&quot;token function&quot;&gt;methodName&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;(&lt;/span&gt;external &lt;span class=&quot;token keyword&quot;&gt;internal&lt;/span&gt; &lt;span class=&quot;token punctuation&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;token builtin&quot;&gt;String&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;token punctuation&quot;&gt;{&lt;/span&gt;
-  &lt;span class=&quot;token function&quot;&gt;print&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;token keyword&quot;&gt;internal&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;)&lt;/span&gt;
-&lt;span class=&quot;token punctuation&quot;&gt;}&lt;/span&gt;
-&lt;/code&gt;&lt;/pre&gt;
+      &lt;pre class=&quot;language-none&quot;&gt;&lt;code&gt;func methodName(external internal : String) {
+ use internal
+}&lt;/code&gt;&lt;/pre&gt;
       &lt;/div&gt;
-&lt;p&gt;called as&lt;/p&gt;
-&lt;div class=&quot;gatsby-highlight&quot;&gt;
-      &lt;pre class=&quot;language-swift&quot;&gt;&lt;code&gt;&lt;span class=&quot;token function&quot;&gt;methodName&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;(&lt;/span&gt;external&lt;span class=&quot;token punctuation&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;token string&quot;&gt;&quot;value&quot;&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;)&lt;/span&gt;
-&lt;/code&gt;&lt;/pre&gt;
-      &lt;/div&gt;
-&lt;p&gt;Use unnamed parameters.&lt;/p&gt;
-&lt;div class=&quot;gatsby-highlight&quot;&gt;
-      &lt;pre class=&quot;language-swift&quot;&gt;&lt;code&gt;&lt;span class=&quot;token keyword&quot;&gt;func&lt;/span&gt; &lt;span class=&quot;token function&quot;&gt;methodName&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;token number&quot;&gt;_&lt;/span&gt; &lt;span class=&quot;token keyword&quot;&gt;internal&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;token builtin&quot;&gt;String&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;token punctuation&quot;&gt;{&lt;/span&gt;
-  &lt;span class=&quot;token function&quot;&gt;print&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;token keyword&quot;&gt;internal&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;)&lt;/span&gt;
-&lt;span class=&quot;token punctuation&quot;&gt;}&lt;/span&gt;
-
-&lt;span class=&quot;token function&quot;&gt;methodName&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;token string&quot;&gt;&quot;string&quot;&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;)&lt;/span&gt;
-&lt;/code&gt;&lt;/pre&gt;
-      &lt;/div&gt;
-&lt;h3&gt;Xcode was slow&lt;/h3&gt;
-&lt;p&gt;The app in simulator was really slow. I thought it was a bug in XCode but it turned out that it was my fault. I had enabled slow animations. Check the debug menu where you can disable it.&lt;/p&gt;
-&lt;h3&gt;class func vs static func&lt;/h3&gt;</content:encoded></item></channel></rss>
+&lt;p&gt;called as &lt;code&gt;methodName(external: &quot;value&quot;)&lt;/code&gt;&lt;/p&gt;
+&lt;h2&gt;Xcode was slow&lt;/h2&gt;
+&lt;p&gt;I had enabled slow animations. Check the debug menu.&lt;/p&gt;
+&lt;h2&gt;Extra stuff&lt;/h2&gt;
+&lt;p&gt;class func vs static func&lt;/p&gt;</content:encoded></item></channel></rss>
