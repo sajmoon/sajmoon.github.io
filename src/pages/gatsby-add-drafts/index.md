@@ -146,6 +146,30 @@ with [`gatsby-transformer-remark`](https://www.gatsbyjs.org/packages/gatsby-tran
 The first plugin is a source plugin. It generates File nodes. Remark reads nodes, and
 parses what it needs, in this case markdown. It creates 'MarkdownRemark' Nodes.
 
+A fun thing, that is not really well documented about `gatsby-transformer-remark` is that it can provide some useful meta data. Remark, which is used in the background, can tell us word count for example.
+
+And from word count it is not that far to an estimation of reading time.
+
+```javascript
+    allMarkdownRemark(sort: { fields: [frontmatter___date], order: DESC }) {
+      edges {
+        node {
+          excerpt
+          timeToRead
+          wordCount {
+            words
+          }
+          ...etc
+```
+
+That information we can display in our UI.
+
+```javascript
+<span>{node.timeToRead} minute read.</span>
+```
+
+It provides more useful data points (headings, tableOfContent, etc). Read the source code [here](https://github.com/gatsbyjs/gatsby/blob/master/packages/gatsby-transformer-remark/src/extend-node-type.js#L315).
+
 ### Gatsby onCreateNode
 
 `onCreateNode` is called when a node is created, and in this hook I already had
