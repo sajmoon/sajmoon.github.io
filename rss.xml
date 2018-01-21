@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="UTF-8"?><rss xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:content="http://purl.org/rss/1.0/modules/content/" xmlns:atom="http://www.w3.org/2005/Atom" version="2.0"><channel><title><![CDATA[Tinkering with Code.]]></title><description><![CDATA[My blog. A dev log.]]></description><link>https://sajmoon.github.io</link><generator>RSS for Node</generator><lastBuildDate>Sun, 21 Jan 2018 20:23:56 GMT</lastBuildDate><item><title><![CDATA[Add methods to a Ruby class]]></title><description><![CDATA[We can always extend classes in Ruby. Both predefined and classes we create ourselfs. We say that classes are  always open . If you extend a…]]></description><link>https://sajmoon.github.io/ruby-add-methods-to-classes/</link><guid isPermaLink="false">https://sajmoon.github.io/ruby-add-methods-to-classes/</guid><pubDate>Tue, 16 Jan 2018 00:00:00 GMT</pubDate><content:encoded>&lt;p&gt;We can always extend classes in Ruby. Both predefined and classes we create ourselfs. We say that classes are &lt;em&gt;always open&lt;/em&gt;.&lt;/p&gt;
+<?xml version="1.0" encoding="UTF-8"?><rss xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:content="http://purl.org/rss/1.0/modules/content/" xmlns:atom="http://www.w3.org/2005/Atom" version="2.0"><channel><title><![CDATA[Tinkering with Code.]]></title><description><![CDATA[My blog. A dev log.]]></description><link>https://sajmoon.github.io</link><generator>RSS for Node</generator><lastBuildDate>Sun, 21 Jan 2018 21:45:24 GMT</lastBuildDate><item><title><![CDATA[Add methods to a Ruby class]]></title><description><![CDATA[We can always extend classes in Ruby. Both predefined and classes we create ourselfs. We say that classes are  always open . If you extend a…]]></description><link>https://sajmoon.github.io/ruby-add-methods-to-classes/</link><guid isPermaLink="false">https://sajmoon.github.io/ruby-add-methods-to-classes/</guid><pubDate>Tue, 16 Jan 2018 00:00:00 GMT</pubDate><content:encoded>&lt;p&gt;We can always extend classes in Ruby. Both predefined and classes we create ourselfs. We say that classes are &lt;em&gt;always open&lt;/em&gt;.&lt;/p&gt;
 &lt;p&gt;If you extend a built-in class be sure that it should be there. A string for example probably should not have methods to generate urls to a placeholder image, even if it could. It does not belong in the String class.&lt;/p&gt;
 &lt;h2&gt;Add an instance method to a built-in class.&lt;/h2&gt;
 &lt;p&gt;Add a method to Integers that returns a random value between 0 and the integer value.&lt;/p&gt;
@@ -102,8 +102,8 @@ date: &quot;2018-01-01&quot;
 &lt;/code&gt;&lt;/pre&gt;
       &lt;/div&gt;
 &lt;p&gt;And we are done.&lt;/p&gt;
-&lt;h2&gt;Show me a real implementaion!&lt;/h2&gt;
-&lt;p&gt;Sure. I added draft support to this blog in &lt;a href=&quot;https://github.com/sajmoon/sajmoon.github.io/commit/1340ce9e5fcda5b8b6a0ca1d791b488638df8b87&quot;&gt;this commit&lt;/a&gt;. Unfortunatly it includes some other stuff too. But there yout have all the changes needed.&lt;/p&gt;
+&lt;h2&gt;Show me a real implementation!&lt;/h2&gt;
+&lt;p&gt;Sure. I added draft support to this blog in &lt;a href=&quot;https://github.com/sajmoon/sajmoon.github.io/commit/1340ce9e5fcda5b8b6a0ca1d791b488638df8b87&quot;&gt;this commit&lt;/a&gt;. Unfortunately it includes some other stuff too. But there you have all the changes needed.&lt;/p&gt;
 &lt;h2&gt;Some improvements.&lt;/h2&gt;
 &lt;p&gt;This is a pretty bad feature. It is hard to use this in development where you might actually have to read the post you are writing.&lt;/p&gt;
 &lt;p&gt;So let’s hide the posts in production, but in development add a tag to them or something.&lt;/p&gt;
@@ -125,9 +125,101 @@ date: &quot;2018-01-01&quot;
 &lt;span class=&quot;token operator&quot;&gt;&amp;lt;&lt;/span&gt;&lt;span class=&quot;token operator&quot;&gt;/&lt;/span&gt;Link&lt;span class=&quot;token operator&quot;&gt;&gt;&lt;/span&gt;
 &lt;/code&gt;&lt;/pre&gt;
       &lt;/div&gt;
+&lt;h2&gt;Change the format of the url&lt;/h2&gt;
+&lt;p&gt;I wanted to add year to the url for the posts, both so they could persist over
+years where I imagine I have many posts soon, and also to understand more about
+Gatsby.&lt;/p&gt;
+&lt;p&gt;The starting position is that we generate posts from markdown, which have a
+title and a date in the &lt;code&gt;frontmatter&lt;/code&gt;. The path is generated from the title, and
+becomes a slug.&lt;/p&gt;
+&lt;div class=&quot;gatsby-highlight&quot;&gt;
+      &lt;pre class=&quot;language-javascript&quot;&gt;&lt;code&gt;_&lt;span class=&quot;token punctuation&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;token function&quot;&gt;each&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;(&lt;/span&gt;result&lt;span class=&quot;token punctuation&quot;&gt;.&lt;/span&gt;data&lt;span class=&quot;token punctuation&quot;&gt;.&lt;/span&gt;allMarkdownRemark&lt;span class=&quot;token punctuation&quot;&gt;.&lt;/span&gt;edges&lt;span class=&quot;token punctuation&quot;&gt;,&lt;/span&gt; edge &lt;span class=&quot;token operator&quot;&gt;=&gt;&lt;/span&gt; &lt;span class=&quot;token punctuation&quot;&gt;{&lt;/span&gt;
+  &lt;span class=&quot;token function&quot;&gt;createPage&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;{&lt;/span&gt;
+    path&lt;span class=&quot;token punctuation&quot;&gt;:&lt;/span&gt; edge&lt;span class=&quot;token punctuation&quot;&gt;.&lt;/span&gt;node&lt;span class=&quot;token punctuation&quot;&gt;.&lt;/span&gt;fields&lt;span class=&quot;token punctuation&quot;&gt;.&lt;/span&gt;slug&lt;span class=&quot;token punctuation&quot;&gt;,&lt;/span&gt;
+    component&lt;span class=&quot;token punctuation&quot;&gt;:&lt;/span&gt; blogPost&lt;span class=&quot;token punctuation&quot;&gt;,&lt;/span&gt;
+    context&lt;span class=&quot;token punctuation&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;token punctuation&quot;&gt;{&lt;/span&gt;
+      slug&lt;span class=&quot;token punctuation&quot;&gt;:&lt;/span&gt; edge&lt;span class=&quot;token punctuation&quot;&gt;.&lt;/span&gt;node&lt;span class=&quot;token punctuation&quot;&gt;.&lt;/span&gt;fields&lt;span class=&quot;token punctuation&quot;&gt;.&lt;/span&gt;slug&lt;span class=&quot;token punctuation&quot;&gt;,&lt;/span&gt;
+    &lt;span class=&quot;token punctuation&quot;&gt;}&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;,&lt;/span&gt;
+  &lt;span class=&quot;token punctuation&quot;&gt;}&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;)&lt;/span&gt;
+&lt;span class=&quot;token punctuation&quot;&gt;}&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;
+      &lt;/div&gt;
+&lt;p&gt;We link to these pages via the slug:&lt;/p&gt;
+&lt;div class=&quot;gatsby-highlight&quot;&gt;
+      &lt;pre class=&quot;language-javascript&quot;&gt;&lt;code&gt;&lt;span class=&quot;token operator&quot;&gt;&amp;lt;&lt;/span&gt;Link to&lt;span class=&quot;token operator&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;{&lt;/span&gt;node&lt;span class=&quot;token punctuation&quot;&gt;.&lt;/span&gt;fields&lt;span class=&quot;token punctuation&quot;&gt;.&lt;/span&gt;path&lt;span class=&quot;token punctuation&quot;&gt;}&lt;/span&gt;&lt;span class=&quot;token operator&quot;&gt;&gt;&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;
+      &lt;/div&gt;
+&lt;p&gt;To create pages on a different path we just change the about createPage call to
+specify a year too.&lt;/p&gt;
+&lt;div class=&quot;gatsby-highlight&quot;&gt;
+      &lt;pre class=&quot;language-javascript&quot;&gt;&lt;code&gt;  path&lt;span class=&quot;token punctuation&quot;&gt;:&lt;/span&gt; edge&lt;span class=&quot;token punctuation&quot;&gt;.&lt;/span&gt;node&lt;span class=&quot;token punctuation&quot;&gt;.&lt;/span&gt;frontmatter&lt;span class=&quot;token punctuation&quot;&gt;.&lt;/span&gt;date &lt;span class=&quot;token operator&quot;&gt;+&lt;/span&gt; edge&lt;span class=&quot;token punctuation&quot;&gt;.&lt;/span&gt;node&lt;span class=&quot;token punctuation&quot;&gt;.&lt;/span&gt;fields&lt;span class=&quot;token punctuation&quot;&gt;.&lt;/span&gt;slug&lt;span class=&quot;token punctuation&quot;&gt;,&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;
+      &lt;/div&gt;
+&lt;p&gt;However, everywhere we link to that post we need to include the date, formatted
+and ready.&lt;/p&gt;
+&lt;h3&gt;Where does slug come from?&lt;/h3&gt;
+&lt;p&gt;So here is the question that actually helped me understand Gatsby a bit
+better. We don’t have slug in frontmatter, nor do we calculate it every time we
+use it. It is sorted in GraphQL and we get it with a query. It is not in
+frontmatter but on fields.&lt;/p&gt;
+&lt;p&gt;So when and where do we generate that, and how is it done?&lt;/p&gt;
+&lt;p&gt;Enter Gatsby lifecycle.&lt;/p&gt;
+&lt;p&gt;The documentation is pretty good at listing what you can do with lifecycles, you
+can read it &lt;a href=&quot;https://www.gatsbyjs.org/docs/node-apis/&quot;&gt;here&lt;/a&gt;, but I found it a
+bit confusing. Maybe because I used a starter boilerplate for Gatsby instead of
+starting from scratch.&lt;/p&gt;
+&lt;p&gt;We read our posts with &lt;a href=&quot;https://www.gatsbyjs.org/packages/gatsby-source-filesystem/&quot;&gt;&lt;code&gt;gatsby-source-filesystem&lt;/code&gt;&lt;/a&gt;, all markdown files are parsed
+with &lt;a href=&quot;https://www.gatsbyjs.org/packages/gatsby-transformer-remark/&quot;&gt;&lt;code&gt;gatsby-transformer-remark&lt;/code&gt;&lt;/a&gt; which is the files we eventually see live.&lt;/p&gt;
+&lt;p&gt;The first plugin is a source plugin. It generates File nodes. Remark reads nodes, and
+parses what it needs, in this case markdown. It creates ‘MarkdownRemark’ Nodes.&lt;/p&gt;
+&lt;h3&gt;Gatsby onCreateNode&lt;/h3&gt;
+&lt;p&gt;&lt;code&gt;onCreateNode&lt;/code&gt; is called when a node is created, and in this hook I already had
+code to generate the slug.&lt;/p&gt;
+&lt;div class=&quot;gatsby-highlight&quot;&gt;
+      &lt;pre class=&quot;language-javascript&quot;&gt;&lt;code&gt;  &lt;span class=&quot;token keyword&quot;&gt;const&lt;/span&gt; value &lt;span class=&quot;token operator&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;token function&quot;&gt;createFilePath&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;{&lt;/span&gt; node&lt;span class=&quot;token punctuation&quot;&gt;,&lt;/span&gt; getNode &lt;span class=&quot;token punctuation&quot;&gt;}&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;)&lt;/span&gt;
+  &lt;span class=&quot;token function&quot;&gt;createNodeField&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;{&lt;/span&gt;
+    name&lt;span class=&quot;token punctuation&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;token template-string&quot;&gt;&lt;span class=&quot;token string&quot;&gt;`slug`&lt;/span&gt;&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;,&lt;/span&gt;
+    node&lt;span class=&quot;token punctuation&quot;&gt;,&lt;/span&gt;
+    value&lt;span class=&quot;token punctuation&quot;&gt;,&lt;/span&gt;
+  &lt;span class=&quot;token punctuation&quot;&gt;}&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;)&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;
+      &lt;/div&gt;
+&lt;p&gt;We mutate the node, and add the property &lt;code&gt;slug&lt;/code&gt; which we need. We can customize
+this to add a &lt;code&gt;path&lt;/code&gt; field variable that includes year and the slug.&lt;/p&gt;
+&lt;p&gt;To create links to these pages we simply do &lt;code&gt;&amp;#x3C;Link to={ node.fields.path }&gt;&lt;/code&gt;.&lt;/p&gt;
+&lt;p&gt;So, we add &lt;code&gt;path&lt;/code&gt; to the MarkdownNode:&lt;/p&gt;
+&lt;div class=&quot;gatsby-highlight&quot;&gt;
+      &lt;pre class=&quot;language-javascript&quot;&gt;&lt;code&gt;  &lt;span class=&quot;token keyword&quot;&gt;const&lt;/span&gt; date &lt;span class=&quot;token operator&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;token keyword&quot;&gt;new&lt;/span&gt; &lt;span class=&quot;token class-name&quot;&gt;Date&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;(&lt;/span&gt;node&lt;span class=&quot;token punctuation&quot;&gt;.&lt;/span&gt;frontmatter&lt;span class=&quot;token punctuation&quot;&gt;.&lt;/span&gt;date&lt;span class=&quot;token punctuation&quot;&gt;)&lt;/span&gt;
+  &lt;span class=&quot;token keyword&quot;&gt;const&lt;/span&gt; year &lt;span class=&quot;token operator&quot;&gt;=&lt;/span&gt; date&lt;span class=&quot;token punctuation&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;token function&quot;&gt;getFullYear&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;)&lt;/span&gt;
+  &lt;span class=&quot;token keyword&quot;&gt;const&lt;/span&gt; path &lt;span class=&quot;token operator&quot;&gt;=&lt;/span&gt; year &lt;span class=&quot;token operator&quot;&gt;+&lt;/span&gt; value
+
+  &lt;span class=&quot;token function&quot;&gt;createNodeField&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;{&lt;/span&gt;
+    node&lt;span class=&quot;token punctuation&quot;&gt;,&lt;/span&gt;
+    name&lt;span class=&quot;token punctuation&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;token template-string&quot;&gt;&lt;span class=&quot;token string&quot;&gt;`path`&lt;/span&gt;&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;,&lt;/span&gt;
+    value&lt;span class=&quot;token punctuation&quot;&gt;:&lt;/span&gt; path&lt;span class=&quot;token punctuation&quot;&gt;,&lt;/span&gt;
+  &lt;span class=&quot;token punctuation&quot;&gt;}&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;)&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;
+      &lt;/div&gt;
+&lt;p&gt;And we create pages with that path instead of the slug:&lt;/p&gt;
+&lt;div class=&quot;gatsby-highlight&quot;&gt;
+      &lt;pre class=&quot;language-javascript&quot;&gt;&lt;code&gt;_&lt;span class=&quot;token punctuation&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;token function&quot;&gt;each&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;(&lt;/span&gt;result&lt;span class=&quot;token punctuation&quot;&gt;.&lt;/span&gt;data&lt;span class=&quot;token punctuation&quot;&gt;.&lt;/span&gt;allMarkdownRemark&lt;span class=&quot;token punctuation&quot;&gt;.&lt;/span&gt;edges&lt;span class=&quot;token punctuation&quot;&gt;,&lt;/span&gt; edge &lt;span class=&quot;token operator&quot;&gt;=&gt;&lt;/span&gt; &lt;span class=&quot;token punctuation&quot;&gt;{&lt;/span&gt;
+  &lt;span class=&quot;token keyword&quot;&gt;const&lt;/span&gt; path &lt;span class=&quot;token operator&quot;&gt;=&lt;/span&gt; edge&lt;span class=&quot;token punctuation&quot;&gt;.&lt;/span&gt;node&lt;span class=&quot;token punctuation&quot;&gt;.&lt;/span&gt;fields&lt;span class=&quot;token punctuation&quot;&gt;.&lt;/span&gt;path
+  &lt;span class=&quot;token function&quot;&gt;createPage&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;{&lt;/span&gt;
+    path&lt;span class=&quot;token punctuation&quot;&gt;:&lt;/span&gt; path&lt;span class=&quot;token punctuation&quot;&gt;,&lt;/span&gt;
+    component&lt;span class=&quot;token punctuation&quot;&gt;:&lt;/span&gt; blogPost&lt;span class=&quot;token punctuation&quot;&gt;,&lt;/span&gt;
+    context&lt;span class=&quot;token punctuation&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;token punctuation&quot;&gt;{&lt;/span&gt;
+      slug&lt;span class=&quot;token punctuation&quot;&gt;:&lt;/span&gt; edge&lt;span class=&quot;token punctuation&quot;&gt;.&lt;/span&gt;node&lt;span class=&quot;token punctuation&quot;&gt;.&lt;/span&gt;fields&lt;span class=&quot;token punctuation&quot;&gt;.&lt;/span&gt;slug&lt;span class=&quot;token punctuation&quot;&gt;,&lt;/span&gt;
+    &lt;span class=&quot;token punctuation&quot;&gt;}&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;,&lt;/span&gt;
+  &lt;span class=&quot;token punctuation&quot;&gt;}&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;)&lt;/span&gt;
+&lt;span class=&quot;token punctuation&quot;&gt;}&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;
+      &lt;/div&gt;
 &lt;h2&gt;Summary&lt;/h2&gt;
 &lt;p&gt;Now we can mark a page as draft. Have it visible during development, and hidden on the final site.&lt;/p&gt;
-&lt;p&gt;We learned how Gatsby uses plugins to parse data, realized that we should look at the documentation, and also how gatsby uses GraphQL.&lt;/p&gt;</content:encoded></item><item><title><![CDATA[Resources for starting with iOS and Swift]]></title><description><![CDATA[I got a new job and here our main platform is iOS. Im a web developer so this should be interesting. Will try to document what and how I…]]></description><link>https://sajmoon.github.io/starting-resources-for-ios-and-swift/</link><guid isPermaLink="false">https://sajmoon.github.io/starting-resources-for-ios-and-swift/</guid><pubDate>Sun, 07 Jan 2018 00:00:00 GMT</pubDate><content:encoded>&lt;p&gt;I got a new job and here our main platform is iOS. Im a web developer so this should be interesting.&lt;/p&gt;
+&lt;p&gt;We learned how Gatsby uses plugins to parse data, realized that we should look at the documentation, and also how gatsby uses GraphQL.&lt;/p&gt;
+&lt;p&gt;We now know about Nodes in Gatsby.&lt;/p&gt;
+&lt;p&gt;We looked at one hook Gatsby provides into the internal workings, and used it to
+attach more date to nodes.&lt;/p&gt;</content:encoded></item><item><title><![CDATA[Resources for starting with iOS and Swift]]></title><description><![CDATA[I got a new job and here our main platform is iOS. Im a web developer so this should be interesting. Will try to document what and how I…]]></description><link>https://sajmoon.github.io/starting-resources-for-ios-and-swift/</link><guid isPermaLink="false">https://sajmoon.github.io/starting-resources-for-ios-and-swift/</guid><pubDate>Sun, 07 Jan 2018 00:00:00 GMT</pubDate><content:encoded>&lt;p&gt;I got a new job and here our main platform is iOS. Im a web developer so this should be interesting.&lt;/p&gt;
 &lt;p&gt;Will try to document what and how I learn both Swift as a language and the SDKs and inner workings of iOS.&lt;/p&gt;
 &lt;h2&gt;Where to start&lt;/h2&gt;
 &lt;h3&gt;Read the docs&lt;/h3&gt;

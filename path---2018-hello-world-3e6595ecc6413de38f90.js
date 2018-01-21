@@ -1,0 +1,2 @@
+webpackJsonp([0x8b0eb4a97f8b],{488:function(t,a){t.exports={data:{site:{siteMetadata:{title:"Tinkering with Code.",author:"Simon Ström"}},markdownRemark:{id:"/Users/simon/Code/sajmoon.github.io/src/pages/hello-world/index.md absPath of file >>> MarkdownRemark",html:"<p>Started a gatsby blog. Will migrate old blog posts here later.</p>",frontmatter:{title:"Installed Gatsby",date:"January 06, 2018"}}},pathContext:{slug:"/hello-world/"}}}});
+//# sourceMappingURL=path---2018-hello-world-3e6595ecc6413de38f90.js.map
