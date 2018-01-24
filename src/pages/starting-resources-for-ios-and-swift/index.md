@@ -26,7 +26,8 @@ I found some episodes on youtube:
 * [Episode 2](https://www.youtube.com/watch?v=qiROf0aHI4k)
 * [Episode 3](https://www.youtube.com/watch?v=bZldHF69C_s)
 * [Episode 4](https://www.youtube.com/watch?v=bHv6QVHId6Q)
-* [Episode 5](https://www.youtube.com/watch?v=5n7cqFdJd1U)
+* [Episode 5 - Draw](https://www.youtube.com/watch?v=5n7cqFdJd1U)
+* [Episode 6 - Multitouch](https://www.youtube.com/watch?v=Zx5cB_aT78Q)
 
 ### Other resiources
 
@@ -34,6 +35,7 @@ I found some episodes on youtube:
 * https://www.raywenderlich.com/160521/storyboards-tutorial-ios-11-part-1
 * Build a logger (simple use of extensions and more) https://medium.com/@sauvik_dolui/developing-a-tiny-logger-in-swift-7221751628e6
 * Declare new infix operators https://developer.apple.com/library/content/documentation/Swift/Conceptual/Swift_Programming_Language/AdvancedOperators.html
+* [Async tasks in swift](https://medium.com/@zhxnlai/async-programming-in-swift-with-asynctask-95a708c1c3c0)
 
 ## Write code
 
