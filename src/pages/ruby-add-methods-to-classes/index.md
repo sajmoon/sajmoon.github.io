@@ -3,9 +3,52 @@ title: Add methods to a Ruby class
 date: "2018-01-16"
 ---
 
-We can always extend classes in Ruby. Both predefined and classes we create ourselfs. We say that classes are _always open_.
+We can always extend classes in Ruby. Both predefined and classes we create ourself. We say that classes are _always open_.
 
-If you extend a built-in class be sure that it should be there. A string for example probably should not have methods to generate urls to a placeholder image, even if it could. It does not belong in the String class.
+Before you extend a built-in class be sure that it should be there. A string should not have methods to generate urls to a placeholder image, even if it could. It does not belong in the String class.
+
+## Maybe don't?
+
+Most of the time you should not add methods to classes. The placeholder image url example above should not be on the String class. It might fit on some other class, maybe your `ImageUrl` class, or not at all.
+
+```ruby
+def placeholder_image_url
+  "http://via.placeholder.com/100x100"
+end
+```
+
+Or in Module if you want it name spaced.
+
+```ruby
+module Placeholders
+  def Placeholders.image_url size = "200"
+    "http://via.placeholder.com/#{size}x#{size}"
+  end
+end
+```
+
+## Create a subclass
+
+An option could be to create a subclass of a known class. For example we could create a class that can count vowels.
+
+```ruby
+class VowelString < String
+  def vowels
+    chars.select{ |char| "aoueiy".include? char }.count
+  end
+end
+```
+
+This is just classic inheritance.
+
+We can use it like any other class.
+
+```
+sample_vowel_string = VowelString.new "My super cool string"
+puts "My sample string has #{sample_vowel_string.vowels} vowels"
+```
+
+In Ruby we have single inheritance, so we can not subclass from both `String` and `Integer`.
 
 ## Add an instance method to a built-in class.
 
@@ -51,6 +94,42 @@ puts "Integer.random 3 => #{Integer.random 3}"
 ```
 
 We add methods to self.
+
+## Mixins
+
+We can add behaviour to classes with mixins. We `include` a module in the class.
+
+```ruby
+module Vowels
+  ALL = "aoueiy"
+
+  def vowels
+    self.chars.select{ |char| ALL.include? char }
+  end
+
+  def count_vowels
+    vowels.count
+  end
+end
+```
+
+Now we can access constants just like normal modules `puts "All vowels: #{Vowels::ALL}"`.
+
+We can then make String vowel aware.
+
+```ruby
+class String
+  include Vowels
+end
+```
+
+and use it like any method on `String`.
+
+```
+"Mu super cool string".count_vowels # 6
+```
+
+We can include many modules in our class, and thus achieving a sort of multi inheritance.
 
 ## Extend active record
 
