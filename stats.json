@@ -65,16 +65,16 @@
       "component---src-templates-blog-post-js-8d09796dfb35ed252c2e.js.map"
     ],
     "component---src-layouts-index-js": [
-      "component---src-layouts-index-js-660957ec2fd771392d02.js",
-      "component---src-layouts-index-js-660957ec2fd771392d02.js.map"
+      "component---src-layouts-index-js-4ff78f3b1d367737e2f8.js",
+      "component---src-layouts-index-js-4ff78f3b1d367737e2f8.js.map"
     ],
     "path---2015-2015-10-25-playing-around-with-elixir-processes": [
       "path---2015-2015-10-25-playing-around-with-elixir-processes-380800d934ee66e71228.js",
       "path---2015-2015-10-25-playing-around-with-elixir-processes-380800d934ee66e71228.js.map"
     ],
     "path---index": [
-      "path---index-5c463a12a1858f2b0c4c.js",
-      "path---index-5c463a12a1858f2b0c4c.js.map"
+      "path---index-cfd0089e7fb469ff1de2.js",
+      "path---index-cfd0089e7fb469ff1de2.js.map"
     ],
     "path---2018-hello-world": [
       "path---2018-hello-world-3e6595ecc6413de38f90.js",
@@ -97,9 +97,9 @@
       "component---src-pages-404-js-2243362f27234f6cf611.js.map"
     ],
     "commons": [
-      "commons-b4be30d634a1b5fad357.js",
+      "commons-78727bd33a365b16d4bb.js",
       "build-js-styles.css",
-      "commons-b4be30d634a1b5fad357.js.map",
+      "commons-78727bd33a365b16d4bb.js.map",
       "build-js-styles.css.map"
     ],
     "path---404-html": [
@@ -107,8 +107,8 @@
       "path---404-html-a0e39f21c11f6a62c5ab.js.map"
     ],
     "path---2018-starting-resources-for-ios-and-swift": [
-      "path---2018-starting-resources-for-ios-and-swift-36f6a3a696fb4146afb4.js",
-      "path---2018-starting-resources-for-ios-and-swift-36f6a3a696fb4146afb4.js.map"
+      "path---2018-starting-resources-for-ios-and-swift-700b8e945e779694ddbd.js",
+      "path---2018-starting-resources-for-ios-and-swift-700b8e945e779694ddbd.js.map"
     ],
     "path---2015-2015-04-17-phoenix-ecto-on-heroku-2": [
       "path---2015-2015-04-17-phoenix-ecto-on-heroku-2-ba828440e2560c67e2a9.js",
@@ -131,21 +131,21 @@
       "path---offline-plugin-app-shell-fallback-a0e39f21c11f6a62c5ab.js.map"
     ],
     "path---2018-ruby-add-methods-to-classes": [
-      "path---2018-ruby-add-methods-to-classes-e2ce4e6e80337e60a694.js",
-      "path---2018-ruby-add-methods-to-classes-e2ce4e6e80337e60a694.js.map"
+      "path---2018-ruby-add-methods-to-classes-481b676f66fae60ca40d.js",
+      "path---2018-ruby-add-methods-to-classes-481b676f66fae60ca40d.js.map"
     ],
     "path---2015-2015-07-14-change-file-encoding-in-the-terminal": [
       "path---2015-2015-07-14-change-file-encoding-in-the-terminal-8e73db2cf6131f5789df.js",
       "path---2015-2015-07-14-change-file-encoding-in-the-terminal-8e73db2cf6131f5789df.js.map"
     ],
     "path---2017-swift-language-feature-summary": [
-      "path---2017-swift-language-feature-summary-3569051b1e1296089bdb.js",
-      "path---2017-swift-language-feature-summary-3569051b1e1296089bdb.js.map"
+      "path---2017-swift-language-feature-summary-4397a122fcee31641092.js",
+      "path---2017-swift-language-feature-summary-4397a122fcee31641092.js.map"
     ],
     "app": [
-      "app-64794e047306abac2270.js",
+      "app-d16f9594662b53b22f3b.js",
       "build-js-styles.css",
-      "app-64794e047306abac2270.js.map",
+      "app-d16f9594662b53b22f3b.js.map",
       "build-js-styles.css.map"
     ],
     "path---2015-2015-09-29-start-from-zero-with-elm": [
