@@ -5,6 +5,8 @@ date: "2018-01-16"
 
 We can always extend classes in Ruby. Both predefined and classes we create ourself. We say that classes are _always open_.
 
+If you want to some concrete examples look at this [gist with some code.](https://gist.github.com/sajmoon/f8b766a7a7da36f7e9a9899e1b8de9b9)
+
 Before you extend a built-in class be sure that it should be there. A string should not have methods to generate urls to a placeholder image, even if it could. It does not belong in the String class.
 
 ## Maybe don't?
@@ -16,7 +18,6 @@ def placeholder_image_url
   "http://via.placeholder.com/100x100"
 end
 ```
-
 Or in Module if you want it name spaced.
 
 ```ruby
