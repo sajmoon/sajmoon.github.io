@@ -36,3 +36,7 @@ adb shell am start -a android.intent.action.VIEW \
                              -d "https://example.com/blog"
 ```
 
+## Some gotchas
+
+I tried to intercept an url, and given some conditional such as the user was not authenticated, open a browser to the same url. This works on iOS, but on Android this creates an infinite loop since it intercepts the new redirect.
+
