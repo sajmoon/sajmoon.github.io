@@ -67,6 +67,8 @@ The app in simulator was really slow. I thought it was a bug in XCode but it tur
 
 ### class func vs static func
 
+https://stackoverflow.com/questions/25156377/what-is-the-difference-between-static-func-and-class-func-in-swift
+
 ### Interpolation Optional strings
 
 ```swift
@@ -77,3 +79,81 @@ if let description = feedItem.description {
     self.descriptionLabel.text = "\(feedItem.user.name!) \(description)"
 }
 ```
+
+### Computed properties
+
+From the [official docs](https://developer.apple.com/library/content/documentation/Swift/Conceptual/Swift_Programming_Language/Properties.html)
+```swift
+var center: Point {
+	get {
+		let centerX = origin.x + (size.width / 2)
+		let centerY = origin.y + (size.height / 2)
+		return Point(x: centerX, y: centerY)
+	}
+
+	set(newCenter) {
+		origin.x = newCenter.x - (size.width / 2)
+		origin.y = newCenter.y - (size.height / 2)
+	}
+}
+```
+
+or a read only short hand:
+
+```swift
+var volume: Double {
+	return width * height * depth
+}
+```
+
+### Protocols
+
+
+#### Default implementaions
+
+```swift
+extensioion PrettyTextRepresentable  {
+	var prettyTextualDescription: String {
+		return textualDescription
+	}
+}
+```
+
+### Closures
+
+@escaping
+
+https://developer.apple.com/library/content/documentation/Swift/Conceptual/Swift_Programming_Language/Closures.html
+
+Reuse closues from variables.
+https://stackoverflow.com/questions/24603559/store-a-closure-as-a-variable-in-swift
+
+but maybe you should not.
+
+Create a func instead.
+
+```
+func myAction(_ id: Int) {
+  func onComplete(_ model: ApiModel, _ error: ApiError) {
+  }
+
+  User.get(id: 1, completionHandler: onComplete)
+}
+```
+
+### Operators
+
+
+You can create new operators in swift
+Example in ObjectMapper they create `<-` for mapping json
+https://github.com/Hearst-DD/ObjectMapper/blob/08f6555f18b274e37d995b9b3bcd802b05878cce/Sources/Operators.swift
+
+Here is a good article about it.
+https://www.raywenderlich.com/157556/overloading-custom-operators-swift
+
+
+## iOS SDK
+
+### NotificationCenter
+
+In app observer, not notifications.
