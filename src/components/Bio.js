@@ -22,13 +22,13 @@ class Bio extends React.Component {
           style={{
             marginRight: rhythm(1 / 2),
             marginBottom: 0,
+            borderRadius: '50%',
             width: rhythm(2),
             height: rhythm(2),
           }}
         />
         <p>
-          Written by <strong>Simon Ström</strong> as a way to remember. It's a
-          dev log of thinks I want to remember.
+          A devlog of interesting things by <strong>Simon Ström</strong>.
         </p>
       </div>
     )
